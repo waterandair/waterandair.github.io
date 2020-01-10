@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>梯度下降求解逻辑回归 | Waterandair&#39;s Blog</title>
+  <meta name="keywords" content=" 机器学习 , 回归 ">
+  <meta name="description" content="梯度下降求解逻辑回归 | Waterandair&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="https://waterandair.github.io/tags/index.html">
+<meta property="og:site_name" content="Waterandair&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-17T18:58:18.000Z">
+<meta property="article:modified_time" content="2019-12-28T06:03:51.541Z">
+<meta property="article:author" content="Waterandair">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Waterandair</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/waterandair" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:156577812@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+<a class="more-menus">更多菜单</a>
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(74)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法与数据结构"><i class="fold iconfont icon-right"></i>算法与数据结构<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端开发"><i class="fold iconfont icon-right"></i>后端开发<small>(33)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(6)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Ansible">Ansible<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Docker">Docker<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Linux">Linux<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="MySQL">MySQL<small>(16)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="RPC">RPC<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="大数据"><i class="fold iconfont icon-right"></i>大数据<small>(29)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Hadoop">Hadoop<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="CDH">CDH<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Hive">Hive<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Kafka">Kafka<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="数据分析">数据分析<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Spark">Spark<small>(19)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Zookeeper">Zookeeper<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Go"><i class="fold iconfont icon-right"></i>Go<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Go 语言注意点">Go 语言注意点<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="环境搭建">环境搭建<small>(5)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="机器学习"><i class="fold iconfont icon-right"></i>机器学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="算法">算法<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="案例">案例<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Interesting"><i class="fold iconfont icon-right"></i>Interesting<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Music">Music<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Python">Python<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="74">
+<input type="hidden" id="yelog_site_word_count" value="137.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">时间复杂度</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">大O算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Ansible</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">大数据</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Nosql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Docker</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Go</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">后端开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Hadoop</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Hive</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">环境搭建</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Kafka</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">消息队列</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Zookeeper</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">回归</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">音乐</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Numpy</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Pandas</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Python</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Spark</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">RPC</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">性能调优</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Spark 原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">工具</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">分布式协作框架</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux 权限问题</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use%20copy.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 基础 "
+           href="/2017-10-06-big-data-collect.html"
+           data-tag="大数据"
+           data-author="" >
+            <span class="post-title" title="大数据的数据采集流程">大数据的数据采集流程</span>
+            <span class="post-date" title="2017-10-06 21:49:02">2017/10/06</span>
+        </a>
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 CDH "
+           href="/2017-12-15-big-data-cdh-5-14-2-install.html"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="centos7 本地源方式部署 CDH 大数据服务管理平台">centos7 本地源方式部署 CDH 大数据服务管理平台</span>
+            <span class="post-date" title="2017-12-15 11:20:47">2017/12/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Docker "
+           href="/2017-10-03-docker-base-use.html"
+           data-tag="Docker"
+           data-author="" >
+            <span class="post-title" title="Docker 基本操作">Docker 基本操作</span>
+            <span class="post-date" title="2017-10-03 23:38:00">2017/10/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-09-10-distributed-lock.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="分布式锁(redis &amp; zookeeper)">分布式锁(redis &amp; zookeeper)</span>
+            <span class="post-date" title="2018-09-10 23:38:23">2018/09/10</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-21-file-descriptor.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="文件描述符（File Descriptor）简介">文件描述符（File Descriptor）简介</span>
+            <span class="post-date" title="2017-09-21 09:24:06">2017/09/21</span>
+        </a>
+        
+        <a id="top" class="大数据 Hadoop "
+           href="/2018-02-16-hadoop-hdfs-base.html"
+           data-tag="大数据,Hadoop"
+           data-author="" >
+            <span class="post-title" title="HDFS 系统基础介绍及使用(python)">HDFS 系统基础介绍及使用(python)</span>
+            <span class="post-date" title="2018-02-16 18:19:32">2018/02/16</span>
+        </a>
+        
+        <a id="top" class="Go Go 语言注意点 "
+           href="/2018-11-05-go-the-zero-value-of-struct-is-not-nil.html"
+           data-tag="Go"
+           data-author="" >
+            <span class="post-title" title="Go语言-结构体的零值问题">Go语言-结构体的零值问题</span>
+            <span class="post-date" title="2018-11-05 12:58:50">2018/11/05</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-04-23-hive-base.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 基础及实践">Hive 基础及实践</span>
+            <span class="post-date" title="2018-04-23 18:19:32">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-06-30-hive-optimization.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 优化总结">Hive 优化总结</span>
+            <span class="post-date" title="2018-06-30 18:19:32">2018/06/30</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-16-install-hadoop.html"
+           data-tag="Hadoop,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hadoop 集群">使用 ansible 部署 hadoop 集群</span>
+            <span class="post-date" title="2017-10-16 18:19:32">2017/10/16</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-23-install-hive.html"
+           data-tag="Hive,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hive （远程 mysql 存储 metadata）">使用 ansible 部署 hive （远程 mysql 存储 metadata）</span>
+            <span class="post-date" title="2017-10-23 18:19:32">2017/10/23</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-11-28-install-zookeeper.html"
+           data-tag="环境搭建,Zookeeper"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 zookeeper 环境">使用 ansible 部署 zookeeper 环境</span>
+            <span class="post-date" title="2017-11-28 12:42:24">2017/11/28</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-13-install-jdk.html"
+           data-tag="环境搭建,Java"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 java(jdk) 环境">使用 ansible 部署 java(jdk) 环境</span>
+            <span class="post-date" title="2017-10-13 18:19:32">2017/10/13</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-12-03-install-kafka.html"
+           data-tag="环境搭建,Kafka"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 kafka 集群">使用 ansible 部署 kafka 集群</span>
+            <span class="post-date" title="2017-12-03 07:01:41">2017/12/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-28-linux-top.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="Linux 命令 top 拆解">Linux 命令 top 拆解</span>
+            <span class="post-date" title="2017-05-28 09:24:06">2017/05/28</span>
+        </a>
+        
+        <a id="top" class="大数据 Kafka "
+           href="/2017-12-19-kafka-intro.html"
+           data-tag="Kafka,消息队列"
+           data-author="" >
+            <span class="post-title" title="kafka python 客户端使用">kafka python 客户端使用</span>
+            <span class="post-date" title="2017-12-19 12:58:50">2017/12/19</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-03-03-ml-gradient-descent.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="梯度下降求解逻辑回归">梯度下降求解逻辑回归</span>
+            <span class="post-date" title="2018-03-03 09:24:06">2018/03/03</span>
+        </a>
+        
+        <a id="top" class="机器学习 案例 "
+           href="/2018-03-10-ml-linearregression-advertising.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="LinearRegression建立广告投放与销售量的模型(sklearn)">LinearRegression建立广告投放与销售量的模型(sklearn)</span>
+            <span class="post-date" title="2018-03-10 09:24:06">2018/03/10</span>
+        </a>
+        
+        <a id="top" class="Interesting Music "
+           href="/2018-05-17-music-eason-unconditional.html"
+           data-tag="音乐"
+           data-author="" >
+            <span class="post-title" title="温情脉脉 —《无条件》">温情脉脉 —《无条件》</span>
+            <span class="post-date" title="2018-05-17 12:58:50">2018/05/17</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-02-26-ml-regression-pic.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="线性回归算法推导">线性回归算法推导</span>
+            <span class="post-date" title="2018-02-26 09:24:06">2018/02/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-30-mysql-authority-management.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 权限管理">MySQL 权限管理</span>
+            <span class="post-date" title="2017-07-30 09:24:06">2017/07/30</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-20-mysql-binlog.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL二进制日志 binlog 详细介绍">MySQL二进制日志 binlog 详细介绍</span>
+            <span class="post-date" title="2017-06-20 09:24:06">2017/06/20</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-29-mysql-backup-restore.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 备份和恢复机制">MySQL 备份和恢复机制</span>
+            <span class="post-date" title="2017-08-29 09:24:06">2017/08/29</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-07-08-mysql-commonly-used-tools.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 中的常用工具">MySQL 中的常用工具</span>
+            <span class="post-date" title="2018-07-08 09:24:06">2018/07/08</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-09-mysql-common-skill.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 常见问题和应用技巧">MySQL 常见问题和应用技巧</span>
+            <span class="post-date" title="2017-07-09 09:24:06">2017/07/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-23-mysql-concurrent-params.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="调整 MySQL 并发相关的参数">调整 MySQL 并发相关的参数</span>
+            <span class="post-date" title="2017-07-23 09:24:06">2017/07/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-07-mysql-index-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 索引优化">MySql 索引优化</span>
+            <span class="post-date" title="2017-08-07 09:24:06">2017/08/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-16-mysql-innodb-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL Innodb 日志机制及优化">MySQL Innodb 日志机制及优化</span>
+            <span class="post-date" title="2017-06-16 09:24:06">2017/06/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-02-mysql-lock-intro.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 锁机制">MySQL 锁机制</span>
+            <span class="post-date" title="2017-07-02 09:24:06">2017/07/02</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-24-mysql-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 日志介绍">MySQL 日志介绍</span>
+            <span class="post-date" title="2017-06-24 09:24:06">2017/06/24</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-16-mysql-memory-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 内存优化">MySQL 内存优化</span>
+            <span class="post-date" title="2017-08-16 09:24:06">2017/08/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-08-26-mysql-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 性能优化(全面)">MySQL 性能优化(全面)</span>
+            <span class="post-date" title="2018-08-26 09:24:06">2018/08/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-05-mysql-partition.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 表分区">MySql 表分区</span>
+            <span class="post-date" title="2017-09-05 09:24:06">2017/09/05</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-13-mysql-replication.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 主从复制">MySQL 主从复制</span>
+            <span class="post-date" title="2017-09-13 09:24:06">2017/09/13</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-10-mysql-sql-optimization-steps.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="优化 sql 语句的一般步骤">优化 sql 语句的一般步骤</span>
+            <span class="post-date" title="2017-06-10 09:24:06">2017/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-18-pandas-intro.html"
+           data-tag="Pandas"
+           data-author="" >
+            <span class="post-title" title="pandas 入门练习">pandas 入门练习</span>
+            <span class="post-date" title="2018-02-18 11:20:47">2018/02/18</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-22-mysql-select-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 查询优化">MySQL 查询优化</span>
+            <span class="post-date" title="2017-08-22 09:24:06">2017/08/22</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-10-numpy-intro.html"
+           data-tag="Numpy"
+           data-author="" >
+            <span class="post-title" title="numpy 入门练习">numpy 入门练习</span>
+            <span class="post-date" title="2018-02-10 11:20:47">2018/02/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-03-pyspark-custom-accumulator.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="pyspark 自定义累加器(python)">pyspark 自定义累加器(python)</span>
+            <span class="post-date" title="2018-04-03 11:20:47">2018/04/03</span>
+        </a>
+        
+        <a id="top" class="Python "
+           href="/2018-05-22-python-singleton.html"
+           data-tag="Python"
+           data-author="" >
+            <span class="post-title" title="四种 python 实现的单例模式的方式">四种 python 实现的单例模式的方式</span>
+            <span class="post-date" title="2018-05-22 09:24:06">2018/05/22</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-08-11-redis-basic.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 数据类型及应用场景">Redis 数据类型及应用场景</span>
+            <span class="post-date" title="2018-08-11 23:38:23">2018/08/11</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-pyspark-read-write.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark 读取和转存数据(python)">Spark 读取和转存数据(python)</span>
+            <span class="post-date" title="2018-01-01 07:34:19">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-21-redis-cluster.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Cluster 介绍">Redis Cluster 介绍</span>
+            <span class="post-date" title="2018-03-21 23:38:23">2018/03/21</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-07-redis-persistence.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 持久化介绍(RDB 和 AOF)">Redis 持久化介绍(RDB 和 AOF)</span>
+            <span class="post-date" title="2017-11-07 23:38:23">2017/11/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-15-redis-replication.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Replication 原理是实践">Redis Replication 原理是实践</span>
+            <span class="post-date" title="2017-11-15 23:38:23">2017/11/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-16-redis-sentinel.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 哨兵(sentinal)">Redis 哨兵(sentinal)</span>
+            <span class="post-date" title="2018-03-16 23:38:23">2018/03/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-27-rpc-distribute-zookeeper-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="基于zookeeper的分布式RPC(python)">基于zookeeper的分布式RPC(python)</span>
+            <span class="post-date" title="2018-05-27 09:24:06">2018/05/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-23-rpc-basic-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 模型基础知识(python)">RPC 模型基础知识(python)</span>
+            <span class="post-date" title="2018-05-23 09:24:06">2018/05/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-06-01-rpc-grpc-python-ping.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="grpc开发入门(python)">grpc开发入门(python)</span>
+            <span class="post-date" title="2018-06-01 09:24:06">2018/06/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-09-spark-and-sql-join-pattern.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="快速区分 spark 四种关联方式(结论适用于 sql)">快速区分 spark 四种关联方式(结论适用于 sql)</span>
+            <span class="post-date" title="2018-01-09 11:20:47">2018/01/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-16-rpc-protocol-basic.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 消息协议设计注意点">RPC 消息协议设计注意点</span>
+            <span class="post-date" title="2018-05-16 09:24:06">2018/05/16</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-22-spark-app-area-top3-product.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="各区域热门商品统计(pyspark)">各区域热门商品统计(pyspark)</span>
+            <span class="post-date" title="2018-04-22 09:24:06">2018/04/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-20-spark-app-page-convert-rate.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="计算页面单跳转化率(pyspark)">计算页面单跳转化率(pyspark)</span>
+            <span class="post-date" title="2018-04-20 09:24:06">2018/04/20</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-19-spark-app-session-analysis.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="用户行为分析(pyspark)">用户行为分析(pyspark)</span>
+            <span class="post-date" title="2018-04-19 09:24:06">2018/04/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-02-02-spark-base-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="spark 性能优化方法">spark 性能优化方法</span>
+            <span class="post-date" title="2018-02-02 09:24:06">2018/02/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-22-spark-functions-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark 算子调优方法">Spark 算子调优方法</span>
+            <span class="post-date" title="2018-01-22 09:24:06">2018/01/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2017-12-25-spark-operating-mechanism.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 运行机制">Spark 运行机制</span>
+            <span class="post-date" title="2017-12-25 11:20:47">2017/12/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-spark-rdd-dependence.html"
+           data-tag="Spark,Spark 原理"
+           data-author="" >
+            <span class="post-title" title="Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)">Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)</span>
+            <span class="post-date" title="2018-01-01 09:24:06">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-07-19-spark-shuffle-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark Shuffle 性能调优">Spark Shuffle 性能调优</span>
+            <span class="post-date" title="2018-07-19 11:20:47">2018/07/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-19-spark-sql-rdd.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Sql 两种将 RDD 转为 DataFrame 的方式">Spark Sql 两种将 RDD 转为 DataFrame 的方式</span>
+            <span class="post-date" title="2018-06-19 11:20:47">2018/06/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-17-spark-standalone.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark Standalone 运行模式">Spark Standalone 运行模式</span>
+            <span class="post-date" title="2018-01-17 11:20:47">2018/01/17</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-10-spark-streaming-checkpoint.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 使用 checkpoint 做恢复">Spark Streaming 使用 checkpoint 做恢复</span>
+            <span class="post-date" title="2018-06-10 11:20:47">2018/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-24-spark-streaming-transform.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="sparkStreaming 实时黑名单过滤(pyspark)">sparkStreaming 实时黑名单过滤(pyspark)</span>
+            <span class="post-date" title="2018-04-24 11:20:47">2018/04/24</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-05-02-spark-streaming-sql-top3.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 与 spark sql 结合实时统计点击量top3商品">Spark Streaming 与 spark sql 结合实时统计点击量top3商品</span>
+            <span class="post-date" title="2018-05-02 11:20:47">2018/05/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-25-spark-streaming-window.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 热点搜索词滑动统计(pyspark)">Spark Streaming 热点搜索词滑动统计(pyspark)</span>
+            <span class="post-date" title="2018-04-25 11:20:47">2018/04/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-23-spark-updatestatebykey.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="UpdateStateByKey 实时统计全局wordcount(pyspark)">UpdateStateByKey 实时统计全局wordcount(pyspark)</span>
+            <span class="post-date" title="2018-04-23 11:20:47">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-27-spark-yarn-client-cluster.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 的 Yarn-cluster 和 Yarn-client 提交模式">Spark 的 Yarn-cluster 和 Yarn-client 提交模式</span>
+            <span class="post-date" title="2018-01-27 09:24:06">2018/01/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-25-supervisor-intro.html"
+           data-tag="工具"
+           data-author="" >
+            <span class="post-title" title="进程管理工具 supervisor">进程管理工具 supervisor</span>
+            <span class="post-date" title="2017-09-25 11:20:47">2017/09/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2017-11-25-zookeeper-intro.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper概述(应用场景及基本概念)">zookeeper概述(应用场景及基本概念)</span>
+            <span class="post-date" title="2017-11-25 09:23:42">2017/11/25</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-14-uid-euid-gid-egid-introduce.html"
+           data-tag="Linux 权限问题"
+           data-author="" >
+            <span class="post-title" title="关于 Linux 进程的 UID、EUID、GID 和 EGID">关于 Linux 进程的 UID、EUID、GID 和 EGID</span>
+            <span class="post-date" title="2017-05-14 17:13:00">2017/05/14</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2018-10-03-zookeeper-kazoo-usage.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper python 客户端 kazoo 使用指南(译自官网)">zookeeper python 客户端 kazoo 使用指南(译自官网)</span>
+            <span class="post-date" title="2018-10-03 09:23:42">2018/10/03</span>
+        </a>
+        
+        <a id="top" class="算法与数据结构 基础 "
+           href="/2017-05-21-algorithm-efficiency-analysis.html"
+           data-tag="时间复杂度,大O算法"
+           data-author="" >
+            <span class="post-title" title="算法效率分析">算法效率分析</span>
+            <span class="post-date" title="2017-05-21 09:24:06">2017/05/21</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-ml-gradient-descent" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">梯度下降求解逻辑回归</h1>
+    
+    <div class="article-meta">
+        
+        <span class="top"><a>置顶</a></span>
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="机器学习">机器学习</a>/
+            
+                <a  data-rel="算法">算法</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color5">机器学习</a>
+            
+            <a class="color3">回归</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-12-28 14:03:59'>2018-03-03 09:24</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.5k</span>
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#准备工作"><span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据说明"><span class="toc-text">数据说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#python-库准备"><span class="toc-text">python 库准备</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sigmoid-函数"><span class="toc-text">Sigmoid 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#公式"><span class="toc-text">公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#python-实现"><span class="toc-text">python 实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑回归模型"><span class="toc-text">逻辑回归模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#python-实现-1"><span class="toc-text">python 实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#损失函数"><span class="toc-text">损失函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#python-实现-2"><span class="toc-text">python 实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计算梯度"><span class="toc-text">计算梯度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#python-实现-3"><span class="toc-text">python 实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#梯度下降求解"><span class="toc-text">梯度下降求解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#三种不同的停止迭代策略"><span class="toc-text">三种不同的停止迭代策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#打乱数据"><span class="toc-text">打乱数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#求梯度下降"><span class="toc-text">求梯度下降</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预测"><span class="toc-text">预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行"><span class="toc-text">运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#封装运行函数"><span class="toc-text">封装运行函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载数据"><span class="toc-text">加载数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#批量梯度下降"><span class="toc-text">批量梯度下降</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#根据迭代次数停止-STOP-ITER"><span class="toc-text">根据迭代次数停止(STOP_ITER)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#根据损失值变化停止-STOP-COST"><span class="toc-text">根据损失值变化停止(STOP_COST)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#根据梯度变化停止-STOP-GRAD"><span class="toc-text">根据梯度变化停止(STOP_GRAD)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#随机梯度下降"><span class="toc-text">随机梯度下降</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#小批量梯度下降"><span class="toc-text">小批量梯度下降</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#根据迭代次数停止-STOP-ITER-1"><span class="toc-text">根据迭代次数停止(STOP_ITER)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#小批量梯度下降-标准化数据"><span class="toc-text">小批量梯度下降(标准化数据)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#数据标准化-数据预处理"><span class="toc-text">数据标准化(数据预处理)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#根据迭代次数停止-STOP-ITER-2"><span class="toc-text">根据迭代次数停止(STOP_ITER)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#根据损失值变化停止-STOP-COST-1"><span class="toc-text">根据损失值变化停止(STOP_COST)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#根据梯度变化停止-STOP-GRAD-1"><span class="toc-text">根据梯度变化停止(STOP_GRAD)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预测-1"><span class="toc-text">预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>建立一个逻辑回归模型,根据已有的录取学生的考试成绩数据,预测一个学生是否能被录取.<br><a href="https://github.com/waterandair/daily-learning/tree/master/learn-ml/regression" target="_blank" rel="noopener"><strong>查看源码</strong></a></p>
+<a id="more"></a>
+
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><h4 id="数据说明"><a href="#数据说明" class="headerlink" title="数据说明"></a>数据说明</h4><p>每一列代表的意义分别是 <code>IQ</code>,<code>EQ</code>, <code>是否录取</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">34.62365962451697,78.0246928153624,0</span><br><span class="line">30.28671076822607,43.89499752400101,0</span><br><span class="line">35.84740876993872,72.90219802708364,0</span><br><span class="line">60.18259938620976,86.30855209546826,1</span><br><span class="line">79.0327360507101,75.3443764369103,1</span><br><span class="line">45.08327747668339,56.3163717815305,0</span><br><span class="line">61.10666453684766,96.51142588489624,1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="python-库准备"><a href="#python-库准备" class="headerlink" title="python 库准备"></a>python 库准备</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">import matplotlib as mpl</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import os</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line"># matplotlib 中文</span><br><span class="line">mpl.rcParams[u&#39;font.sans-serif&#39;] &#x3D; [&#39;SimHei&#39;]</span><br><span class="line">mpl.rcParams[&#39;axes.unicode_minus&#39;] &#x3D; False</span><br><span class="line"></span><br><span class="line"># pandas 加载数据</span><br><span class="line">data_path &#x3D; os.path.dirname(os.path.realpath(__file__)) + &#39;&#x2F;data&#x2F;LogiReg_data.txt&#39;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Sigmoid-函数"><a href="#Sigmoid-函数" class="headerlink" title="Sigmoid 函数"></a>Sigmoid 函数</h3><p>sigmoid函数连续，光滑，严格单调，以(0,0.5)中心对称，它可以把任何一个值转换为一个0到1之间的数,是一个非常良好的阈值函数。<br>在逻辑回归算法中,可以使用 Sigmoid 函数把目标值映射到一个 (0, 1) 的阈值区间,然后可以根据自己设定的阈值实现样本分类.</p>
+<h4 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h4><p>$$<br>g(z) = \frac{1}{1+e^{-z}}<br>$$</p>
+<h4 id="python-实现"><a href="#python-实现" class="headerlink" title="python 实现"></a>python 实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def sigmoid(z):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    映射到概率的函数, 可以把一个值映射到从0到1的一个值</span><br><span class="line">    :param z:</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    return 1 &#x2F; (1 + np.exp(-z))</span><br><span class="line"></span><br><span class="line">def show_sigmoid_demo():</span><br><span class="line">    nums &#x3D; np.arange(-10, 10)</span><br><span class="line">    fig, ax &#x3D; plt.subplots(figsize&#x3D;(12, 4))</span><br><span class="line">    ax.plot(nums, sigmoid(nums))</span><br><span class="line">    ax.set_title(&quot;sigmoid 函数&quot;)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    show_sigmoid_demo()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/sigmoid-demo.png" alt="image"></p>
+<h3 id="逻辑回归模型"><a href="#逻辑回归模型" class="headerlink" title="逻辑回归模型"></a>逻辑回归模型</h3><p>回归模型是为一组样本找到一组最优参数,以此得出最拟合实际的模型.<br>对于非线性回归,不能直接求出最拟合的参数,所以采用梯度下降的算法为模型求出一组最合适的参数,以此确定模型.</p>
+<p>$$<br>\begin{array}{ccc}<br>\begin{pmatrix}\theta_{0} &amp; \theta_{1} &amp; \theta_{2}\end{pmatrix} &amp; \times &amp;<br>\begin{matrix}\left\lgroup<br>\matrix{1 \cr x_{1} \cr x_{2}}\right\rgroup<br>\end{matrix}<br>\end{array}=\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}<br>$$</p>
+<h4 id="python-实现-1"><a href="#python-实现-1" class="headerlink" title="python 实现"></a>python 实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def model(X, theta):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    返回预测结果值</span><br><span class="line">    :param X: 样本</span><br><span class="line">    :param theta: 参数</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    return sigmoid(np.dot(X, theta.T))</span><br></pre></td></tr></table></figure>
+
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>损失函数是用来度量拟合的程度的, 损失函数越小，就代表模型拟合的越好。损失函数的期望成为平均损失(经验风险),<br>实际的模型并不是越拟合越好,过拟合的模型预测时效果会很不好.<br>将对数似然函数去负号:<br>$$<br>D(h_\theta(x), y) = -y\log(h_\theta(x)) - (1-y)\log(1-h_\theta(x))<br>$$<br>平均损失:<br>$$<br>J(\theta)=\frac{1}{n}\sum_{i=1}^{n} D(h_\theta(x_i), y_i)<br>$$</p>
+<h4 id="python-实现-2"><a href="#python-实现-2" class="headerlink" title="python 实现"></a>python 实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def cost(X, y, theta):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    损失函数(代价函数) 根据参数计算损失,损失越小,拟合越好</span><br><span class="line">    :param X: 样本</span><br><span class="line">    :param y: 目标值</span><br><span class="line">    :param theta: 参数</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    left &#x3D; np.multiply(-y, np.log(model(X, theta)))</span><br><span class="line">    right &#x3D; np.multiply(1 - y, np.log(1 - model(X, theta)))</span><br><span class="line">    return np.sum(left - right) &#x2F; (len(X))</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算梯度"><a href="#计算梯度" class="headerlink" title="计算梯度"></a>计算梯度</h3><p>$$<br>\frac{\partial J}{\partial \theta_j}=-\frac{1}{m}\sum_{i=1}^n (y_i - h_\theta (x_i))x_{ij}<br>$$</p>
+<h4 id="python-实现-3"><a href="#python-实现-3" class="headerlink" title="python 实现"></a>python 实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def gradient(X, y, theta):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    计算每个参数的梯度方向</span><br><span class="line">    :param X: 样本</span><br><span class="line">    :param y: 目标值</span><br><span class="line">    :param theta: 参数</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    grad &#x3D; np.zeros(theta.shape)</span><br><span class="line">    error &#x3D; (model(X, theta) - y).ravel()  # 计算误差</span><br><span class="line">    for j in range(len(theta.ravel())):</span><br><span class="line">        term &#x3D; np.multiply(error, X[:, j])</span><br><span class="line">        grad[0, j] &#x3D; np.sum(term) &#x2F; len(X)  # 计算每项的梯度</span><br><span class="line"></span><br><span class="line">    return grad</span><br></pre></td></tr></table></figure>
+
+<h3 id="梯度下降求解"><a href="#梯度下降求解" class="headerlink" title="梯度下降求解"></a>梯度下降求解</h3><h4 id="三种不同的停止迭代策略"><a href="#三种不同的停止迭代策略" class="headerlink" title="三种不同的停止迭代策略"></a>三种不同的停止迭代策略</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">STOP_ITER &#x3D; 0  # 根据迭代次数停止迭代</span><br><span class="line">STOP_COST &#x3D; 1  # 根据损失值的变化停止迭代,如果两次迭代损失值变化很小很小,就停止迭代</span><br><span class="line">STOP_GRAD &#x3D; 2  # 根据梯度,如果梯度变化很小很小,就停止迭代</span><br><span class="line"></span><br><span class="line">def stopCriterion(type, value, threshold):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    设定三种不同的停止策略</span><br><span class="line">    :param type:</span><br><span class="line">    :param value:</span><br><span class="line">    :param threshold:</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    if type &#x3D;&#x3D; STOP_ITER:</span><br><span class="line">        return value &gt; threshold</span><br><span class="line">    elif type &#x3D;&#x3D; STOP_COST:</span><br><span class="line">        return abs(value[-1]-value[-2]) &lt; threshold</span><br><span class="line">    elif type &#x3D;&#x3D; STOP_GRAD:</span><br><span class="line">        return np.linalg.norm(value) &lt; threshold</span><br></pre></td></tr></table></figure>
+
+<h4 id="打乱数据"><a href="#打乱数据" class="headerlink" title="打乱数据"></a>打乱数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def shuffleData(data):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    重组数据</span><br><span class="line">    :param data:</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    np.random.shuffle(data)</span><br><span class="line">    cols &#x3D; data.shape[1]</span><br><span class="line">    X &#x3D; data[:, 0:cols-1]</span><br><span class="line">    y &#x3D; data[:, cols-1:]</span><br><span class="line">    return X, y</span><br></pre></td></tr></table></figure>
+
+<h4 id="求梯度下降"><a href="#求梯度下降" class="headerlink" title="求梯度下降"></a>求梯度下降</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">def descent(data, theta, batchSize, stopType, thresh, alpha, n):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    梯度下降求解,计算参数更新</span><br><span class="line">    :param data: 样本数据</span><br><span class="line">    :param theta: 参数</span><br><span class="line">    :param batchSize: 每次迭代计算的样本数量</span><br><span class="line">    :param stopType: 停止策略</span><br><span class="line">    :param thresh: 停止策略对应的阈值</span><br><span class="line">    :param alpha: 学习率</span><br><span class="line">    :param n: 样本总数量</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    init_time &#x3D; time.time()</span><br><span class="line">    # 初始化</span><br><span class="line">    i &#x3D; 0  # 迭代次数</span><br><span class="line">    k &#x3D; 0  # 每次迭代计算的样本数量</span><br><span class="line">    X, y &#x3D; shuffleData(data)</span><br><span class="line">    grad &#x3D; np.zeros(theta.shape)  # 计算的梯度</span><br><span class="line">    costs &#x3D; [cost(X, y, theta)]  # 损失值</span><br><span class="line"></span><br><span class="line">    while True:</span><br><span class="line">        grad &#x3D; gradient(X[k:k + batchSize], y[k:k + batchSize], theta)</span><br><span class="line">        k +&#x3D; batchSize  # 取batch数量个数据</span><br><span class="line">        if k &gt;&#x3D; n:</span><br><span class="line">            k &#x3D; 0</span><br><span class="line">            X, y &#x3D; shuffleData(data)  # 重新洗牌</span><br><span class="line">        theta &#x3D; theta - alpha * grad  # 参数更新</span><br><span class="line">        costs.append(cost(X, y, theta))  # 计算新的损失</span><br><span class="line">        i +&#x3D; 1</span><br><span class="line"></span><br><span class="line">        if stopType &#x3D;&#x3D; STOP_ITER:</span><br><span class="line">            value &#x3D; i</span><br><span class="line">        elif stopType &#x3D;&#x3D; STOP_COST:</span><br><span class="line">            value &#x3D; costs</span><br><span class="line">        elif stopType &#x3D;&#x3D; STOP_GRAD:</span><br><span class="line">            value &#x3D; grad</span><br><span class="line">        if stopCriterion(stopType, value, thresh):</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">    return theta, i - 1, costs, grad, time.time() - init_time</span><br></pre></td></tr></table></figure>
+
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>使用梯度下降计算出一组参数后,就可以使用这个模型对测试数据进行预测</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def predict(X,theta):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    返回预测值</span><br><span class="line">    :param X: 测试样本</span><br><span class="line">    :param theta: 梯度下降计算得到的参数</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    return [1 if x &gt; 0.5 else 0 for x in model(X, theta)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><h4 id="封装运行函数"><a href="#封装运行函数" class="headerlink" title="封装运行函数"></a>封装运行函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">def runExpe(data, theta, batchSize, stopType, thresh, alpha, n):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    :param data: 样本</span><br><span class="line">    :param theta: 参数</span><br><span class="line">    :param batchSize: 每次迭代要计算的样本数量,根据这个值,可以分为三种不同的梯度下降算法</span><br><span class="line">                      batchSize &#x3D;&#x3D; n(样本总量): 批量梯度下降,每次迭代计算所有样本,速度慢,精度高</span><br><span class="line">                      batchSize &#x3D;&#x3D; 1(样本总量): 随机梯度下降,每次迭代计算一个样本,速度快,精度低</span><br><span class="line">                      batchSize &#x3D;&#x3D; m(部分样本): 随机梯度下降,每次迭代计算一部分样本,兼顾速度和精度</span><br><span class="line">    :param stopType: 三种停止策略</span><br><span class="line">                      STOP_ITER &#x3D;&#x3D; 0:  根据迭代次数停止迭代</span><br><span class="line">                      STOP_COST &#x3D;&#x3D; 1:  根据损失值的变化停止迭代,如果两次迭代损失值变化很小很小,就停止迭代</span><br><span class="line">                      STOP_GRAD &#x3D;&#x3D; 2:  根据梯度,如果梯度变化很小很小,就停止迭代</span><br><span class="line">    :param thresh: 针对不同停止策略的阈值</span><br><span class="line">    :param alpha: 学习率</span><br><span class="line">    :param n: 样本重量</span><br><span class="line">    :return:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    theta, iter, costs, grad, dur &#x3D; descent(data, theta, batchSize, stopType, thresh, alpha, n)</span><br><span class="line"></span><br><span class="line">    title &#x3D; &quot;原始数据&quot; if (data[:, 1] &gt; 2).sum() &gt; 1 else &quot;标准化数据&quot;</span><br><span class="line">    if batchSize &#x3D;&#x3D; n:</span><br><span class="line">        strDescType &#x3D; &quot;批量梯度下降&quot;</span><br><span class="line">    elif batchSize &#x3D;&#x3D; 1:</span><br><span class="line">        strDescType &#x3D; &quot;随机梯度下降&quot;</span><br><span class="line">    else:</span><br><span class="line">        strDescType &#x3D; &quot;小批量梯度下降 (&#123;&#125;)&quot;.format(batchSize)</span><br><span class="line"></span><br><span class="line">    title +&#x3D; strDescType + &quot; 学习率: &#123;&#125; &quot;.format(alpha)</span><br><span class="line">    title +&#x3D; &quot; 迭代停止策略: &quot;</span><br><span class="line">    if stopType &#x3D;&#x3D; STOP_ITER:</span><br><span class="line">        strStop &#x3D; &quot;迭代次数 &#x3D; &#123;&#125;&quot;.format(thresh)</span><br><span class="line">    elif stopType &#x3D;&#x3D; STOP_COST:</span><br><span class="line">        strStop &#x3D; &quot;损失变化 &lt; &#123;&#125;&quot;.format(thresh)</span><br><span class="line">    else:</span><br><span class="line">        strStop &#x3D; &quot;梯度变化 &lt; &#123;&#125;&quot;.format(thresh)</span><br><span class="line">    title +&#x3D; strStop</span><br><span class="line">    print(&quot;***&#123;&#125;\nTheta: &#123;&#125; - Iter: &#123;&#125; - Last cost: &#123;:03.2f&#125; - Duration: &#123;:03.2f&#125;s&quot;.format(</span><br><span class="line">        title, theta, iter, costs[-1], dur))</span><br><span class="line"></span><br><span class="line">    fig, ax &#x3D; plt.subplots(figsize&#x3D;(12, 4))</span><br><span class="line">    ax.plot(np.arange(len(costs)), costs, &#39;r&#39;)</span><br><span class="line">    ax.set_xlabel(&#39;迭代次数&#39;)</span><br><span class="line">    ax.set_ylabel(&#39;损失&#39;)</span><br><span class="line">    ax.set_title(title)</span><br><span class="line">    plt.show()</span><br><span class="line">    return theta</span><br></pre></td></tr></table></figure>
+<h4 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    # 查看 sigmoid 函数曲线</span><br><span class="line">    show_sigmoid_demo()</span><br><span class="line">    student_data &#x3D; pd.read_csv(data_path, header&#x3D;None, names&#x3D;[&#39;iq&#39;, &#39;eq&#39;, &#39;admitted&#39;])</span><br><span class="line">    # show_plt(student_data)</span><br><span class="line">    # 添加一列偏置项系数, 设置为1</span><br><span class="line">    student_data.insert(0, &#39;ones&#39;, 1)</span><br><span class="line">    # 设置原始样本X和目标值y</span><br><span class="line">    orig_data &#x3D; student_data.as_matrix()  # 把DataFrame转为矩阵,方便计算</span><br><span class="line">    cols &#x3D; orig_data.shape[1]</span><br><span class="line">    X &#x3D; orig_data[:, 0:cols-1]</span><br><span class="line">    y &#x3D; orig_data[:, cols-1:]</span><br><span class="line">    # 给参数设置一个初始值</span><br><span class="line">    theta &#x3D; np.zeros([1, 3]</span><br></pre></td></tr></table></figure>
+
+<h4 id="批量梯度下降"><a href="#批量梯度下降" class="headerlink" title="批量梯度下降"></a>批量梯度下降</h4><h5 id="根据迭代次数停止-STOP-ITER"><a href="#根据迭代次数停止-STOP-ITER" class="headerlink" title="根据迭代次数停止(STOP_ITER)"></a>根据迭代次数停止(STOP_ITER)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 根据迭代次数停止,设置阈值 5000, 迭代5000次</span><br><span class="line">res &#x3D; runExpe(orig_data, theta, 100, STOP_ITER, 5000, 0.000001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/batch_descent_stop_iter.png" alt="image"></p>
+<h5 id="根据损失值变化停止-STOP-COST"><a href="#根据损失值变化停止-STOP-COST" class="headerlink" title="根据损失值变化停止(STOP_COST)"></a>根据损失值变化停止(STOP_COST)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(orig_data, theta, 100, STOP_COST, 0.000001, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/batch_descent_stop_cost.png" alt="image"></p>
+<h5 id="根据梯度变化停止-STOP-GRAD"><a href="#根据梯度变化停止-STOP-GRAD" class="headerlink" title="根据梯度变化停止(STOP_GRAD)"></a>根据梯度变化停止(STOP_GRAD)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(orig_data, theta, 100, STOP_GRAD, 0.05, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/batch_descent_stop_grad.png" alt="image"></p>
+<h4 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(orig_data, theta, 1, STOP_ITER, 5000, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/random_descent_stop_iter.png" alt="image"></p>
+<h4 id="小批量梯度下降"><a href="#小批量梯度下降" class="headerlink" title="小批量梯度下降"></a>小批量梯度下降</h4><h5 id="根据迭代次数停止-STOP-ITER-1"><a href="#根据迭代次数停止-STOP-ITER-1" class="headerlink" title="根据迭代次数停止(STOP_ITER)"></a>根据迭代次数停止(STOP_ITER)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 根据迭代次数停止,设置阈值 5000, 迭代5000次</span><br><span class="line">res &#x3D; runExpe(orig_data, theta, 15, STOP_ITER, 5000, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/part_batch_descent_stop_iter.png" alt="image"></p>
+<h4 id="小批量梯度下降-标准化数据"><a href="#小批量梯度下降-标准化数据" class="headerlink" title="小批量梯度下降(标准化数据)"></a>小批量梯度下降(标准化数据)</h4><h5 id="数据标准化-数据预处理"><a href="#数据标准化-数据预处理" class="headerlink" title="数据标准化(数据预处理)"></a>数据标准化(数据预处理)</h5><p>将数据按其属性(按列进行)减去其均值，然后除以其方差。最后得到的结果是，对每个属性/每列来说所有数据都聚集在0附近，方差值为1.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from sklearn import preprocessing as pp</span><br><span class="line">scaled_data &#x3D; orig_data.copy()</span><br><span class="line">scaled_data[:, 1:3] &#x3D; pp.scale(orig_data[:, 1:3])</span><br></pre></td></tr></table></figure>
+<h5 id="根据迭代次数停止-STOP-ITER-2"><a href="#根据迭代次数停止-STOP-ITER-2" class="headerlink" title="根据迭代次数停止(STOP_ITER)"></a>根据迭代次数停止(STOP_ITER)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(scaled_data, theta, 15, STOP_ITER, 5000, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/scaled_part_batch_descent_stop_iter.png" alt="image"></p>
+<h5 id="根据损失值变化停止-STOP-COST-1"><a href="#根据损失值变化停止-STOP-COST-1" class="headerlink" title="根据损失值变化停止(STOP_COST)"></a>根据损失值变化停止(STOP_COST)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(scaled_data, theta, 15, STOP_COST, 0.000001, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/scaled_part_batch_descent_stop_cost.png" alt="image"></p>
+<h5 id="根据梯度变化停止-STOP-GRAD-1"><a href="#根据梯度变化停止-STOP-GRAD-1" class="headerlink" title="根据梯度变化停止(STOP_GRAD)"></a>根据梯度变化停止(STOP_GRAD)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res &#x3D; runExpe(scaled_data, theta, 15, STOP_GRAD, 0.001, 0.001, 100)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ml/scaled_part_batch_descent_stop_grad.png" alt="image"></p>
+<h3 id="预测-1"><a href="#预测-1" class="headerlink" title="预测"></a>预测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 要被预测的数据</span><br><span class="line">scaled_X &#x3D; scaled_data[:, :3]</span><br><span class="line"># 目标值</span><br><span class="line">y &#x3D; scaled_data[:, 3]</span><br><span class="line"># 传入梯度下降算法得出的参数</span><br><span class="line">predictions &#x3D; predict(scaled_X, res)</span><br><span class="line">correct &#x3D; [1 if a &#x3D;&#x3D; b else 0 for (a, b) in zip(predictions, y)]</span><br><span class="line">accuracy &#x3D; (sum(map(int, correct)) % len(correct))</span><br><span class="line">print(&#39;准确率 &#x3D; &#123;0&#125;%&#39;.format(accuracy))  # 准确率 &#x3D; 89%</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>使用样本训练模型前,应该先对样本进行预处理</li>
+<li>使用小批量梯度下降算法兼顾速度和准确度,推荐使用这种方式训练模型</li>
+<li>训练模型的过程中,需要不断的调整迭代停止策略和对应的阈值以及学习率,直到找到满足需求的参数</li>
+</ul>
+
+      
+       
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>梯度下降求解逻辑回归</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">2.5k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="Waterandair">Waterandair</a></p>
+    <p><span class="copy-title">发布时间:</span>2018-03-03, 09:24:06</p>
+    <p><span class="copy-title">最后更新:</span>2019-12-28, 14:03:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2018-03-03-ml-gradient-descent.html" title="梯度下降求解逻辑回归">https://waterandair.github.io/2018-03-03-ml-gradient-descent.html</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2017 Waterandair</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#时间复杂度','#大O算法','#Ansible','#大数据','#Redis','#Nosql','#Docker','#Go','#后端开发','#Linux','#Hadoop','#Hive','#环境搭建','#Java','#Kafka','#消息队列','#Zookeeper','#机器学习','#回归','#MySQL','#音乐','#Numpy','#Pandas','#Python','#Spark','#开发','#RPC','#性能调优','#原理','#Spark 原理','#工具','#分布式协作框架','#Linux 权限问题',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: ;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+</div>
+
+
+</html>

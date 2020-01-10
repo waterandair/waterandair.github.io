@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hive 优化总结 | Waterandair&#39;s Blog</title>
+  <meta name="keywords" content=" 大数据 , Hive ">
+  <meta name="description" content="Hive 优化总结 | Waterandair&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="https://waterandair.github.io/tags/index.html">
+<meta property="og:site_name" content="Waterandair&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-17T18:58:18.000Z">
+<meta property="article:modified_time" content="2019-12-28T06:03:51.541Z">
+<meta property="article:author" content="Waterandair">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Waterandair</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/waterandair" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:156577812@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+<a class="more-menus">更多菜单</a>
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(74)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法与数据结构"><i class="fold iconfont icon-right"></i>算法与数据结构<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端开发"><i class="fold iconfont icon-right"></i>后端开发<small>(33)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(6)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Ansible">Ansible<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Docker">Docker<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Linux">Linux<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="MySQL">MySQL<small>(16)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="RPC">RPC<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="大数据"><i class="fold iconfont icon-right"></i>大数据<small>(29)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Hadoop">Hadoop<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="CDH">CDH<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Hive">Hive<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Kafka">Kafka<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="数据分析">数据分析<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Spark">Spark<small>(19)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Zookeeper">Zookeeper<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Go"><i class="fold iconfont icon-right"></i>Go<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Go 语言注意点">Go 语言注意点<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="环境搭建">环境搭建<small>(5)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="机器学习"><i class="fold iconfont icon-right"></i>机器学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="算法">算法<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="案例">案例<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Interesting"><i class="fold iconfont icon-right"></i>Interesting<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Music">Music<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Python">Python<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="74">
+<input type="hidden" id="yelog_site_word_count" value="137.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">时间复杂度</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">大O算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Ansible</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">大数据</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Nosql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Docker</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Go</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">后端开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Hadoop</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Hive</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">环境搭建</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Kafka</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">消息队列</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Zookeeper</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">回归</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">音乐</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Numpy</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Pandas</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Python</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Spark</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">RPC</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">性能调优</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Spark 原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">工具</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">分布式协作框架</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux 权限问题</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use%20copy.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 基础 "
+           href="/2017-10-06-big-data-collect.html"
+           data-tag="大数据"
+           data-author="" >
+            <span class="post-title" title="大数据的数据采集流程">大数据的数据采集流程</span>
+            <span class="post-date" title="2017-10-06 21:49:02">2017/10/06</span>
+        </a>
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 CDH "
+           href="/2017-12-15-big-data-cdh-5-14-2-install.html"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="centos7 本地源方式部署 CDH 大数据服务管理平台">centos7 本地源方式部署 CDH 大数据服务管理平台</span>
+            <span class="post-date" title="2017-12-15 11:20:47">2017/12/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Docker "
+           href="/2017-10-03-docker-base-use.html"
+           data-tag="Docker"
+           data-author="" >
+            <span class="post-title" title="Docker 基本操作">Docker 基本操作</span>
+            <span class="post-date" title="2017-10-03 23:38:00">2017/10/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-09-10-distributed-lock.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="分布式锁(redis &amp; zookeeper)">分布式锁(redis &amp; zookeeper)</span>
+            <span class="post-date" title="2018-09-10 23:38:23">2018/09/10</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-21-file-descriptor.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="文件描述符（File Descriptor）简介">文件描述符（File Descriptor）简介</span>
+            <span class="post-date" title="2017-09-21 09:24:06">2017/09/21</span>
+        </a>
+        
+        <a id="top" class="大数据 Hadoop "
+           href="/2018-02-16-hadoop-hdfs-base.html"
+           data-tag="大数据,Hadoop"
+           data-author="" >
+            <span class="post-title" title="HDFS 系统基础介绍及使用(python)">HDFS 系统基础介绍及使用(python)</span>
+            <span class="post-date" title="2018-02-16 18:19:32">2018/02/16</span>
+        </a>
+        
+        <a id="top" class="Go Go 语言注意点 "
+           href="/2018-11-05-go-the-zero-value-of-struct-is-not-nil.html"
+           data-tag="Go"
+           data-author="" >
+            <span class="post-title" title="Go语言-结构体的零值问题">Go语言-结构体的零值问题</span>
+            <span class="post-date" title="2018-11-05 12:58:50">2018/11/05</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-04-23-hive-base.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 基础及实践">Hive 基础及实践</span>
+            <span class="post-date" title="2018-04-23 18:19:32">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-06-30-hive-optimization.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 优化总结">Hive 优化总结</span>
+            <span class="post-date" title="2018-06-30 18:19:32">2018/06/30</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-16-install-hadoop.html"
+           data-tag="Hadoop,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hadoop 集群">使用 ansible 部署 hadoop 集群</span>
+            <span class="post-date" title="2017-10-16 18:19:32">2017/10/16</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-23-install-hive.html"
+           data-tag="Hive,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hive （远程 mysql 存储 metadata）">使用 ansible 部署 hive （远程 mysql 存储 metadata）</span>
+            <span class="post-date" title="2017-10-23 18:19:32">2017/10/23</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-11-28-install-zookeeper.html"
+           data-tag="环境搭建,Zookeeper"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 zookeeper 环境">使用 ansible 部署 zookeeper 环境</span>
+            <span class="post-date" title="2017-11-28 12:42:24">2017/11/28</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-13-install-jdk.html"
+           data-tag="环境搭建,Java"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 java(jdk) 环境">使用 ansible 部署 java(jdk) 环境</span>
+            <span class="post-date" title="2017-10-13 18:19:32">2017/10/13</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-12-03-install-kafka.html"
+           data-tag="环境搭建,Kafka"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 kafka 集群">使用 ansible 部署 kafka 集群</span>
+            <span class="post-date" title="2017-12-03 07:01:41">2017/12/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-28-linux-top.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="Linux 命令 top 拆解">Linux 命令 top 拆解</span>
+            <span class="post-date" title="2017-05-28 09:24:06">2017/05/28</span>
+        </a>
+        
+        <a id="top" class="大数据 Kafka "
+           href="/2017-12-19-kafka-intro.html"
+           data-tag="Kafka,消息队列"
+           data-author="" >
+            <span class="post-title" title="kafka python 客户端使用">kafka python 客户端使用</span>
+            <span class="post-date" title="2017-12-19 12:58:50">2017/12/19</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-03-03-ml-gradient-descent.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="梯度下降求解逻辑回归">梯度下降求解逻辑回归</span>
+            <span class="post-date" title="2018-03-03 09:24:06">2018/03/03</span>
+        </a>
+        
+        <a id="top" class="机器学习 案例 "
+           href="/2018-03-10-ml-linearregression-advertising.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="LinearRegression建立广告投放与销售量的模型(sklearn)">LinearRegression建立广告投放与销售量的模型(sklearn)</span>
+            <span class="post-date" title="2018-03-10 09:24:06">2018/03/10</span>
+        </a>
+        
+        <a id="top" class="Interesting Music "
+           href="/2018-05-17-music-eason-unconditional.html"
+           data-tag="音乐"
+           data-author="" >
+            <span class="post-title" title="温情脉脉 —《无条件》">温情脉脉 —《无条件》</span>
+            <span class="post-date" title="2018-05-17 12:58:50">2018/05/17</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-02-26-ml-regression-pic.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="线性回归算法推导">线性回归算法推导</span>
+            <span class="post-date" title="2018-02-26 09:24:06">2018/02/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-30-mysql-authority-management.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 权限管理">MySQL 权限管理</span>
+            <span class="post-date" title="2017-07-30 09:24:06">2017/07/30</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-20-mysql-binlog.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL二进制日志 binlog 详细介绍">MySQL二进制日志 binlog 详细介绍</span>
+            <span class="post-date" title="2017-06-20 09:24:06">2017/06/20</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-29-mysql-backup-restore.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 备份和恢复机制">MySQL 备份和恢复机制</span>
+            <span class="post-date" title="2017-08-29 09:24:06">2017/08/29</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-07-08-mysql-commonly-used-tools.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 中的常用工具">MySQL 中的常用工具</span>
+            <span class="post-date" title="2018-07-08 09:24:06">2018/07/08</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-09-mysql-common-skill.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 常见问题和应用技巧">MySQL 常见问题和应用技巧</span>
+            <span class="post-date" title="2017-07-09 09:24:06">2017/07/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-23-mysql-concurrent-params.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="调整 MySQL 并发相关的参数">调整 MySQL 并发相关的参数</span>
+            <span class="post-date" title="2017-07-23 09:24:06">2017/07/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-07-mysql-index-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 索引优化">MySql 索引优化</span>
+            <span class="post-date" title="2017-08-07 09:24:06">2017/08/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-16-mysql-innodb-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL Innodb 日志机制及优化">MySQL Innodb 日志机制及优化</span>
+            <span class="post-date" title="2017-06-16 09:24:06">2017/06/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-02-mysql-lock-intro.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 锁机制">MySQL 锁机制</span>
+            <span class="post-date" title="2017-07-02 09:24:06">2017/07/02</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-24-mysql-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 日志介绍">MySQL 日志介绍</span>
+            <span class="post-date" title="2017-06-24 09:24:06">2017/06/24</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-16-mysql-memory-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 内存优化">MySQL 内存优化</span>
+            <span class="post-date" title="2017-08-16 09:24:06">2017/08/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-08-26-mysql-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 性能优化(全面)">MySQL 性能优化(全面)</span>
+            <span class="post-date" title="2018-08-26 09:24:06">2018/08/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-05-mysql-partition.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 表分区">MySql 表分区</span>
+            <span class="post-date" title="2017-09-05 09:24:06">2017/09/05</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-13-mysql-replication.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 主从复制">MySQL 主从复制</span>
+            <span class="post-date" title="2017-09-13 09:24:06">2017/09/13</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-10-mysql-sql-optimization-steps.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="优化 sql 语句的一般步骤">优化 sql 语句的一般步骤</span>
+            <span class="post-date" title="2017-06-10 09:24:06">2017/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-18-pandas-intro.html"
+           data-tag="Pandas"
+           data-author="" >
+            <span class="post-title" title="pandas 入门练习">pandas 入门练习</span>
+            <span class="post-date" title="2018-02-18 11:20:47">2018/02/18</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-22-mysql-select-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 查询优化">MySQL 查询优化</span>
+            <span class="post-date" title="2017-08-22 09:24:06">2017/08/22</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-10-numpy-intro.html"
+           data-tag="Numpy"
+           data-author="" >
+            <span class="post-title" title="numpy 入门练习">numpy 入门练习</span>
+            <span class="post-date" title="2018-02-10 11:20:47">2018/02/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-03-pyspark-custom-accumulator.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="pyspark 自定义累加器(python)">pyspark 自定义累加器(python)</span>
+            <span class="post-date" title="2018-04-03 11:20:47">2018/04/03</span>
+        </a>
+        
+        <a id="top" class="Python "
+           href="/2018-05-22-python-singleton.html"
+           data-tag="Python"
+           data-author="" >
+            <span class="post-title" title="四种 python 实现的单例模式的方式">四种 python 实现的单例模式的方式</span>
+            <span class="post-date" title="2018-05-22 09:24:06">2018/05/22</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-08-11-redis-basic.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 数据类型及应用场景">Redis 数据类型及应用场景</span>
+            <span class="post-date" title="2018-08-11 23:38:23">2018/08/11</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-pyspark-read-write.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark 读取和转存数据(python)">Spark 读取和转存数据(python)</span>
+            <span class="post-date" title="2018-01-01 07:34:19">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-21-redis-cluster.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Cluster 介绍">Redis Cluster 介绍</span>
+            <span class="post-date" title="2018-03-21 23:38:23">2018/03/21</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-07-redis-persistence.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 持久化介绍(RDB 和 AOF)">Redis 持久化介绍(RDB 和 AOF)</span>
+            <span class="post-date" title="2017-11-07 23:38:23">2017/11/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-15-redis-replication.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Replication 原理是实践">Redis Replication 原理是实践</span>
+            <span class="post-date" title="2017-11-15 23:38:23">2017/11/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-16-redis-sentinel.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 哨兵(sentinal)">Redis 哨兵(sentinal)</span>
+            <span class="post-date" title="2018-03-16 23:38:23">2018/03/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-27-rpc-distribute-zookeeper-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="基于zookeeper的分布式RPC(python)">基于zookeeper的分布式RPC(python)</span>
+            <span class="post-date" title="2018-05-27 09:24:06">2018/05/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-23-rpc-basic-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 模型基础知识(python)">RPC 模型基础知识(python)</span>
+            <span class="post-date" title="2018-05-23 09:24:06">2018/05/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-06-01-rpc-grpc-python-ping.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="grpc开发入门(python)">grpc开发入门(python)</span>
+            <span class="post-date" title="2018-06-01 09:24:06">2018/06/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-09-spark-and-sql-join-pattern.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="快速区分 spark 四种关联方式(结论适用于 sql)">快速区分 spark 四种关联方式(结论适用于 sql)</span>
+            <span class="post-date" title="2018-01-09 11:20:47">2018/01/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-16-rpc-protocol-basic.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 消息协议设计注意点">RPC 消息协议设计注意点</span>
+            <span class="post-date" title="2018-05-16 09:24:06">2018/05/16</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-22-spark-app-area-top3-product.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="各区域热门商品统计(pyspark)">各区域热门商品统计(pyspark)</span>
+            <span class="post-date" title="2018-04-22 09:24:06">2018/04/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-20-spark-app-page-convert-rate.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="计算页面单跳转化率(pyspark)">计算页面单跳转化率(pyspark)</span>
+            <span class="post-date" title="2018-04-20 09:24:06">2018/04/20</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-19-spark-app-session-analysis.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="用户行为分析(pyspark)">用户行为分析(pyspark)</span>
+            <span class="post-date" title="2018-04-19 09:24:06">2018/04/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-02-02-spark-base-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="spark 性能优化方法">spark 性能优化方法</span>
+            <span class="post-date" title="2018-02-02 09:24:06">2018/02/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-22-spark-functions-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark 算子调优方法">Spark 算子调优方法</span>
+            <span class="post-date" title="2018-01-22 09:24:06">2018/01/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2017-12-25-spark-operating-mechanism.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 运行机制">Spark 运行机制</span>
+            <span class="post-date" title="2017-12-25 11:20:47">2017/12/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-spark-rdd-dependence.html"
+           data-tag="Spark,Spark 原理"
+           data-author="" >
+            <span class="post-title" title="Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)">Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)</span>
+            <span class="post-date" title="2018-01-01 09:24:06">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-07-19-spark-shuffle-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark Shuffle 性能调优">Spark Shuffle 性能调优</span>
+            <span class="post-date" title="2018-07-19 11:20:47">2018/07/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-19-spark-sql-rdd.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Sql 两种将 RDD 转为 DataFrame 的方式">Spark Sql 两种将 RDD 转为 DataFrame 的方式</span>
+            <span class="post-date" title="2018-06-19 11:20:47">2018/06/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-17-spark-standalone.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark Standalone 运行模式">Spark Standalone 运行模式</span>
+            <span class="post-date" title="2018-01-17 11:20:47">2018/01/17</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-10-spark-streaming-checkpoint.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 使用 checkpoint 做恢复">Spark Streaming 使用 checkpoint 做恢复</span>
+            <span class="post-date" title="2018-06-10 11:20:47">2018/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-24-spark-streaming-transform.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="sparkStreaming 实时黑名单过滤(pyspark)">sparkStreaming 实时黑名单过滤(pyspark)</span>
+            <span class="post-date" title="2018-04-24 11:20:47">2018/04/24</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-05-02-spark-streaming-sql-top3.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 与 spark sql 结合实时统计点击量top3商品">Spark Streaming 与 spark sql 结合实时统计点击量top3商品</span>
+            <span class="post-date" title="2018-05-02 11:20:47">2018/05/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-25-spark-streaming-window.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 热点搜索词滑动统计(pyspark)">Spark Streaming 热点搜索词滑动统计(pyspark)</span>
+            <span class="post-date" title="2018-04-25 11:20:47">2018/04/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-23-spark-updatestatebykey.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="UpdateStateByKey 实时统计全局wordcount(pyspark)">UpdateStateByKey 实时统计全局wordcount(pyspark)</span>
+            <span class="post-date" title="2018-04-23 11:20:47">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-27-spark-yarn-client-cluster.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 的 Yarn-cluster 和 Yarn-client 提交模式">Spark 的 Yarn-cluster 和 Yarn-client 提交模式</span>
+            <span class="post-date" title="2018-01-27 09:24:06">2018/01/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-25-supervisor-intro.html"
+           data-tag="工具"
+           data-author="" >
+            <span class="post-title" title="进程管理工具 supervisor">进程管理工具 supervisor</span>
+            <span class="post-date" title="2017-09-25 11:20:47">2017/09/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2017-11-25-zookeeper-intro.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper概述(应用场景及基本概念)">zookeeper概述(应用场景及基本概念)</span>
+            <span class="post-date" title="2017-11-25 09:23:42">2017/11/25</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-14-uid-euid-gid-egid-introduce.html"
+           data-tag="Linux 权限问题"
+           data-author="" >
+            <span class="post-title" title="关于 Linux 进程的 UID、EUID、GID 和 EGID">关于 Linux 进程的 UID、EUID、GID 和 EGID</span>
+            <span class="post-date" title="2017-05-14 17:13:00">2017/05/14</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2018-10-03-zookeeper-kazoo-usage.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper python 客户端 kazoo 使用指南(译自官网)">zookeeper python 客户端 kazoo 使用指南(译自官网)</span>
+            <span class="post-date" title="2018-10-03 09:23:42">2018/10/03</span>
+        </a>
+        
+        <a id="top" class="算法与数据结构 基础 "
+           href="/2017-05-21-algorithm-efficiency-analysis.html"
+           data-tag="时间复杂度,大O算法"
+           data-author="" >
+            <span class="post-title" title="算法效率分析">算法效率分析</span>
+            <span class="post-date" title="2017-05-21 09:24:06">2017/05/21</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-hive-optimization" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Hive 优化总结</h1>
+    
+    <div class="article-meta">
+        
+        <span class="top"><a>置顶</a></span>
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="大数据">大数据</a>/
+            
+                <a  data-rel="Hive">Hive</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color4">大数据</a>
+            
+            <a class="color5">Hive</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-12-28 14:03:59'>2018-06-30 18:19</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.8k</span>
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Fetch-抓取选项"><span class="toc-text">Fetch 抓取选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#本地模式"><span class="toc-text">本地模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查询的优化"><span class="toc-text">查询的优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#大表，小表-join"><span class="toc-text">大表，小表 join</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#大表-join-大表"><span class="toc-text">大表 join 大表</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#空-key-过滤"><span class="toc-text">空 key 过滤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#空-key-转换"><span class="toc-text">空 key 转换</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MapJoin"><span class="toc-text">MapJoin</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#MapJoin-说明"><span class="toc-text">MapJoin 说明</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#开启-MapJoin-参数设置"><span class="toc-text">开启 MapJoin 参数设置:</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Group-By"><span class="toc-text">Group By</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#说明"><span class="toc-text">说明</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#开启-Map-端聚合参数设置"><span class="toc-text">开启 Map 端聚合参数设置</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Count-Distinct-去重统计"><span class="toc-text">Count(Distinct) 去重统计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#笛卡尔积"><span class="toc-text">笛卡尔积</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#行列过滤"><span class="toc-text">行列过滤</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#动态分区调整"><span class="toc-text">动态分区调整</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#合理使用分桶、分区"><span class="toc-text">合理使用分桶、分区</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据倾斜优化"><span class="toc-text">数据倾斜优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Map-数"><span class="toc-text">Map 数</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#小文件进行合并减少-map-数"><span class="toc-text">小文件进行合并减少 map 数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#复杂文件增加-map-数"><span class="toc-text">复杂文件增加 map 数</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Reduce数"><span class="toc-text">Reduce数</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#计算的方式调增-reduce-数"><span class="toc-text">计算的方式调增 reduce 数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#修改配置项调整-reduce-数"><span class="toc-text">修改配置项调整 reduce 数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#并行执行"><span class="toc-text">并行执行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#严格模式"><span class="toc-text">严格模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM-重用"><span class="toc-text">JVM 重用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推测执行"><span class="toc-text">推测执行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看执行计划-EXPLAIN"><span class="toc-text">查看执行计划(EXPLAIN)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#压缩"><span class="toc-text">压缩</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hive 实际上是运行在 yarn 上的 mapreduce 任务，所以性能调优对 hql 处理数据的速度有很大的影响。</p>
+<a id="more"></a>
+
+<h4 id="Fetch-抓取选项"><a href="#Fetch-抓取选项" class="headerlink" title="Fetch 抓取选项"></a>Fetch 抓取选项</h4><p>Fetch 抓取是指 Hive 中某些查询可以不使用 MapReduce 计算。<br>例如: <code>SELECT * FROM team;</code> 可以简单地读取 <code>team</code> 对应的文件并返回结果。  </p>
+<p>配置项 <code>hive.fetch.task.conversion</code> 指定了哪些操作不启动 mapreduce。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hive.fetch.task.conversion&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;more&lt;&#x2F;value&gt;</span><br><span class="line">    &lt;description&gt;</span><br><span class="line">      Expects one of [none, minimal, more].</span><br><span class="line">      Some select queries can be converted to single FETCH task minimizing latency.</span><br><span class="line">      Currently the query should be single sourced not having any subquery and should not have</span><br><span class="line">      any aggregations or distincts (which incurs RS), lateral views and joins.</span><br><span class="line">      0. none : disable hive.fetch.task.conversion</span><br><span class="line">      1. minimal : SELECT STAR, FILTER on partition columns, LIMIT only</span><br><span class="line">      2. more    : SELECT, FILTER, LIMIT only (support TABLESAMPLE and virtual columns)</span><br><span class="line">    &lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="本地模式"><a href="#本地模式" class="headerlink" title="本地模式"></a>本地模式</h4><p>因为 Hive 背后是 Hadoop 集群，所以更适合处理大数据，但有时 Hive 中的数据比较小。这种情况下在集群中查询所消耗的时间可能会比本地处理还要长。  </p>
+<p>对于小数据集，Hive 可以使用本地模式在单台机器上处理任务，这样执行的时间可以明显被缩短。  </p>
+<p>配置项 <code>hive.exec.mode.local.auto</code> 的值设置为 <code>true</code>，Hive 会在适当的时候自动启动这个优化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 开启自动本地模式优化</span><br><span class="line">set hive.exec.mode.local.auto&#x3D;true;</span><br><span class="line"># 设置本地模式的最大输入数据量，当小于这个设置的时候才使用本地模式, 默认为 134217728， 即 128M</span><br><span class="line">set hive.exec.mode.local.auto.inputbytes.max</span><br><span class="line"># 设置本地模式的最大输入文件个数，当输入文件个数小于这个设置的时候才使用本地模式。默认为 4</span><br><span class="line">set hive.exec.mode.local.auto.input.files.max</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询的优化"><a href="#查询的优化" class="headerlink" title="查询的优化"></a>查询的优化</h4><h5 id="大表，小表-join"><a href="#大表，小表-join" class="headerlink" title="大表，小表 join"></a>大表，小表 join</h5><p>建议将 key 相对分散且数据量小的小表放在 join 的左边，这样可以有效减少内存溢出错误发生的几率。<br>新版的 hive 已经对大小表之间的 join 操作做了优化。</p>
+<h5 id="大表-join-大表"><a href="#大表-join-大表" class="headerlink" title="大表 join 大表"></a>大表 join 大表</h5><h6 id="空-key-过滤"><a href="#空-key-过滤" class="headerlink" title="空 key 过滤"></a>空 key 过滤</h6><p>有时 join 超时是因为某些 key 对应的数据太多，而相同 key 对应的数据都会发送到相同的 reducer 上，从而导致内存不够。此时我们应该仔细分析这些异常的 key，很多情况下，这些 key 对应的数据是异常数据，我们需要在SQL语句中进行过滤。例如 key 对应的字段为空: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select p.* from (select * from player where id is not null ) p left join team  on p.team_id &#x3D; team.id;</span><br></pre></td></tr></table></figure>
+<h6 id="空-key-转换"><a href="#空-key-转换" class="headerlink" title="空 key 转换"></a>空 key 转换</h6><p>有时虽然某个 key 为空对应的数据很多，但相应的数据不是异常数据，必须要包含在join的结果中，此时可以为表 a 中 key 为空的字段赋一个随机的值，使得数据随机均匀地分不到不同的 reducer 上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select p.* from player p full join team on  </span><br><span class="line">case when p.id is null then concat(&#39;hive&#39;, rand()) else p.team_id end &#x3D; team.id;</span><br></pre></td></tr></table></figure>
+
+<h5 id="MapJoin"><a href="#MapJoin" class="headerlink" title="MapJoin"></a>MapJoin</h5><h6 id="MapJoin-说明"><a href="#MapJoin-说明" class="headerlink" title="MapJoin 说明"></a>MapJoin 说明</h6><p>如果不指定 MapJoin 或者不符合 MapJoin 的条件，那么 Hive 解析器会将 Join 操作转换成 Common Join，即：<br>在 Reduce 阶段完成join。这样容易发生数据倾斜，可以用 MapJoin 把小表全部加载到内存先在map端进行join，避免reducer处理。</p>
+<h6 id="开启-MapJoin-参数设置"><a href="#开启-MapJoin-参数设置" class="headerlink" title="开启 MapJoin 参数设置:"></a>开启 MapJoin 参数设置:</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 开启自动选择 MapJoin, 默认为 true</span><br><span class="line">set hive.auto.convert.join &#x3D; true;</span><br><span class="line"></span><br><span class="line"># 大小表的阈值设置, 默认 25M 以下是小表</span><br></pre></td></tr></table></figure>
+
+<h5 id="Group-By"><a href="#Group-By" class="headerlink" title="Group By"></a>Group By</h5><h6 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h6><p>默认情况下，Map阶段同一Key数据分发给一个reduce，当一个key数据过大时就倾斜了。并不是所有的聚合操作都需要在Reduce端完成，很多聚合操作都可以先在Map端进行部分聚合，最后在Reduce端得出最终结果。</p>
+<h6 id="开启-Map-端聚合参数设置"><a href="#开启-Map-端聚合参数设置" class="headerlink" title="开启 Map 端聚合参数设置"></a>开启 Map 端聚合参数设置</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 开启在 map 端进行聚合，默认为 true</span><br><span class="line">hive.map.aggr&#x3D;true</span><br><span class="line"></span><br><span class="line"># 在 map 端进行聚合操作的条目数目</span><br><span class="line">hive.groupby.mapaggr.checkinterval &#x3D; 100000</span><br><span class="line"></span><br><span class="line"># 有数据倾斜的时候进行负载均衡（默认是false）</span><br><span class="line">hive.groupby.skewindata&#x3D;true</span><br><span class="line"># 当 hive.groupby.skewindata&#x3D;true，查询计划会有两个MR Job。第一个MR Job中，Map 的输出结果会随机分布到 Reduce 中，</span><br><span class="line"># 每个 Reduce 做部分聚合操作，并输出结果，这样处理的结果是相同的 Group By Key 有可能被分发到不同的Reduce中，从而达到负载均衡的目的；</span><br><span class="line"># 第二个MR Job再根据预处理的数据结果按照 Group By Key 分布到 Reduce 中（这个过程可以保证相同的Group By Key被分布到同一个Reduce中），最后完成最终的聚合操作。</span><br></pre></td></tr></table></figure>
+
+<h5 id="Count-Distinct-去重统计"><a href="#Count-Distinct-去重统计" class="headerlink" title="Count(Distinct) 去重统计"></a>Count(Distinct) 去重统计</h5><p>数据量大的情况下，由于 <code>COUNT DISTINCT</code> 操作需要用一个Reduce Task来完成，这一个 Reduce 需要处理的数据量太大，就会导致整个Job很难完成，一般 <code>COUNT DISTINCT</code> 操作可以使用先 <code>GROUP BY</code> 再 <code>COUNT</code> 的方式替换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select count(distinct team_id) from player;</span><br><span class="line"># 等价于:</span><br><span class="line">select count(team_id) from (select id from player group by team_id) p;</span><br><span class="line"># 虽然会多用一个Job来完成，但在数据量大的情况下，这个绝对是值得的。</span><br></pre></td></tr></table></figure>
+
+<h5 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h5><p>尽量避免笛卡尔积，Hive只能使用1个reducer来完成笛卡尔积</p>
+<h5 id="行列过滤"><a href="#行列过滤" class="headerlink" title="行列过滤"></a>行列过滤</h5><p>列处理: 在 <code>SELECT</code> 中只拿需要的列，如果有分区尽量使用分区过滤，少用不用<code>SELECT *</code>。<br>行处理: 在分区剪裁中，当使用外关联时，如果将副表的过滤条件写在 <code>Where</code> 后面，那么就会先全表关联，之后再过滤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 先关联两张表，再用 where 条件过滤</span><br><span class="line">select t.id from player p join team t on t.id &#x3D; p.team_id where t.id &lt;&#x3D; 3;</span><br><span class="line"># 先进行子查询，在关联表，这样更快一些</span><br></pre></td></tr></table></figure>
+
+<h5 id="动态分区调整"><a href="#动态分区调整" class="headerlink" title="动态分区调整"></a>动态分区调整</h5><p>动态分区(Dynamic Partition) 是指 对分区表 Insert 数据时候，数据库自动会根据分区字段的值将数据插入到相应的分区中。</p>
+<p>配置动态分区:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 开启动态分区功能(默认true 开启)</span><br><span class="line">hive.exec.dynamic.partition&#x3D;true</span><br><span class="line"></span><br><span class="line"># 设置为非严格模式(默认strict，表示必须指定至少一个分区为静态分区，nonstrict模式表示允许所有的分区字段都可以使用动态分区。）</span><br><span class="line">hive.exec.dynamic.partition.mode&#x3D;nonstrict</span><br><span class="line"></span><br><span class="line"># 设置在所有执行 MR 的节点上，最大一共可以创建多少个动态分区</span><br><span class="line">hive.exec.max.dynamic.partitions&#x3D;1000</span><br><span class="line"></span><br><span class="line"># 在每个执行MR的节点上，最大可以创建多少个动态分区</span><br><span class="line"># 这个参数要根据实际情况设定，设定不好会报错</span><br><span class="line"># 比如: 源数据中包含了一年的数据，即day字段有365个值，那么该参数就需要设置成大于365，如果使用默认值100，则会报错。</span><br><span class="line">hive.exec.max.dynamic.partitions.pernode&#x3D;100</span><br><span class="line"></span><br><span class="line"># 整个MR Job中，最大可以创建多少个HDFS文件</span><br><span class="line">hive.exec.max.created.files&#x3D;100000</span><br><span class="line"></span><br><span class="line"># 当有空分区生成时，是否抛出异常。一般不需要设置。</span><br><span class="line">hive.error.on.empty.partition&#x3D;false</span><br></pre></td></tr></table></figure>
+<p>动态分区表要使用 insert 从一个已存在的表的基础上建立</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert overwrite table log2 partition (day) </span><br><span class="line">select id, time, uid, keyword, url_rank, click_num, click_url, day from log1;</span><br></pre></td></tr></table></figure>
+<h5 id="合理使用分桶、分区"><a href="#合理使用分桶、分区" class="headerlink" title="合理使用分桶、分区"></a>合理使用分桶、分区</h5><h4 id="数据倾斜优化"><a href="#数据倾斜优化" class="headerlink" title="数据倾斜优化"></a>数据倾斜优化</h4><h5 id="Map-数"><a href="#Map-数" class="headerlink" title="Map 数"></a>Map 数</h5><ul>
+<li>通常情况下，作业会通过input的目录产生一个或者多个map任务。主要的决定因素有：input的文件总个数，input的文件大小，集群设置的文件块大小。</li>
+<li>Map 数不是越多越好，如果一个任务有很多小文件（远远小于块大小128m），则每个小文件也会被当做一个块，用一个map任务来完成，而一个map任务启动和初始化的时间远远大于逻辑处理的时间，就会造成很大的资源浪费。而且，同时可执行的map数是受限的。这种情况要减少 map 数</li>
+<li>对于接近 128M 的文件，正常会用一个 map 去完成，但如果这个文件只有一个或者两个小字段，却有几千万的记录，如果map处理的逻辑比较复杂，用一个map任务去做，肯定也比较耗时。这种情况，应该增加 map 数</li>
+</ul>
+<h6 id="小文件进行合并减少-map-数"><a href="#小文件进行合并减少-map-数" class="headerlink" title="小文件进行合并减少 map 数"></a>小文件进行合并减少 map 数</h6><p>在 map 执行前合并小文件，减少 map 数。<br>CombineHiveInputFormat具有对小文件进行合并的功能（系统默认的格式）。HiveInputFormat没有对小文件合并功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set hive.input.format&#x3D; org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;</span><br></pre></td></tr></table></figure>
+
+<h6 id="复杂文件增加-map-数"><a href="#复杂文件增加-map-数" class="headerlink" title="复杂文件增加 map 数"></a>复杂文件增加 map 数</h6><p>当input的文件都很大，任务逻辑复杂，map执行非常慢的时候，可以考虑增加Map数，来使得每个map处理的数据量减少，从而提高任务的执行效率。</p>
+<p>增加 map 的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">computeSliteSize(Math.max(minSize,Math.min(maxSize,blocksize)))&#x3D;blocksize&#x3D;128M</span><br><span class="line"># 调整 maxSize 最大值。让maxSize最大值低于blocksize就可以增加map的个数</span><br></pre></td></tr></table></figure>
+<p>案例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 普通查询</span><br><span class="line">select count(*) from team;</span><br><span class="line"># Hadoop job information for Stage-1: number of mappers: 1; number of reducers: </span><br><span class="line"></span><br><span class="line"># 设置最大切片值为100</span><br><span class="line">set mapreduce.input.fileinputformat.split.maxsize&#x3D;100;</span><br><span class="line"></span><br><span class="line"># 查询</span><br><span class="line">hive (default)&gt; select count(*) from team;</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 6; number of reducers: 1</span><br></pre></td></tr></table></figure>
+
+<h5 id="Reduce数"><a href="#Reduce数" class="headerlink" title="Reduce数"></a>Reduce数</h5><p>reduce个数并不是越多越好，过多的启动和初始化reduce也会消耗时间和资源。<br>另外，有多少个reduce，就会有多少个输出文件，如果生成了很多个小文件，那么如果这些小文件作为下一个任务的输入，则也会出现小文件过多的问题。<br>在设置reduce个数的时候也需要考虑这两个原则：处理大数据量利用合适的reduce数；使单个reduce任务处理数据量大小要合适；</p>
+<h6 id="计算的方式调增-reduce-数"><a href="#计算的方式调增-reduce-数" class="headerlink" title="计算的方式调增 reduce 数"></a>计算的方式调增 reduce 数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 每个 Reduce 处理的数据量默认是 256MB</span><br><span class="line">hive.exec.reducers.bytes.per.reducer&#x3D;256000000</span><br><span class="line"># 每个任务最大的reduce数，默认为1009</span><br><span class="line">hive.exec.reducers.max&#x3D;1009</span><br><span class="line"># 计算reducer数的公式</span><br><span class="line">N&#x3D;min(hive.exec.reducers.max，总输入数据量&#x2F;hive.exec.reducers.bytes.per.reducer)</span><br></pre></td></tr></table></figure>
+<h6 id="修改配置项调整-reduce-数"><a href="#修改配置项调整-reduce-数" class="headerlink" title="修改配置项调整 reduce 数"></a>修改配置项调整 reduce 数</h6><p>在 hadoop 的 mapred-default.xml 文件中修改，或在hive命令行中执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set mapreduce.job.reduces&#x3D;15;</span><br></pre></td></tr></table></figure>
+
+<h4 id="并行执行"><a href="#并行执行" class="headerlink" title="并行执行"></a>并行执行</h4><p>Hive 会将一个查询转化成一个或者多个阶段。默认情况下，Hive 一次只会执行一个阶段。<br>不过,并非完全互相依赖的阶段是可以并行执行的，这样可能使得整个job的执行时间缩短。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 开启并发执行</span><br><span class="line">set hive.exec.parallel&#x3D;true </span><br><span class="line"># 在共享集群中，需要注意如果job中并行阶段增多，那么集群利用率就会增加。</span><br><span class="line"></span><br><span class="line"># 同一个sql允许最大并行度，默认为8。</span><br><span class="line">set hive.exec.parallel.thread.number&#x3D;16;</span><br></pre></td></tr></table></figure>
+
+<h4 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h4><p>Hive 提供了一个严格模式，可以防止用户执行那些可能有不好的影响的查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hive.mapred.mode&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;strict&lt;&#x2F;value&gt;</span><br><span class="line">    &lt;description&gt;</span><br><span class="line">      The mode in which the Hive operations are being performed. </span><br><span class="line">      In strict mode, some risky queries are not allowed to run. They include:</span><br><span class="line">        Cartesian Product.</span><br><span class="line">        No partition being picked up for a query.</span><br><span class="line">        Comparing bigints and strings.</span><br><span class="line">        Comparing bigints and doubles.</span><br><span class="line">        Orderby without limit.</span><br><span class="line">    &lt;&#x2F;description&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<p>开启严格模式后会禁止三种类型的查询:</p>
+<ul>
+<li><code>对于分区表，如果 where 语句中没有分区字段过滤条件来限制范围，则不允许执行</code><br>这样是为了不让用户扫描所有分区，通常分区表都拥有非常大的数据集，而且数据增加迅速。没有进行分区限制的查询可能会消耗巨大资源。</li>
+<li><code>对于使用了order by语句的查询，要求必须使用limit语句</code><br>order by为了执行排序过程会将所有的结果数据分发到同一个Reducer中进行处理，强制要求用户增加 LIMIT 语句可以防止 Reducer 额外执行很长一段时间。</li>
+<li><code>限制笛卡尔积的查询</code><br>小弟出道多年，从未见过在数据库中做笛卡尔积</li>
+</ul>
+<h4 id="JVM-重用"><a href="#JVM-重用" class="headerlink" title="JVM 重用"></a>JVM 重用</h4><p>JVM 重用对 Hive 的性能具有很大的影响，特别是对于小文件或 task 特别多的场景。<br>Hadoop 的默认配置通常是使用派生 JVM 来执行 map 和 Reduce 任务的。<br>这时 JVM 的启动过程可能会造成相当大的开销，尤其是执行的 job 包含有成百上千 task 任务的情况。<br>JVM重用可以使得 JVM 实例在同一个job中重新使用 N 次。<br>N 的值可以在Hadoop的mapred-site.xml文件中进行配置。通常在10-20之间，具体多少需要根据具体业务场景测试得出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.job.jvm.numtasks&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;10&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;How many tasks to run per jvm. If set to -1, there is</span><br><span class="line">  no limit. </span><br><span class="line">  &lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<p>这个功能的缺点是，开启JVM重用将一直占用使用到的 task 插槽，以便进行重用，直到任务完成后才能释放。<br>如果某个“不平衡的”job中有某几个reduce task执行的时间要比其他Reduce task消耗的时间多的多的话，那么保留的插槽就会一直空闲着却无法被其他的job使用，直到所有的task都结束了才会释放。</p>
+<h4 id="推测执行"><a href="#推测执行" class="headerlink" title="推测执行"></a>推测执行</h4><p>在分布式集群环境下，同一个作业的多个任务之间运行速度通常不一致，有些任务的运行速度可能明显慢于其他任务从而拖慢整体执行进度。<br>为了避免这种情况，Hadoop 采用了推测执行（Speculative Execution）机制，它根据一定的法则推测出“拖后腿”的任务，并为这样的任务启动一个备份任务，让该任务与原始任务同时处理同一份数据，并最终选用最先成功运行完成任务的计算结果作为最终结果。  </p>
+<p>在 Hadoop 的 mapred-site.xml 中开启推测执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.map.speculative&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;true&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;If true, then multiple instances of some map tasks </span><br><span class="line">               may be executed in parallel.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;mapreduce.reduce.speculative&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;true&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;If true, then multiple instances of some reduce tasks </span><br><span class="line">               may be executed in parallel.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<p>hive 也提供了配置项来控制 reduce-side 的推测执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hive.mapred.reduce.tasks.speculative.execution&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;true&lt;&#x2F;value&gt;</span><br><span class="line">   &lt;description&gt;Whether speculative execution for reducers should be turned on. &lt;&#x2F;description&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<p>如果用户对于运行时的偏差非常敏感的话，那么可以将这些功能关闭掉。<br>如果用户因为输入数据量很大而需要执行长时间的map或者Reduce task的话，那么启动推测执行造成的浪费是非常巨大大。</p>
+<h4 id="查看执行计划-EXPLAIN"><a href="#查看执行计划-EXPLAIN" class="headerlink" title="查看执行计划(EXPLAIN)"></a>查看执行计划(EXPLAIN)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN [EXTENDED | DEPENDENCY | AUTHORIZATION] query;</span><br><span class="line"></span><br><span class="line">explain select * from team;</span><br><span class="line">explain extended select * from team;</span><br></pre></td></tr></table></figure>
+
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4>
+      
+       
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Hive 优化总结</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">3.8k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="Waterandair">Waterandair</a></p>
+    <p><span class="copy-title">发布时间:</span>2018-06-30, 18:19:32</p>
+    <p><span class="copy-title">最后更新:</span>2019-12-28, 14:03:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2018-06-30-hive-optimization.html" title="Hive 优化总结">https://waterandair.github.io/2018-06-30-hive-optimization.html</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2017 Waterandair</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#时间复杂度','#大O算法','#Ansible','#大数据','#Redis','#Nosql','#Docker','#Go','#后端开发','#Linux','#Hadoop','#Hive','#环境搭建','#Java','#Kafka','#消息队列','#Zookeeper','#机器学习','#回归','#MySQL','#音乐','#Numpy','#Pandas','#Python','#Spark','#开发','#RPC','#性能调优','#原理','#Spark 原理','#工具','#分布式协作框架','#Linux 权限问题',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: ;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+</div>
+
+
+</html>

@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>numpy 入门练习 | Waterandair&#39;s Blog</title>
+  <meta name="keywords" content=" Numpy ">
+  <meta name="description" content="numpy 入门练习 | Waterandair&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="https://waterandair.github.io/tags/index.html">
+<meta property="og:site_name" content="Waterandair&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-17T18:58:18.000Z">
+<meta property="article:modified_time" content="2019-12-28T06:03:51.541Z">
+<meta property="article:author" content="Waterandair">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Waterandair</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/waterandair" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:156577812@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+<a class="more-menus">更多菜单</a>
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(74)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法与数据结构"><i class="fold iconfont icon-right"></i>算法与数据结构<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端开发"><i class="fold iconfont icon-right"></i>后端开发<small>(33)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(6)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Ansible">Ansible<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Docker">Docker<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Linux">Linux<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="MySQL">MySQL<small>(16)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="RPC">RPC<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="大数据"><i class="fold iconfont icon-right"></i>大数据<small>(29)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Hadoop">Hadoop<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="CDH">CDH<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Hive">Hive<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Kafka">Kafka<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="数据分析">数据分析<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Spark">Spark<small>(19)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Zookeeper">Zookeeper<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Go"><i class="fold iconfont icon-right"></i>Go<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Go 语言注意点">Go 语言注意点<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="环境搭建">环境搭建<small>(5)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="机器学习"><i class="fold iconfont icon-right"></i>机器学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="算法">算法<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="案例">案例<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Interesting"><i class="fold iconfont icon-right"></i>Interesting<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Music">Music<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Python">Python<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="74">
+<input type="hidden" id="yelog_site_word_count" value="137.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">时间复杂度</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">大O算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Ansible</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">大数据</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Nosql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Docker</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Go</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">后端开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Hadoop</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Hive</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">环境搭建</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Kafka</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">消息队列</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Zookeeper</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">回归</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">音乐</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Numpy</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Pandas</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Python</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Spark</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">RPC</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">性能调优</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Spark 原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">工具</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">分布式协作框架</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux 权限问题</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use%20copy.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 基础 "
+           href="/2017-10-06-big-data-collect.html"
+           data-tag="大数据"
+           data-author="" >
+            <span class="post-title" title="大数据的数据采集流程">大数据的数据采集流程</span>
+            <span class="post-date" title="2017-10-06 21:49:02">2017/10/06</span>
+        </a>
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 CDH "
+           href="/2017-12-15-big-data-cdh-5-14-2-install.html"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="centos7 本地源方式部署 CDH 大数据服务管理平台">centos7 本地源方式部署 CDH 大数据服务管理平台</span>
+            <span class="post-date" title="2017-12-15 11:20:47">2017/12/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Docker "
+           href="/2017-10-03-docker-base-use.html"
+           data-tag="Docker"
+           data-author="" >
+            <span class="post-title" title="Docker 基本操作">Docker 基本操作</span>
+            <span class="post-date" title="2017-10-03 23:38:00">2017/10/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-09-10-distributed-lock.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="分布式锁(redis &amp; zookeeper)">分布式锁(redis &amp; zookeeper)</span>
+            <span class="post-date" title="2018-09-10 23:38:23">2018/09/10</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-21-file-descriptor.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="文件描述符（File Descriptor）简介">文件描述符（File Descriptor）简介</span>
+            <span class="post-date" title="2017-09-21 09:24:06">2017/09/21</span>
+        </a>
+        
+        <a id="top" class="大数据 Hadoop "
+           href="/2018-02-16-hadoop-hdfs-base.html"
+           data-tag="大数据,Hadoop"
+           data-author="" >
+            <span class="post-title" title="HDFS 系统基础介绍及使用(python)">HDFS 系统基础介绍及使用(python)</span>
+            <span class="post-date" title="2018-02-16 18:19:32">2018/02/16</span>
+        </a>
+        
+        <a id="top" class="Go Go 语言注意点 "
+           href="/2018-11-05-go-the-zero-value-of-struct-is-not-nil.html"
+           data-tag="Go"
+           data-author="" >
+            <span class="post-title" title="Go语言-结构体的零值问题">Go语言-结构体的零值问题</span>
+            <span class="post-date" title="2018-11-05 12:58:50">2018/11/05</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-04-23-hive-base.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 基础及实践">Hive 基础及实践</span>
+            <span class="post-date" title="2018-04-23 18:19:32">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-06-30-hive-optimization.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 优化总结">Hive 优化总结</span>
+            <span class="post-date" title="2018-06-30 18:19:32">2018/06/30</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-16-install-hadoop.html"
+           data-tag="Hadoop,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hadoop 集群">使用 ansible 部署 hadoop 集群</span>
+            <span class="post-date" title="2017-10-16 18:19:32">2017/10/16</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-23-install-hive.html"
+           data-tag="Hive,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hive （远程 mysql 存储 metadata）">使用 ansible 部署 hive （远程 mysql 存储 metadata）</span>
+            <span class="post-date" title="2017-10-23 18:19:32">2017/10/23</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-11-28-install-zookeeper.html"
+           data-tag="环境搭建,Zookeeper"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 zookeeper 环境">使用 ansible 部署 zookeeper 环境</span>
+            <span class="post-date" title="2017-11-28 12:42:24">2017/11/28</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-13-install-jdk.html"
+           data-tag="环境搭建,Java"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 java(jdk) 环境">使用 ansible 部署 java(jdk) 环境</span>
+            <span class="post-date" title="2017-10-13 18:19:32">2017/10/13</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-12-03-install-kafka.html"
+           data-tag="环境搭建,Kafka"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 kafka 集群">使用 ansible 部署 kafka 集群</span>
+            <span class="post-date" title="2017-12-03 07:01:41">2017/12/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-28-linux-top.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="Linux 命令 top 拆解">Linux 命令 top 拆解</span>
+            <span class="post-date" title="2017-05-28 09:24:06">2017/05/28</span>
+        </a>
+        
+        <a id="top" class="大数据 Kafka "
+           href="/2017-12-19-kafka-intro.html"
+           data-tag="Kafka,消息队列"
+           data-author="" >
+            <span class="post-title" title="kafka python 客户端使用">kafka python 客户端使用</span>
+            <span class="post-date" title="2017-12-19 12:58:50">2017/12/19</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-03-03-ml-gradient-descent.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="梯度下降求解逻辑回归">梯度下降求解逻辑回归</span>
+            <span class="post-date" title="2018-03-03 09:24:06">2018/03/03</span>
+        </a>
+        
+        <a id="top" class="机器学习 案例 "
+           href="/2018-03-10-ml-linearregression-advertising.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="LinearRegression建立广告投放与销售量的模型(sklearn)">LinearRegression建立广告投放与销售量的模型(sklearn)</span>
+            <span class="post-date" title="2018-03-10 09:24:06">2018/03/10</span>
+        </a>
+        
+        <a id="top" class="Interesting Music "
+           href="/2018-05-17-music-eason-unconditional.html"
+           data-tag="音乐"
+           data-author="" >
+            <span class="post-title" title="温情脉脉 —《无条件》">温情脉脉 —《无条件》</span>
+            <span class="post-date" title="2018-05-17 12:58:50">2018/05/17</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-02-26-ml-regression-pic.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="线性回归算法推导">线性回归算法推导</span>
+            <span class="post-date" title="2018-02-26 09:24:06">2018/02/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-30-mysql-authority-management.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 权限管理">MySQL 权限管理</span>
+            <span class="post-date" title="2017-07-30 09:24:06">2017/07/30</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-20-mysql-binlog.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL二进制日志 binlog 详细介绍">MySQL二进制日志 binlog 详细介绍</span>
+            <span class="post-date" title="2017-06-20 09:24:06">2017/06/20</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-29-mysql-backup-restore.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 备份和恢复机制">MySQL 备份和恢复机制</span>
+            <span class="post-date" title="2017-08-29 09:24:06">2017/08/29</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-07-08-mysql-commonly-used-tools.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 中的常用工具">MySQL 中的常用工具</span>
+            <span class="post-date" title="2018-07-08 09:24:06">2018/07/08</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-09-mysql-common-skill.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 常见问题和应用技巧">MySQL 常见问题和应用技巧</span>
+            <span class="post-date" title="2017-07-09 09:24:06">2017/07/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-23-mysql-concurrent-params.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="调整 MySQL 并发相关的参数">调整 MySQL 并发相关的参数</span>
+            <span class="post-date" title="2017-07-23 09:24:06">2017/07/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-07-mysql-index-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 索引优化">MySql 索引优化</span>
+            <span class="post-date" title="2017-08-07 09:24:06">2017/08/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-16-mysql-innodb-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL Innodb 日志机制及优化">MySQL Innodb 日志机制及优化</span>
+            <span class="post-date" title="2017-06-16 09:24:06">2017/06/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-02-mysql-lock-intro.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 锁机制">MySQL 锁机制</span>
+            <span class="post-date" title="2017-07-02 09:24:06">2017/07/02</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-24-mysql-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 日志介绍">MySQL 日志介绍</span>
+            <span class="post-date" title="2017-06-24 09:24:06">2017/06/24</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-16-mysql-memory-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 内存优化">MySQL 内存优化</span>
+            <span class="post-date" title="2017-08-16 09:24:06">2017/08/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-08-26-mysql-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 性能优化(全面)">MySQL 性能优化(全面)</span>
+            <span class="post-date" title="2018-08-26 09:24:06">2018/08/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-05-mysql-partition.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 表分区">MySql 表分区</span>
+            <span class="post-date" title="2017-09-05 09:24:06">2017/09/05</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-13-mysql-replication.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 主从复制">MySQL 主从复制</span>
+            <span class="post-date" title="2017-09-13 09:24:06">2017/09/13</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-10-mysql-sql-optimization-steps.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="优化 sql 语句的一般步骤">优化 sql 语句的一般步骤</span>
+            <span class="post-date" title="2017-06-10 09:24:06">2017/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-18-pandas-intro.html"
+           data-tag="Pandas"
+           data-author="" >
+            <span class="post-title" title="pandas 入门练习">pandas 入门练习</span>
+            <span class="post-date" title="2018-02-18 11:20:47">2018/02/18</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-22-mysql-select-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 查询优化">MySQL 查询优化</span>
+            <span class="post-date" title="2017-08-22 09:24:06">2017/08/22</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-10-numpy-intro.html"
+           data-tag="Numpy"
+           data-author="" >
+            <span class="post-title" title="numpy 入门练习">numpy 入门练习</span>
+            <span class="post-date" title="2018-02-10 11:20:47">2018/02/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-03-pyspark-custom-accumulator.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="pyspark 自定义累加器(python)">pyspark 自定义累加器(python)</span>
+            <span class="post-date" title="2018-04-03 11:20:47">2018/04/03</span>
+        </a>
+        
+        <a id="top" class="Python "
+           href="/2018-05-22-python-singleton.html"
+           data-tag="Python"
+           data-author="" >
+            <span class="post-title" title="四种 python 实现的单例模式的方式">四种 python 实现的单例模式的方式</span>
+            <span class="post-date" title="2018-05-22 09:24:06">2018/05/22</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-08-11-redis-basic.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 数据类型及应用场景">Redis 数据类型及应用场景</span>
+            <span class="post-date" title="2018-08-11 23:38:23">2018/08/11</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-pyspark-read-write.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark 读取和转存数据(python)">Spark 读取和转存数据(python)</span>
+            <span class="post-date" title="2018-01-01 07:34:19">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-21-redis-cluster.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Cluster 介绍">Redis Cluster 介绍</span>
+            <span class="post-date" title="2018-03-21 23:38:23">2018/03/21</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-07-redis-persistence.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 持久化介绍(RDB 和 AOF)">Redis 持久化介绍(RDB 和 AOF)</span>
+            <span class="post-date" title="2017-11-07 23:38:23">2017/11/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-15-redis-replication.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Replication 原理是实践">Redis Replication 原理是实践</span>
+            <span class="post-date" title="2017-11-15 23:38:23">2017/11/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-16-redis-sentinel.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 哨兵(sentinal)">Redis 哨兵(sentinal)</span>
+            <span class="post-date" title="2018-03-16 23:38:23">2018/03/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-27-rpc-distribute-zookeeper-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="基于zookeeper的分布式RPC(python)">基于zookeeper的分布式RPC(python)</span>
+            <span class="post-date" title="2018-05-27 09:24:06">2018/05/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-23-rpc-basic-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 模型基础知识(python)">RPC 模型基础知识(python)</span>
+            <span class="post-date" title="2018-05-23 09:24:06">2018/05/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-06-01-rpc-grpc-python-ping.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="grpc开发入门(python)">grpc开发入门(python)</span>
+            <span class="post-date" title="2018-06-01 09:24:06">2018/06/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-09-spark-and-sql-join-pattern.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="快速区分 spark 四种关联方式(结论适用于 sql)">快速区分 spark 四种关联方式(结论适用于 sql)</span>
+            <span class="post-date" title="2018-01-09 11:20:47">2018/01/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-16-rpc-protocol-basic.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 消息协议设计注意点">RPC 消息协议设计注意点</span>
+            <span class="post-date" title="2018-05-16 09:24:06">2018/05/16</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-22-spark-app-area-top3-product.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="各区域热门商品统计(pyspark)">各区域热门商品统计(pyspark)</span>
+            <span class="post-date" title="2018-04-22 09:24:06">2018/04/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-20-spark-app-page-convert-rate.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="计算页面单跳转化率(pyspark)">计算页面单跳转化率(pyspark)</span>
+            <span class="post-date" title="2018-04-20 09:24:06">2018/04/20</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-19-spark-app-session-analysis.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="用户行为分析(pyspark)">用户行为分析(pyspark)</span>
+            <span class="post-date" title="2018-04-19 09:24:06">2018/04/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-02-02-spark-base-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="spark 性能优化方法">spark 性能优化方法</span>
+            <span class="post-date" title="2018-02-02 09:24:06">2018/02/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-22-spark-functions-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark 算子调优方法">Spark 算子调优方法</span>
+            <span class="post-date" title="2018-01-22 09:24:06">2018/01/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2017-12-25-spark-operating-mechanism.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 运行机制">Spark 运行机制</span>
+            <span class="post-date" title="2017-12-25 11:20:47">2017/12/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-spark-rdd-dependence.html"
+           data-tag="Spark,Spark 原理"
+           data-author="" >
+            <span class="post-title" title="Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)">Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)</span>
+            <span class="post-date" title="2018-01-01 09:24:06">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-07-19-spark-shuffle-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark Shuffle 性能调优">Spark Shuffle 性能调优</span>
+            <span class="post-date" title="2018-07-19 11:20:47">2018/07/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-19-spark-sql-rdd.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Sql 两种将 RDD 转为 DataFrame 的方式">Spark Sql 两种将 RDD 转为 DataFrame 的方式</span>
+            <span class="post-date" title="2018-06-19 11:20:47">2018/06/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-17-spark-standalone.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark Standalone 运行模式">Spark Standalone 运行模式</span>
+            <span class="post-date" title="2018-01-17 11:20:47">2018/01/17</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-10-spark-streaming-checkpoint.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 使用 checkpoint 做恢复">Spark Streaming 使用 checkpoint 做恢复</span>
+            <span class="post-date" title="2018-06-10 11:20:47">2018/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-24-spark-streaming-transform.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="sparkStreaming 实时黑名单过滤(pyspark)">sparkStreaming 实时黑名单过滤(pyspark)</span>
+            <span class="post-date" title="2018-04-24 11:20:47">2018/04/24</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-05-02-spark-streaming-sql-top3.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 与 spark sql 结合实时统计点击量top3商品">Spark Streaming 与 spark sql 结合实时统计点击量top3商品</span>
+            <span class="post-date" title="2018-05-02 11:20:47">2018/05/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-25-spark-streaming-window.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 热点搜索词滑动统计(pyspark)">Spark Streaming 热点搜索词滑动统计(pyspark)</span>
+            <span class="post-date" title="2018-04-25 11:20:47">2018/04/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-23-spark-updatestatebykey.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="UpdateStateByKey 实时统计全局wordcount(pyspark)">UpdateStateByKey 实时统计全局wordcount(pyspark)</span>
+            <span class="post-date" title="2018-04-23 11:20:47">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-27-spark-yarn-client-cluster.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 的 Yarn-cluster 和 Yarn-client 提交模式">Spark 的 Yarn-cluster 和 Yarn-client 提交模式</span>
+            <span class="post-date" title="2018-01-27 09:24:06">2018/01/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-25-supervisor-intro.html"
+           data-tag="工具"
+           data-author="" >
+            <span class="post-title" title="进程管理工具 supervisor">进程管理工具 supervisor</span>
+            <span class="post-date" title="2017-09-25 11:20:47">2017/09/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2017-11-25-zookeeper-intro.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper概述(应用场景及基本概念)">zookeeper概述(应用场景及基本概念)</span>
+            <span class="post-date" title="2017-11-25 09:23:42">2017/11/25</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-14-uid-euid-gid-egid-introduce.html"
+           data-tag="Linux 权限问题"
+           data-author="" >
+            <span class="post-title" title="关于 Linux 进程的 UID、EUID、GID 和 EGID">关于 Linux 进程的 UID、EUID、GID 和 EGID</span>
+            <span class="post-date" title="2017-05-14 17:13:00">2017/05/14</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2018-10-03-zookeeper-kazoo-usage.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper python 客户端 kazoo 使用指南(译自官网)">zookeeper python 客户端 kazoo 使用指南(译自官网)</span>
+            <span class="post-date" title="2018-10-03 09:23:42">2018/10/03</span>
+        </a>
+        
+        <a id="top" class="算法与数据结构 基础 "
+           href="/2017-05-21-algorithm-efficiency-analysis.html"
+           data-tag="时间复杂度,大O算法"
+           data-author="" >
+            <span class="post-title" title="算法效率分析">算法效率分析</span>
+            <span class="post-date" title="2017-05-21 09:24:06">2017/05/21</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-numpy-intro" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">numpy 入门练习</h1>
+    
+    <div class="article-meta">
+        
+        <span class="top"><a>置顶</a></span>
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="大数据">大数据</a>/
+            
+                <a  data-rel="数据分析">数据分析</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color1">Numpy</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-12-28 14:03:59'>2018-02-10 11:20</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.2k</span>
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据类型-ndarray"><span class="toc-text">数据类型 ndarray</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray-属性"><span class="toc-text">ndarray 属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray-常见的创建方式"><span class="toc-text">ndarray 常见的创建方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#array-函数"><span class="toc-text">array 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zeros-函数"><span class="toc-text">zeros 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ones-函数"><span class="toc-text">ones 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#empty-函数"><span class="toc-text">empty 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#arange-函数"><span class="toc-text">arange 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linespace-函数"><span class="toc-text">linespace 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#logspace-函数"><span class="toc-text">logspace 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#random-函数生成数组"><span class="toc-text">random() 函数生成数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#改变-ndarray-的形状的"><span class="toc-text">改变 ndarray 的形状的</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-直接修改-ndarray-的-shape-值"><span class="toc-text">1. 直接修改 ndarray 的 shape 值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-使用-reshape-函数"><span class="toc-text">2. 使用 reshape 函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#numpy-中的数据类型"><span class="toc-text">numpy 中的数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#numpy-基本操作"><span class="toc-text">numpy 基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数组与标量-数组之间的运算"><span class="toc-text">数组与标量, 数组之间的运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组的矩阵积-matrix-product"><span class="toc-text">数组的矩阵积(matrix product)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组的索引与切片"><span class="toc-text">数组的索引与切片</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#多维数组的索引"><span class="toc-text">多维数组的索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#布尔型索引"><span class="toc-text">布尔型索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#花式索引"><span class="toc-text">花式索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#numpy-数组的切片"><span class="toc-text">numpy 数组的切片</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组转置"><span class="toc-text">数组转置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通用函数-快速的元素级数组函数"><span class="toc-text">通用函数: 快速的元素级数组函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#常见的一元通用函数"><span class="toc-text">常见的一元通用函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#常见的二元通用函数"><span class="toc-text">常见的二元通用函数</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#聚合函数"><span class="toc-text">聚合函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#np-where-函数"><span class="toc-text">np.where 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#np-unique-函数"><span class="toc-text">np.unique 函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组数据文件读写"><span class="toc-text">数组数据文件读写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#将数组以二进制格式保存到磁盘"><span class="toc-text">将数组以二进制格式保存到磁盘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#存取文本文件"><span class="toc-text">存取文本文件</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>NumPy 是一个 Python 包。 它代表 “Numeric Python”。 它是一个由多维数组对象和用于处理数组的例程集合组成的库。</p>
+<a id="more"></a>
+<h3 id="数据类型-ndarray"><a href="#数据类型-ndarray" class="headerlink" title="数据类型 ndarray"></a>数据类型 ndarray</h3><ul>
+<li>全称 N-dimensiona array, N维数组, ndarray 是一个具有矢量算术运算和复杂广播能力的快速且节省空间的<code>多维数据</code>.  </li>
+<li>ndarray 是一种由相同元素组成的多维数组,<code>元素数量是事先指定好的</code></li>
+<li>元素的类型由 dtype 对象来指定,每个 ndarray 只有一种 dtype 类型</li>
+<li>大小固定,创建好数组时一旦指定好大小,就不会再发生改变</li>
+</ul>
+<p>``</p>
+<h3 id="ndarray-属性"><a href="#ndarray-属性" class="headerlink" title="ndarray 属性"></a>ndarray 属性</h3><ul>
+<li>ndim: 维度数量  </li>
+<li>shape: 数组的形状, 是一个表示各维度大小的元组 </li>
+<li>dtype: 表示数组元素类型的对象</li>
+<li>size: 数组中元素的总个数,是 shape 中各维度数量相乘得到的值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 约定俗成的引用方法是 import numpy as np</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">arr = np.array([</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>],</span><br><span class="line">    ],</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">4</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">9</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">5</span>],</span><br><span class="line">    ],</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">3</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">8</span>],</span><br><span class="line">    ]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">arr.ndim  <span class="comment"># 3</span></span><br><span class="line">arr.dtype  <span class="comment"># dtype('int64')</span></span><br><span class="line">arr.shape  <span class="comment"># (3, 2, 4), 表示第一层中括号下有 3 个元素.第二层中括号下有 2 个元素,第三层中括号下有 4 个元素</span></span><br><span class="line">arr.size  <span class="comment"># 24</span></span><br></pre></td></tr></table></figure>
+<h3 id="ndarray-常见的创建方式"><a href="#ndarray-常见的创建方式" class="headerlink" title="ndarray 常见的创建方式"></a>ndarray 常见的创建方式</h3><h4 id="array-函数"><a href="#array-函数" class="headerlink" title="array 函数"></a>array 函数</h4><p>接收一个普通的 python 序列, 转成 ndarray</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.array([1, 2, 3, 4])</span><br><span class="line">arr &#x3D; np.array((1, 2, 3, 4))</span><br></pre></td></tr></table></figure>
+<h4 id="zeros-函数"><a href="#zeros-函数" class="headerlink" title="zeros 函数"></a>zeros 函数</h4><p>创建指定长度或形状的全零数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.zeros((3, 4))</span><br><span class="line"># 创建的数组如下,zeros 的参数其实就是要创建的数组的 shape 值,</span><br><span class="line"># array([[0., 0., 0., 0.],</span><br><span class="line">#        [0., 0., 0., 0.],</span><br><span class="line">#        [0., 0., 0., 0.]])</span><br></pre></td></tr></table></figure>
+<h4 id="ones-函数"><a href="#ones-函数" class="headerlink" title="ones 函数"></a>ones 函数</h4><p>创建指定长度或形状的全 1 数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.ones((3, 4))</span><br><span class="line"></span><br><span class="line"># array([[1., 1., 1., 1.],</span><br><span class="line">#       [1., 1., 1., 1.],</span><br><span class="line">#       [1., 1., 1., 1.]])</span><br></pre></td></tr></table></figure>
+<h4 id="empty-函数"><a href="#empty-函数" class="headerlink" title="empty 函数"></a>empty 函数</h4><p>创建一个没有任何具体值的数组, 所以创建速度会比 zeros 和 ones 快, 但这种方式需要手动指定所有值,慎用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 在测试中发现一个有趣的现象,如果在 empty() 中指定的 shape 在之前已经被 zeros 或 ones 指定过,然么 empty 会直接使用 zeros 或 ones 的值</span><br><span class="line"></span><br><span class="line">arr &#x3D; np.empty((2, 2))</span><br><span class="line"></span><br><span class="line"># array([[4.9e-324, 9.9e-324],</span><br><span class="line">#        [1.5e-323, 2.0e-323]])</span><br><span class="line"></span><br><span class="line">arr &#x3D; np.ones((2, 2))</span><br><span class="line"># array([[1., 1.],</span><br><span class="line">#        [1., 1.]])</span><br><span class="line"></span><br><span class="line">arr &#x3D; np.empty((2, 2))</span><br><span class="line"># array([[1., 1.],</span><br><span class="line">#        [1., 1.]])</span><br></pre></td></tr></table></figure>
+<h4 id="arange-函数"><a href="#arange-函数" class="headerlink" title="arange 函数"></a>arange 函数</h4><p>类似于 python 中的 range 函数,通过指定开始值,终值和步长来创建一维数组,注意不包括终值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(6)</span><br><span class="line"># array([0, 1, 2, 3, 4, 5])</span><br><span class="line"></span><br><span class="line"># 同 python 的 range 类似, 第三个参数是步长</span><br><span class="line">arr &#x3D; np.arange(0, 7, 2)</span><br><span class="line"># array([0, 2, 4, 6])</span><br><span class="line"></span><br><span class="line"># 可以使用 reshape 把一维数组转为多维</span><br><span class="line">arr &#x3D; np.arange(12).reshape(3, 4)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#        [ 4,  5,  6,  7],</span><br><span class="line">#        [ 8,  9, 10, 11]])</span><br></pre></td></tr></table></figure>
+<h4 id="linespace-函数"><a href="#linespace-函数" class="headerlink" title="linespace 函数"></a>linespace 函数</h4><p>通过指定开始值,终值和元素个数来创建一维数组(等差数列),可以通过 endpoint 关键字指定是否包括终值, 默认包括</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 第三个参数表示元素个数</span><br><span class="line">arr &#x3D; np.linspace(0, 10, 5)</span><br><span class="line"># array([ 0. ,  2.5,  5. ,  7.5, 10. ])</span><br></pre></td></tr></table></figure>
+<h4 id="logspace-函数"><a href="#logspace-函数" class="headerlink" title="logspace 函数"></a>logspace 函数</h4><p>和 linespace 类似,不过它创建等比数列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.logspace(0, 2, 3)</span><br><span class="line"># array([  1.,  10., 100.])</span><br></pre></td></tr></table></figure>
+
+<h4 id="random-函数生成数组"><a href="#random-函数生成数组" class="headerlink" title="random() 函数生成数组"></a>random() 函数生成数组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.random.random((2, 2))</span><br><span class="line"># array([[0.34659492, 0.83549888],</span><br><span class="line">#       [0.83618173, 0.0771643 ]])</span><br></pre></td></tr></table></figure>
+
+<h4 id="改变-ndarray-的形状的"><a href="#改变-ndarray-的形状的" class="headerlink" title="改变 ndarray 的形状的"></a>改变 ndarray 的形状的</h4><h5 id="1-直接修改-ndarray-的-shape-值"><a href="#1-直接修改-ndarray-的-shape-值" class="headerlink" title="1. 直接修改 ndarray 的 shape 值"></a>1. 直接修改 ndarray 的 shape 值</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(10)  </span><br><span class="line"># array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</span><br><span class="line">arr.shape  # (10,)</span><br><span class="line">arr.shape &#x3D; 2, 5</span><br><span class="line">arr</span><br><span class="line"># array([[0, 1, 2, 3, 4],</span><br><span class="line">#        [5, 6, 7, 8, 9]])</span><br><span class="line"></span><br><span class="line">arr.shape &#x3D; -1, 2</span><br><span class="line">arr </span><br><span class="line"># array([[0, 1],</span><br><span class="line">#        [2, 3],</span><br><span class="line">#        [4, 5],</span><br><span class="line">#        [6, 7],</span><br><span class="line">#        [8, 9]])</span><br></pre></td></tr></table></figure>
+<h5 id="2-使用-reshape-函数"><a href="#2-使用-reshape-函数" class="headerlink" title="2. 使用 reshape 函数"></a>2. 使用 reshape 函数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(9)</span><br><span class="line"># array([0, 1, 2, 3, 4, 5, 6, 7, 8])</span><br><span class="line">arr.shape  # (9,)</span><br><span class="line">arr.reshape(3, 3)</span><br><span class="line">arr</span><br><span class="line"># array([[0, 1, 2],</span><br><span class="line">#       [3, 4, 5],</span><br><span class="line">#       [6, 7, 8]])</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意: 当指定新数组某个轴的元素为 -1 时, 将根据数组元素的个数自动计算此轴的长度</p>
+</blockquote>
+<h3 id="numpy-中的数据类型"><a href="#numpy-中的数据类型" class="headerlink" title="numpy 中的数据类型"></a>numpy 中的数据类型</h3><p>创建 ndarray 数据时,可以通过 dtype 属性显示指定数据类型, 如果不指定, numpy 会自动推断出合适的数据类型,所以一般无需显示指定</p>
+<p>astype 方法,可以转换数组的元素数据类型, 得到一个新数组</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>类型代码</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int_</td>
+<td></td>
+<td>默认整型 (与 C 中的 long 相同, 通常为 int64 或 int32)</td>
+</tr>
+<tr>
+<td>intc</td>
+<td></td>
+<td>完全等同于 C 中的 long (通常为 int64 或者 int32)</td>
+</tr>
+<tr>
+<td>intp</td>
+<td></td>
+<td>表示索引的整型, 与 C 中的 size_t 相同, 通常为 int64 或者 int32</td>
+</tr>
+<tr>
+<td>int8</td>
+<td>i1</td>
+<td>字节(-128 ~ 127), 1个字节</td>
+</tr>
+<tr>
+<td>int16</td>
+<td>i2</td>
+<td>整型(-32768 ~　32767). 2个字节</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>i4</td>
+<td>整型 (-2147483648 ~ 2147483647), 4个字节</td>
+</tr>
+<tr>
+<td>int64</td>
+<td>i8</td>
+<td>整型 (-9223372036854775808 ~ 9223372036854775807), 8个字节</td>
+</tr>
+<tr>
+<td>uint8</td>
+<td>u1</td>
+<td>无符号整型 (0 ~ 255)</td>
+</tr>
+<tr>
+<td>uint16</td>
+<td>u2</td>
+<td>无符号整型 (0 ~ 65535)</td>
+</tr>
+<tr>
+<td>uint32</td>
+<td>u4</td>
+<td>无符号整型 (0 ~ 4294967295)</td>
+</tr>
+<tr>
+<td>unint64</td>
+<td>u8</td>
+<td>无符号整型 (0 ~ 18446744073709551615)</td>
+</tr>
+<tr>
+<td>float_</td>
+<td></td>
+<td>float64 的简写形式</td>
+</tr>
+<tr>
+<td>float16</td>
+<td>f2</td>
+<td>半精度浮点型: 符号位, 5 位指数, 10 位小数部分</td>
+</tr>
+<tr>
+<td>float32</td>
+<td>f4 或者 f</td>
+<td>单精度浮点数：32位，符号位, 8 位指数, 23 位小数部分</td>
+</tr>
+<tr>
+<td>float64</td>
+<td>f8 或者 d</td>
+<td>双精度浮点数：64位，符号位, 11 位指数, 52 位小数部分</td>
+</tr>
+<tr>
+<td>float128</td>
+<td>f16 或者 g</td>
+<td>扩展精度浮点数</td>
+</tr>
+<tr>
+<td>complex_</td>
+<td>c16</td>
+<td>complex128 的简写形式</td>
+</tr>
+<tr>
+<td>complex64</td>
+<td>c8</td>
+<td>复数,由两个 32 位的浮点数来表示(实数部分和虚数部分)</td>
+</tr>
+<tr>
+<td>complex128</td>
+<td>c16</td>
+<td>复数,由两个 64 位的浮点数来表示(实数部分和虚数部分)</td>
+</tr>
+<tr>
+<td>bool_</td>
+<td></td>
+<td>以一个字节形式存储的布尔值(True / False)</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>?</td>
+<td>存储 True 和 False 值的布尔类型</td>
+</tr>
+<tr>
+<td>object</td>
+<td>O</td>
+<td>python 对象类型</td>
+</tr>
+<tr>
+<td>String_</td>
+<td>S</td>
+<td>固定长度的字符串类型(每个字符1个字节) eg.创建一个长度为 8 的字符串使用 S8</td>
+</tr>
+<tr>
+<td>Unicode_</td>
+<td>U</td>
+<td>固定长度的 unicode 类型(字节数由平台决定), 跟字符串的定义方式一样, eg U8</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.array([&quot;python&quot;, &quot;scala&quot;, &quot;javascript&quot;, &quot;lua&quot;])</span><br><span class="line">arr.dtype  # dtype(&#39;&lt;U10&#39;)</span><br><span class="line">arr &#x3D; np.array([&quot;python&quot;, &quot;scala&quot;, &quot;javascript&quot;, &quot;lua&quot;], dtype&#x3D;&#39;S6&#39;)</span><br><span class="line"># array([b&#39;python&#39;, b&#39;scala&#39;, b&#39;javasc&#39;, b&#39;lua&#39;], dtype&#x3D;&#39;|S6&#39;) 注意有元素被截断</span><br><span class="line">arr.dtype  # dtype(&#39;S6&#39;)</span><br><span class="line"></span><br><span class="line">## 在需要指定类型的时候,推荐使用 np 对象内提供的类型</span><br><span class="line"></span><br><span class="line">arr &#x3D; np.array([&quot;python&quot;, &quot;scala&quot;, &quot;javascript&quot;, &quot;lua&quot;], dtype&#x3D;np.string_)</span><br><span class="line"># array([b&#39;python&#39;, b&#39;scala&#39;, b&#39;javascript&#39;, b&#39;lua&#39;], dtype&#x3D;&#39;|S10&#39;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="numpy-基本操作"><a href="#numpy-基本操作" class="headerlink" title="numpy 基本操作"></a>numpy 基本操作</h3><h4 id="数组与标量-数组之间的运算"><a href="#数组与标量-数组之间的运算" class="headerlink" title="数组与标量, 数组之间的运算"></a>数组与标量, 数组之间的运算</h4><ul>
+<li>数组不用循环即可对每个元素执行批量运算,这通常就叫做矢量化,即用数组表达式代替循环的做法</li>
+<li>矢量化数组运算性能要比纯 python 方式快一两个数量级</li>
+<li>大小相等的数组之间的任何算术运算都会将运算应用到元素级</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">## 数组与标量之间的运算</span><br><span class="line">arr &#x3D; np.arange(1, 6)</span><br><span class="line"># array([1, 2, 3, 4, 5])</span><br><span class="line"></span><br><span class="line">arr + 2</span><br><span class="line"># array([3, 4, 5, 6, 7])</span><br><span class="line"></span><br><span class="line">arr - 2</span><br><span class="line"># array([-1,  0,  1,  2,  3])</span><br><span class="line"></span><br><span class="line">arr * 2</span><br><span class="line"># array([ 2,  4,  6,  8, 10])</span><br><span class="line"></span><br><span class="line">arr &#x2F; 2</span><br><span class="line"># array([0.5, 1. , 1.5, 2. , 2.5])</span><br><span class="line"></span><br><span class="line">arr ** 2 </span><br><span class="line"># array([ 1,  4,  9, 16, 25])</span><br><span class="line"></span><br><span class="line">## shape 相同的数组之间的运算</span><br><span class="line">arr1 &#x3D; np.arange(4).reshape(2, 2)</span><br><span class="line"># array([[0, 1],</span><br><span class="line">#        [2, 3]])</span><br><span class="line"></span><br><span class="line">arr2 &#x3D; np.arange(1, 5).reshape(2, 2)</span><br><span class="line"># array([[1, 2],</span><br><span class="line">#        [3, 4]])</span><br><span class="line"></span><br><span class="line">arr1 + arr2</span><br><span class="line"># array([[1, 3],</span><br><span class="line">#       [5, 7]])</span><br><span class="line"></span><br><span class="line">arr1 * arr2</span><br><span class="line"># array([[ 0,  2],</span><br><span class="line">#       [ 6, 12]])</span><br><span class="line"></span><br><span class="line">arr1 &#x2F; arr2</span><br><span class="line"># array([[0.        , 0.5       ],</span><br><span class="line">#       [0.66666667, 0.75      ]])</span><br></pre></td></tr></table></figure>
+
+<h4 id="数组的矩阵积-matrix-product"><a href="#数组的矩阵积-matrix-product" class="headerlink" title="数组的矩阵积(matrix product)"></a>数组的矩阵积(matrix product)</h4><ul>
+<li>两个多为矩阵(通常是二维)满足第一个矩阵的列数与第二个矩阵的行数相同,那么可以进行矩阵乘法</li>
+<li>两个矩阵相乘结果所得到的数据中每个元素为,第一个矩阵中与该元素行号相同的元素与第二个矩阵中与该元素列号相同的元素,两两相乘后的求和</li>
+</ul>
+<p>eg. 假设有一下两张表格,要求计算每个部门购买产品的总价格和总占用空间</p>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>产品A</th>
+<th>产品B</th>
+<th>产品C</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部门1</td>
+<td>2</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr>
+<td>部门2</td>
+<td>1</td>
+<td>3</td>
+<td>5</td>
+</tr>
+<tr>
+<td>部门3</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>单价</th>
+<th>单件体积</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>产品A</td>
+<td>6</td>
+<td>5</td>
+</tr>
+<tr>
+<td>产品B</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>产品C</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>分别计算每个部分的用花费和总体积:</p>
+<p>部门1  总花费: 2 x 6 + 4 x 4 + 6 x 2 = <strong>40</strong>  总体积: 2 x 5 + 4 x 3 + 6 x 1 = <strong>28</strong><br>部门2  总花费: 1 x 6 + 3 x 4 + 5 x 2 = <strong>28</strong>  总体积: 1 x 5 + 3 x 3 + 5 x 1 = <strong>19</strong><br>部门3  总花费: 2 x 6 + 3 x 4 + 4 x 2 = <strong>32</strong>  总体积: 2 x 5 + 3 x 3 + 4 x 1 = <strong>23</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 用 numpy 的矩阵积计算</span><br><span class="line"></span><br><span class="line">arr1 &#x3D; np.array([</span><br><span class="line">    [2, 4, 6],</span><br><span class="line">    [1, 3, 5],</span><br><span class="line">    [2, 3, 4]</span><br><span class="line">])</span><br><span class="line">arr2 &#x3D; np.array([</span><br><span class="line">    [6, 5],</span><br><span class="line">    [4, 3],</span><br><span class="line">    [2, 1]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"># 直接就可以计算出满足需求的结果</span><br><span class="line">res &#x3D; np.dot(arr1, arr2)</span><br><span class="line"># array([[40, 28],</span><br><span class="line">#        [28, 19],</span><br><span class="line">#       [32, 23]])</span><br></pre></td></tr></table></figure>
+<h4 id="数组的索引与切片"><a href="#数组的索引与切片" class="headerlink" title="数组的索引与切片"></a>数组的索引与切片</h4><h5 id="多维数组的索引"><a href="#多维数组的索引" class="headerlink" title="多维数组的索引"></a>多维数组的索引</h5><p>对于二维数组的索引如表中所示,其他维度的数组索引与此类似<br>横轴\ 纵轴| 0 | 1 | 2 | 3<br>—|—|—|—|—<br> <strong>0</strong> | [0, 0] | [0, 1] | [0, 2] | [0, 3]<br> <strong>1</strong> | [1, 0] | [1, 1] | [1, 2] | [1, 3]<br> <strong>2</strong> | [2, 0] | [2, 1] | [2, 2] | [2, 3]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(2, 2, 3)</span><br><span class="line"># array([[[ 0,  1,  2],</span><br><span class="line">#        [ 3,  4,  5]],</span><br><span class="line">#</span><br><span class="line">#       [[ 6,  7,  8],</span><br><span class="line">#        [ 9, 10, 11]]])</span><br><span class="line"></span><br><span class="line">arr[1]</span><br><span class="line"># array([[ 6,  7,  8],</span><br><span class="line">#       [ 9, 10, 11]])</span><br><span class="line"></span><br><span class="line">arr[1][1]</span><br><span class="line"># array([ 9, 10, 11])</span><br><span class="line"></span><br><span class="line">arr[1, 1]</span><br><span class="line"># array([ 9, 10, 11])</span><br><span class="line"></span><br><span class="line">arr[1, 1, 2]</span><br><span class="line"># 11</span><br></pre></td></tr></table></figure>
+
+<h5 id="布尔型索引"><a href="#布尔型索引" class="headerlink" title="布尔型索引"></a>布尔型索引</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(2, 2, 3)</span><br><span class="line"># array([[[ 0,  1,  2],</span><br><span class="line">#        [ 3,  4,  5]],</span><br><span class="line">#</span><br><span class="line">#       [[ 6,  7,  8],</span><br><span class="line">#        [ 9, 10, 11]]])</span><br><span class="line"></span><br><span class="line">arr &lt; 5</span><br><span class="line"># array([[[ True,  True,  True],</span><br><span class="line">#         [ True,  True, False]],</span><br><span class="line"># </span><br><span class="line">#        [[False, False, False],</span><br><span class="line">#         [False, False, False]]])</span><br><span class="line"></span><br><span class="line">arr[arr &lt; 5]</span><br><span class="line"># array([0, 1, 2, 3, 4])  中 True 位置上取出的元素组成新的数组</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">names &#x3D; np.array([&#39;zj&#39;, &#39;zk&#39;, &#39;zl&#39;])</span><br><span class="line">scores &#x3D; np.array([</span><br><span class="line">    [98, 97, 96],</span><br><span class="line">    [89, 79, 69],</span><br><span class="line">    [77, 66, 55]</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line"># 取出 &#39;zj&#39; 对应的分数</span><br><span class="line">scores[names &#x3D;&#x3D; &#39;zj&#39;]</span><br><span class="line"># array([[98, 97, 96]])</span><br><span class="line"></span><br><span class="line"># 取出 &#39;zj&#39; 对应的分数的第二项分数</span><br><span class="line">scores[names&#x3D;&#x3D;&#39;zj&#39;, 1]</span><br><span class="line"># array([97])</span><br><span class="line"></span><br><span class="line"># numpy 中可以使用 逻辑与 &amp;, 逻辑或 |, 逻辑非 ~</span><br><span class="line"># 取出不是 zj 的分数</span><br><span class="line">scores[~(names &#x3D;&#x3D; &quot;zj&quot;)]</span><br><span class="line"># array([[89, 79, 69],</span><br><span class="line">#       [77, 66, 55]])array([[89, 79, 69],</span><br><span class="line">#       [77, 66, 55]])</span><br></pre></td></tr></table></figure>
+
+<h5 id="花式索引"><a href="#花式索引" class="headerlink" title="花式索引"></a>花式索引</h5><p>指的是利用整数数组进行索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(6, 2)</span><br><span class="line"># array([[ 0,  1],</span><br><span class="line">#       [ 2,  3],</span><br><span class="line">#       [ 4,  5],</span><br><span class="line">#       [ 6,  7],</span><br><span class="line">#       [ 8,  9],</span><br><span class="line">#       [10, 11]])</span><br><span class="line"></span><br><span class="line"># 取第一维度的第 0, 3, 5 这几个元素</span><br><span class="line">arr[[0, 3, 5]]</span><br><span class="line"># array([[ 0,  1],</span><br><span class="line">#       [ 6,  7],</span><br><span class="line">#       [10, 11]])</span><br><span class="line"></span><br><span class="line"># 取第一维度的第 0 个元素中的 第 1 个元素,第 3 个元素中的第 0 个元素,第 4 个元素中的第 1 个元素</span><br><span class="line">arr[[0, 3, 5], [1, 0 ,1]]</span><br><span class="line"># array([ 1,  6, 11])</span><br><span class="line"></span><br><span class="line"># ix_函数产生一个索引器</span><br><span class="line">ix &#x3D; np.ix_([0, 3, 5], [1, 0, 1])</span><br><span class="line"># (array([[0],[3],[5]]), array([[1, 0, 1]]))</span><br><span class="line"> </span><br><span class="line">arr[ix]</span><br><span class="line"># array([[ 1,  0,  1],</span><br><span class="line">#        [ 7,  6,  7],</span><br><span class="line">#        [11, 10, 11]])</span><br></pre></td></tr></table></figure>
+
+<h5 id="numpy-数组的切片"><a href="#numpy-数组的切片" class="headerlink" title="numpy 数组的切片"></a>numpy 数组的切片</h5><ul>
+<li>在各维度上单独切片,如果某维度都要保留,则直接使用 <code>:</code> 冒号, 不指定起始值和终止值</li>
+<li>numpy 中通过切片得到的新数组,只是原来数组的一个视图, 因此对新数组进行操作也会影响原数组</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(2, 2, 3)</span><br><span class="line"># array([[[ 0,  1,  2],</span><br><span class="line">#        [ 3,  4,  5]],</span><br><span class="line">#</span><br><span class="line">#       [[ 6,  7,  8],</span><br><span class="line">#        [ 9, 10, 11]]])</span><br><span class="line"></span><br><span class="line">arr[1][1][1:]</span><br><span class="line"># array([10, 11])</span><br><span class="line"></span><br><span class="line">arr[0, : , 1:]</span><br><span class="line"># array([[1, 2],</span><br><span class="line">#       [4, 5]])</span><br></pre></td></tr></table></figure>
+<h4 id="数组转置"><a href="#数组转置" class="headerlink" title="数组转置"></a>数组转置</h4><p>transpose 函数和数组的 T 属性用于数组转置,对于二维数组就是行列互换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(3, 4)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br><span class="line"></span><br><span class="line">arr.transpose()</span><br><span class="line"># array([[ 0,  4,  8],</span><br><span class="line">#       [ 1,  5,  9],</span><br><span class="line">#       [ 2,  6, 10],</span><br><span class="line">#       [ 3,  7, 11]])</span><br><span class="line"></span><br><span class="line">arr.T</span><br><span class="line"># array([[ 0,  4,  8],</span><br><span class="line">#       [ 1,  5,  9],</span><br><span class="line">#       [ 2,  6, 10],</span><br><span class="line">#       [ 3,  7, 11]])</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="通用函数-快速的元素级数组函数"><a href="#通用函数-快速的元素级数组函数" class="headerlink" title="通用函数: 快速的元素级数组函数"></a>通用函数: 快速的元素级数组函数</h4><p>ufunc: 一种对 dnarray 中的数据执行元素级运算的函数,也可以看做是简单函数(接受一个或多个标量值,并产生一个或多个标量值)的矢量化包装器</p>
+<h5 id="常见的一元通用函数"><a href="#常见的一元通用函数" class="headerlink" title="常见的一元通用函数"></a>常见的一元通用函数</h5><table>
+<thead>
+<tr>
+<th>一元 ufunc</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>abs, fabs</td>
+<td>计算整数,浮点数或复数的绝对值,对于非复数值</td>
+</tr>
+<tr>
+<td>sqrt</td>
+<td>计算各元素的平方根, 相当于 arr**0.5</td>
+</tr>
+<tr>
+<td>square</td>
+<td>计算各元素的平方, 相当于 arr**2</td>
+</tr>
+<tr>
+<td>exp</td>
+<td>计算各元素的指数 e 的 x 次方</td>
+</tr>
+<tr>
+<td>log. log10, log2, log1p</td>
+<td>分别为自然对数,底数是 10 的 log, 底数为 2 的 log, log(1+x)</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>计算各元素的正负号, 1: 正数, 0: 零, -1 负数</td>
+</tr>
+<tr>
+<td>cell</td>
+<td>计算大于等于该值的最小正数</td>
+</tr>
+<tr>
+<td>floor</td>
+<td>计算小于等于该值的最大整数</td>
+</tr>
+<tr>
+<td>rint</td>
+<td>将各元素值四舍五入到最接近的整数, 保留 dtype</td>
+</tr>
+<tr>
+<td>modf</td>
+<td>将数组的小数位和整数部分以两个独立数组的形式返回</td>
+</tr>
+<tr>
+<td>isnan</td>
+<td>返回一个表示 “哪些值是 NaN” 的布尔类型数组</td>
+</tr>
+<tr>
+<td>isfinite, isinf</td>
+<td>分别返回一个表示 “哪些元素是有穷的(非 inf, 非 nan)” 或 “哪些元素是无穷的” 的布尔型整数</td>
+</tr>
+<tr>
+<td>cos, cosh, sin, sinh, tan, tanh</td>
+<td>普通型和双曲型三角函数</td>
+</tr>
+<tr>
+<td>arccos, arccosh, arc, sin, arctan, arctanh</td>
+<td>反三角函数</td>
+</tr>
+<tr>
+<td>logical_not</td>
+<td>计算各元素 not x 的真值, 相当于 ~ 和 -arr</td>
+</tr>
+</tbody></table>
+<h5 id="常见的二元通用函数"><a href="#常见的二元通用函数" class="headerlink" title="常见的二元通用函数"></a>常见的二元通用函数</h5><table>
+<thead>
+<tr>
+<th>二元 ufunc</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add</td>
+<td>将数据中相同位置对应的元素相加</td>
+</tr>
+<tr>
+<td>substract</td>
+<td>从第一个数组中减去第二个数组中的元素</td>
+</tr>
+<tr>
+<td>multiply</td>
+<td>数据元素相乘</td>
+</tr>
+<tr>
+<td>divide, floor_divive</td>
+<td>除法或者向下整除法(丢弃余数)</td>
+</tr>
+<tr>
+<td>pow</td>
+<td>对第一个数组中的元素 A, 根据第二个数组中相应元素 B, 计算 A 的 B 次方</td>
+</tr>
+<tr>
+<td>maximum, fmax</td>
+<td>元素级别的最大值, fmax 会忽略 NaN</td>
+</tr>
+<tr>
+<td>minimum, fmin</td>
+<td>元素级别的最小值, fmin 会忽略 NaN</td>
+</tr>
+<tr>
+<td>mod</td>
+<td>元素级求模(除法的余数)</td>
+</tr>
+<tr>
+<td>copysign</td>
+<td>将第二个数组中的值的符号复制给第一个数组中对应位置的值</td>
+</tr>
+<tr>
+<td>greater,greater_equal,less,less_equal,equal,not_equal</td>
+<td>执行元素级别的比较运算,最终产生布尔型数组</td>
+</tr>
+<tr>
+<td>logical_and, logical_or, logical_xor</td>
+<td>执行元素级别的布尔逻辑运算, 相当于 &amp;,</td>
+</tr>
+</tbody></table>
+<h4 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h4><p>聚合函数是对一组值(比如一个数组)进行操作,返回一个单一值作为结果的函数.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.array([1, 2, 3, 4])</span><br><span class="line">arr.max()  #最大值  4</span><br><span class="line">arr.min()  # 最小值  1</span><br><span class="line">arr.mean()  # 均值  2.5</span><br><span class="line">arr.std()  # 标准差  1.118033988749895</span><br><span class="line">np.sqrt(np.power(arr - arr.mean(), 2).sum()&#x2F;arr.size)  # 标准差  1.118033988749895</span><br></pre></td></tr></table></figure>
+<p>聚合函数可以指定对数值的某个轴元素进行操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.array([</span><br><span class="line">    [1, 2, 3, 4],</span><br><span class="line">    [5, 6, 7, 8]</span><br><span class="line">    ])</span><br><span class="line"># 对同一列上的元素计算均值, axis&#x3D;0 表示横轴, axis&#x3D;1 表示纵轴</span><br><span class="line">arr.mean(axis&#x3D;0)  # array([3., 4., 5., 6.])</span><br><span class="line"># 对同一行上的元素计算均值</span><br><span class="line">arr.mean(axis&#x3D;1)  # array([2.5, 6.5])</span><br><span class="line"># 同一列求和</span><br><span class="line">arr.sum(axis&#x3D;0)  # array([ 6,  8, 10, 12])</span><br><span class="line"># 同一行求最大值</span><br><span class="line">arr.max(axis&#x3D;1)  # array([4, 8])</span><br><span class="line"># 同一列求标准差</span><br><span class="line">arr.std(axis&#x3D;0)  # array([2., 2., 2., 2.])</span><br></pre></td></tr></table></figure>
+
+<h4 id="np-where-函数"><a href="#np-where-函数" class="headerlink" title="np.where 函数"></a>np.where 函数</h4><p>三元表达式 <code>x if condition else y</code> 的矢量化版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">xarr &#x3D; np.array([1, 2, 3, 4, 5])</span><br><span class="line">yarr &#x3D; np.array([2, 3, 4, 5, 6])</span><br><span class="line">condition &#x3D; np.array([True, False, True, False, True])</span><br><span class="line">result &#x3D; [(x if c else y) for x, y, c in zip(xarr, yarr, condition)]</span><br><span class="line"># [1, 3, 3, 5, 5]</span><br><span class="line"></span><br><span class="line">result &#x3D; np.where(condition, xarr, yarr)</span><br><span class="line"># array([1, 3, 3, 5, 5])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 将数组中所有的 NaN 缺失值替换为 0 </span><br><span class="line">arr &#x3D; np.array([</span><br><span class="line">    [1, 2, np.NaN, 4],</span><br><span class="line">    [3, 4, 5, np.NaN]</span><br><span class="line">])</span><br><span class="line">condition &#x3D; np.isnan(arr)</span><br><span class="line">result &#x3D; np.where(condition, 0, arr)</span><br><span class="line"># array([[1., 2., 0., 4.],</span><br><span class="line">#       [3., 4., 5., 0.]])</span><br></pre></td></tr></table></figure>
+<h4 id="np-unique-函数"><a href="#np-unique-函数" class="headerlink" title="np.unique 函数"></a>np.unique 函数</h4><p>求数组中去掉重复元素后的一维数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.array([</span><br><span class="line">    [&#39;a&#39;, &#39;a&#39;, &#39;c&#39;, &#39;d&#39;, &#39;h&#39;, &#39;c&#39;, &#39;f&#39;],</span><br><span class="line">    [&#39;a&#39;, &#39;a&#39;, &#39;c&#39;, &#39;d&#39;, &#39;h&#39;, &#39;c&#39;, &#39;f&#39;]</span><br><span class="line">])</span><br><span class="line">result &#x3D; np.unique(arr)</span><br><span class="line"># array([&#39;a&#39;, &#39;c&#39;, &#39;d&#39;, &#39;f&#39;, &#39;h&#39;], dtype&#x3D;&#39;&lt;U1&#39;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组数据文件读写"><a href="#数组数据文件读写" class="headerlink" title="数组数据文件读写"></a>数组数据文件读写</h3><h4 id="将数组以二进制格式保存到磁盘"><a href="#将数组以二进制格式保存到磁盘" class="headerlink" title="将数组以二进制格式保存到磁盘"></a>将数组以二进制格式保存到磁盘</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12).reshape(3, 4)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br><span class="line"></span><br><span class="line"># 可以存储到本地文件名为 &#39;arr&#39;, 后缀名为 &#39;.npy&#39; 的文件中, </span><br><span class="line">np.save(&#39;arr&#39;, arr)</span><br><span class="line"></span><br><span class="line"># 读取二进制文件</span><br><span class="line">arr &#x3D; np.load(&#39;arr.npy&#39;)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br></pre></td></tr></table></figure>
+<h4 id="存取文本文件"><a href="#存取文本文件" class="headerlink" title="存取文本文件"></a>存取文本文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.arange(12, dtype&#x3D;np.int).reshape(3, 4)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br><span class="line"></span><br><span class="line"># 转存为 &#39;csv&#39; 格式文件</span><br><span class="line">np.savetxt(&#39;arr.csv&#39;, arr, delimiter&#x3D;&#39;,&#39;, fmt&#x3D;&quot;%s&quot;)</span><br><span class="line"></span><br><span class="line"># 从 csv 文件中读取</span><br><span class="line">arr &#x3D; np.loadtxt(&#39;arr.csv&#39;, delimiter&#x3D;&#39;,&#39;, dtype&#x3D;np.int)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br><span class="line"></span><br><span class="line"># 从 csv 文件中读取</span><br><span class="line">arr &#x3D; np.genfromtxt(&#39;arr.csv&#39;, delimiter&#x3D;&#39;,&#39;, dtype&#x3D;np.int)</span><br><span class="line"># array([[ 0,  1,  2,  3],</span><br><span class="line">#       [ 4,  5,  6,  7],</span><br><span class="line">#       [ 8,  9, 10, 11]])</span><br></pre></td></tr></table></figure>
+
+<p>使用 genformtxt 还可以指定 header, 假设有文件内容如下的 test.csv 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A,B,C,D</span><br><span class="line">0,1,2,3</span><br><span class="line">4,5,6,7</span><br><span class="line">8,9,10,11</span><br></pre></td></tr></table></figure>
+<p>可以这样灵活操作:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr &#x3D; np.genfromtxt(&quot;test.csv&quot;, delimiter&#x3D;&quot;,&quot;, names&#x3D;True, dtype&#x3D;np.int)</span><br><span class="line"># array([(0, 1,  2,  3), (4, 5,  6,  7), (8, 9, 10, 11)],</span><br><span class="line"># dtype&#x3D;[(&#39;A&#39;, &#39;&lt;i8&#39;), (&#39;B&#39;, &#39;&lt;i8&#39;), (&#39;C&#39;, &#39;&lt;i8&#39;), (&#39;D&#39;, &#39;&lt;i8&#39;)])</span><br><span class="line"></span><br><span class="line">arr[&#39;A&#39;]  # array([0, 4, 8])</span><br><span class="line">arr[0]  #  (0, 1, 2, 3)</span><br></pre></td></tr></table></figure>
+      
+       
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>numpy 入门练习</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">4.2k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="Waterandair">Waterandair</a></p>
+    <p><span class="copy-title">发布时间:</span>2018-02-10, 11:20:47</p>
+    <p><span class="copy-title">最后更新:</span>2019-12-28, 14:03:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2018-02-10-numpy-intro.html" title="numpy 入门练习">https://waterandair.github.io/2018-02-10-numpy-intro.html</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2017 Waterandair</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#时间复杂度','#大O算法','#Ansible','#大数据','#Redis','#Nosql','#Docker','#Go','#后端开发','#Linux','#Hadoop','#Hive','#环境搭建','#Java','#Kafka','#消息队列','#Zookeeper','#机器学习','#回归','#MySQL','#音乐','#Numpy','#Pandas','#Python','#Spark','#开发','#RPC','#性能调优','#原理','#Spark 原理','#工具','#分布式协作框架','#Linux 权限问题',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: ;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+</div>
+
+
+</html>

@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySql 索引优化 | Waterandair&#39;s Blog</title>
+  <meta name="keywords" content=" 后端开发 , MySQL ">
+  <meta name="description" content="MySql 索引优化 | Waterandair&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="https://waterandair.github.io/tags/index.html">
+<meta property="og:site_name" content="Waterandair&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-17T18:58:18.000Z">
+<meta property="article:modified_time" content="2019-12-28T06:03:51.541Z">
+<meta property="article:author" content="Waterandair">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Waterandair</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/waterandair" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:156577812@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+<a class="more-menus">更多菜单</a>
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(74)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法与数据结构"><i class="fold iconfont icon-right"></i>算法与数据结构<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端开发"><i class="fold iconfont icon-right"></i>后端开发<small>(33)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(6)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Ansible">Ansible<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Docker">Docker<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Linux">Linux<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="MySQL">MySQL<small>(16)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="RPC">RPC<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="大数据"><i class="fold iconfont icon-right"></i>大数据<small>(29)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Hadoop">Hadoop<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="CDH">CDH<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Hive">Hive<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Kafka">Kafka<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="数据分析">数据分析<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Spark">Spark<small>(19)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Zookeeper">Zookeeper<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Go"><i class="fold iconfont icon-right"></i>Go<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Go 语言注意点">Go 语言注意点<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="环境搭建">环境搭建<small>(5)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="机器学习"><i class="fold iconfont icon-right"></i>机器学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="算法">算法<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="案例">案例<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Interesting"><i class="fold iconfont icon-right"></i>Interesting<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Music">Music<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Python">Python<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="74">
+<input type="hidden" id="yelog_site_word_count" value="137.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">时间复杂度</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">大O算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Ansible</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">大数据</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Nosql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Docker</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Go</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">后端开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Hadoop</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Hive</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">环境搭建</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Kafka</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">消息队列</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Zookeeper</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">回归</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">音乐</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Numpy</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Pandas</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Python</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Spark</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">RPC</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">性能调优</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Spark 原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">工具</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">分布式协作框架</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux 权限问题</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use%20copy.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 基础 "
+           href="/2017-10-06-big-data-collect.html"
+           data-tag="大数据"
+           data-author="" >
+            <span class="post-title" title="大数据的数据采集流程">大数据的数据采集流程</span>
+            <span class="post-date" title="2017-10-06 21:49:02">2017/10/06</span>
+        </a>
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 CDH "
+           href="/2017-12-15-big-data-cdh-5-14-2-install.html"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="centos7 本地源方式部署 CDH 大数据服务管理平台">centos7 本地源方式部署 CDH 大数据服务管理平台</span>
+            <span class="post-date" title="2017-12-15 11:20:47">2017/12/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Docker "
+           href="/2017-10-03-docker-base-use.html"
+           data-tag="Docker"
+           data-author="" >
+            <span class="post-title" title="Docker 基本操作">Docker 基本操作</span>
+            <span class="post-date" title="2017-10-03 23:38:00">2017/10/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-09-10-distributed-lock.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="分布式锁(redis &amp; zookeeper)">分布式锁(redis &amp; zookeeper)</span>
+            <span class="post-date" title="2018-09-10 23:38:23">2018/09/10</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-21-file-descriptor.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="文件描述符（File Descriptor）简介">文件描述符（File Descriptor）简介</span>
+            <span class="post-date" title="2017-09-21 09:24:06">2017/09/21</span>
+        </a>
+        
+        <a id="top" class="大数据 Hadoop "
+           href="/2018-02-16-hadoop-hdfs-base.html"
+           data-tag="大数据,Hadoop"
+           data-author="" >
+            <span class="post-title" title="HDFS 系统基础介绍及使用(python)">HDFS 系统基础介绍及使用(python)</span>
+            <span class="post-date" title="2018-02-16 18:19:32">2018/02/16</span>
+        </a>
+        
+        <a id="top" class="Go Go 语言注意点 "
+           href="/2018-11-05-go-the-zero-value-of-struct-is-not-nil.html"
+           data-tag="Go"
+           data-author="" >
+            <span class="post-title" title="Go语言-结构体的零值问题">Go语言-结构体的零值问题</span>
+            <span class="post-date" title="2018-11-05 12:58:50">2018/11/05</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-04-23-hive-base.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 基础及实践">Hive 基础及实践</span>
+            <span class="post-date" title="2018-04-23 18:19:32">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-06-30-hive-optimization.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 优化总结">Hive 优化总结</span>
+            <span class="post-date" title="2018-06-30 18:19:32">2018/06/30</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-16-install-hadoop.html"
+           data-tag="Hadoop,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hadoop 集群">使用 ansible 部署 hadoop 集群</span>
+            <span class="post-date" title="2017-10-16 18:19:32">2017/10/16</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-23-install-hive.html"
+           data-tag="Hive,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hive （远程 mysql 存储 metadata）">使用 ansible 部署 hive （远程 mysql 存储 metadata）</span>
+            <span class="post-date" title="2017-10-23 18:19:32">2017/10/23</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-11-28-install-zookeeper.html"
+           data-tag="环境搭建,Zookeeper"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 zookeeper 环境">使用 ansible 部署 zookeeper 环境</span>
+            <span class="post-date" title="2017-11-28 12:42:24">2017/11/28</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-13-install-jdk.html"
+           data-tag="环境搭建,Java"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 java(jdk) 环境">使用 ansible 部署 java(jdk) 环境</span>
+            <span class="post-date" title="2017-10-13 18:19:32">2017/10/13</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-12-03-install-kafka.html"
+           data-tag="环境搭建,Kafka"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 kafka 集群">使用 ansible 部署 kafka 集群</span>
+            <span class="post-date" title="2017-12-03 07:01:41">2017/12/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-28-linux-top.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="Linux 命令 top 拆解">Linux 命令 top 拆解</span>
+            <span class="post-date" title="2017-05-28 09:24:06">2017/05/28</span>
+        </a>
+        
+        <a id="top" class="大数据 Kafka "
+           href="/2017-12-19-kafka-intro.html"
+           data-tag="Kafka,消息队列"
+           data-author="" >
+            <span class="post-title" title="kafka python 客户端使用">kafka python 客户端使用</span>
+            <span class="post-date" title="2017-12-19 12:58:50">2017/12/19</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-03-03-ml-gradient-descent.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="梯度下降求解逻辑回归">梯度下降求解逻辑回归</span>
+            <span class="post-date" title="2018-03-03 09:24:06">2018/03/03</span>
+        </a>
+        
+        <a id="top" class="机器学习 案例 "
+           href="/2018-03-10-ml-linearregression-advertising.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="LinearRegression建立广告投放与销售量的模型(sklearn)">LinearRegression建立广告投放与销售量的模型(sklearn)</span>
+            <span class="post-date" title="2018-03-10 09:24:06">2018/03/10</span>
+        </a>
+        
+        <a id="top" class="Interesting Music "
+           href="/2018-05-17-music-eason-unconditional.html"
+           data-tag="音乐"
+           data-author="" >
+            <span class="post-title" title="温情脉脉 —《无条件》">温情脉脉 —《无条件》</span>
+            <span class="post-date" title="2018-05-17 12:58:50">2018/05/17</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-02-26-ml-regression-pic.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="线性回归算法推导">线性回归算法推导</span>
+            <span class="post-date" title="2018-02-26 09:24:06">2018/02/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-30-mysql-authority-management.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 权限管理">MySQL 权限管理</span>
+            <span class="post-date" title="2017-07-30 09:24:06">2017/07/30</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-20-mysql-binlog.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL二进制日志 binlog 详细介绍">MySQL二进制日志 binlog 详细介绍</span>
+            <span class="post-date" title="2017-06-20 09:24:06">2017/06/20</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-29-mysql-backup-restore.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 备份和恢复机制">MySQL 备份和恢复机制</span>
+            <span class="post-date" title="2017-08-29 09:24:06">2017/08/29</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-07-08-mysql-commonly-used-tools.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 中的常用工具">MySQL 中的常用工具</span>
+            <span class="post-date" title="2018-07-08 09:24:06">2018/07/08</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-09-mysql-common-skill.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 常见问题和应用技巧">MySQL 常见问题和应用技巧</span>
+            <span class="post-date" title="2017-07-09 09:24:06">2017/07/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-23-mysql-concurrent-params.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="调整 MySQL 并发相关的参数">调整 MySQL 并发相关的参数</span>
+            <span class="post-date" title="2017-07-23 09:24:06">2017/07/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-07-mysql-index-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 索引优化">MySql 索引优化</span>
+            <span class="post-date" title="2017-08-07 09:24:06">2017/08/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-16-mysql-innodb-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL Innodb 日志机制及优化">MySQL Innodb 日志机制及优化</span>
+            <span class="post-date" title="2017-06-16 09:24:06">2017/06/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-02-mysql-lock-intro.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 锁机制">MySQL 锁机制</span>
+            <span class="post-date" title="2017-07-02 09:24:06">2017/07/02</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-24-mysql-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 日志介绍">MySQL 日志介绍</span>
+            <span class="post-date" title="2017-06-24 09:24:06">2017/06/24</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-16-mysql-memory-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 内存优化">MySQL 内存优化</span>
+            <span class="post-date" title="2017-08-16 09:24:06">2017/08/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-08-26-mysql-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 性能优化(全面)">MySQL 性能优化(全面)</span>
+            <span class="post-date" title="2018-08-26 09:24:06">2018/08/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-05-mysql-partition.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 表分区">MySql 表分区</span>
+            <span class="post-date" title="2017-09-05 09:24:06">2017/09/05</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-13-mysql-replication.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 主从复制">MySQL 主从复制</span>
+            <span class="post-date" title="2017-09-13 09:24:06">2017/09/13</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-10-mysql-sql-optimization-steps.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="优化 sql 语句的一般步骤">优化 sql 语句的一般步骤</span>
+            <span class="post-date" title="2017-06-10 09:24:06">2017/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-18-pandas-intro.html"
+           data-tag="Pandas"
+           data-author="" >
+            <span class="post-title" title="pandas 入门练习">pandas 入门练习</span>
+            <span class="post-date" title="2018-02-18 11:20:47">2018/02/18</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-22-mysql-select-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 查询优化">MySQL 查询优化</span>
+            <span class="post-date" title="2017-08-22 09:24:06">2017/08/22</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-10-numpy-intro.html"
+           data-tag="Numpy"
+           data-author="" >
+            <span class="post-title" title="numpy 入门练习">numpy 入门练习</span>
+            <span class="post-date" title="2018-02-10 11:20:47">2018/02/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-03-pyspark-custom-accumulator.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="pyspark 自定义累加器(python)">pyspark 自定义累加器(python)</span>
+            <span class="post-date" title="2018-04-03 11:20:47">2018/04/03</span>
+        </a>
+        
+        <a id="top" class="Python "
+           href="/2018-05-22-python-singleton.html"
+           data-tag="Python"
+           data-author="" >
+            <span class="post-title" title="四种 python 实现的单例模式的方式">四种 python 实现的单例模式的方式</span>
+            <span class="post-date" title="2018-05-22 09:24:06">2018/05/22</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-08-11-redis-basic.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 数据类型及应用场景">Redis 数据类型及应用场景</span>
+            <span class="post-date" title="2018-08-11 23:38:23">2018/08/11</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-pyspark-read-write.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark 读取和转存数据(python)">Spark 读取和转存数据(python)</span>
+            <span class="post-date" title="2018-01-01 07:34:19">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-21-redis-cluster.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Cluster 介绍">Redis Cluster 介绍</span>
+            <span class="post-date" title="2018-03-21 23:38:23">2018/03/21</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-07-redis-persistence.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 持久化介绍(RDB 和 AOF)">Redis 持久化介绍(RDB 和 AOF)</span>
+            <span class="post-date" title="2017-11-07 23:38:23">2017/11/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-15-redis-replication.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Replication 原理是实践">Redis Replication 原理是实践</span>
+            <span class="post-date" title="2017-11-15 23:38:23">2017/11/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-16-redis-sentinel.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 哨兵(sentinal)">Redis 哨兵(sentinal)</span>
+            <span class="post-date" title="2018-03-16 23:38:23">2018/03/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-27-rpc-distribute-zookeeper-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="基于zookeeper的分布式RPC(python)">基于zookeeper的分布式RPC(python)</span>
+            <span class="post-date" title="2018-05-27 09:24:06">2018/05/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-23-rpc-basic-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 模型基础知识(python)">RPC 模型基础知识(python)</span>
+            <span class="post-date" title="2018-05-23 09:24:06">2018/05/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-06-01-rpc-grpc-python-ping.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="grpc开发入门(python)">grpc开发入门(python)</span>
+            <span class="post-date" title="2018-06-01 09:24:06">2018/06/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-09-spark-and-sql-join-pattern.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="快速区分 spark 四种关联方式(结论适用于 sql)">快速区分 spark 四种关联方式(结论适用于 sql)</span>
+            <span class="post-date" title="2018-01-09 11:20:47">2018/01/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-16-rpc-protocol-basic.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 消息协议设计注意点">RPC 消息协议设计注意点</span>
+            <span class="post-date" title="2018-05-16 09:24:06">2018/05/16</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-22-spark-app-area-top3-product.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="各区域热门商品统计(pyspark)">各区域热门商品统计(pyspark)</span>
+            <span class="post-date" title="2018-04-22 09:24:06">2018/04/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-20-spark-app-page-convert-rate.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="计算页面单跳转化率(pyspark)">计算页面单跳转化率(pyspark)</span>
+            <span class="post-date" title="2018-04-20 09:24:06">2018/04/20</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-19-spark-app-session-analysis.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="用户行为分析(pyspark)">用户行为分析(pyspark)</span>
+            <span class="post-date" title="2018-04-19 09:24:06">2018/04/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-02-02-spark-base-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="spark 性能优化方法">spark 性能优化方法</span>
+            <span class="post-date" title="2018-02-02 09:24:06">2018/02/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-22-spark-functions-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark 算子调优方法">Spark 算子调优方法</span>
+            <span class="post-date" title="2018-01-22 09:24:06">2018/01/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2017-12-25-spark-operating-mechanism.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 运行机制">Spark 运行机制</span>
+            <span class="post-date" title="2017-12-25 11:20:47">2017/12/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-spark-rdd-dependence.html"
+           data-tag="Spark,Spark 原理"
+           data-author="" >
+            <span class="post-title" title="Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)">Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)</span>
+            <span class="post-date" title="2018-01-01 09:24:06">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-07-19-spark-shuffle-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark Shuffle 性能调优">Spark Shuffle 性能调优</span>
+            <span class="post-date" title="2018-07-19 11:20:47">2018/07/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-19-spark-sql-rdd.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Sql 两种将 RDD 转为 DataFrame 的方式">Spark Sql 两种将 RDD 转为 DataFrame 的方式</span>
+            <span class="post-date" title="2018-06-19 11:20:47">2018/06/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-17-spark-standalone.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark Standalone 运行模式">Spark Standalone 运行模式</span>
+            <span class="post-date" title="2018-01-17 11:20:47">2018/01/17</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-10-spark-streaming-checkpoint.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 使用 checkpoint 做恢复">Spark Streaming 使用 checkpoint 做恢复</span>
+            <span class="post-date" title="2018-06-10 11:20:47">2018/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-24-spark-streaming-transform.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="sparkStreaming 实时黑名单过滤(pyspark)">sparkStreaming 实时黑名单过滤(pyspark)</span>
+            <span class="post-date" title="2018-04-24 11:20:47">2018/04/24</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-05-02-spark-streaming-sql-top3.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 与 spark sql 结合实时统计点击量top3商品">Spark Streaming 与 spark sql 结合实时统计点击量top3商品</span>
+            <span class="post-date" title="2018-05-02 11:20:47">2018/05/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-25-spark-streaming-window.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 热点搜索词滑动统计(pyspark)">Spark Streaming 热点搜索词滑动统计(pyspark)</span>
+            <span class="post-date" title="2018-04-25 11:20:47">2018/04/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-23-spark-updatestatebykey.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="UpdateStateByKey 实时统计全局wordcount(pyspark)">UpdateStateByKey 实时统计全局wordcount(pyspark)</span>
+            <span class="post-date" title="2018-04-23 11:20:47">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-27-spark-yarn-client-cluster.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 的 Yarn-cluster 和 Yarn-client 提交模式">Spark 的 Yarn-cluster 和 Yarn-client 提交模式</span>
+            <span class="post-date" title="2018-01-27 09:24:06">2018/01/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-25-supervisor-intro.html"
+           data-tag="工具"
+           data-author="" >
+            <span class="post-title" title="进程管理工具 supervisor">进程管理工具 supervisor</span>
+            <span class="post-date" title="2017-09-25 11:20:47">2017/09/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2017-11-25-zookeeper-intro.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper概述(应用场景及基本概念)">zookeeper概述(应用场景及基本概念)</span>
+            <span class="post-date" title="2017-11-25 09:23:42">2017/11/25</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-14-uid-euid-gid-egid-introduce.html"
+           data-tag="Linux 权限问题"
+           data-author="" >
+            <span class="post-title" title="关于 Linux 进程的 UID、EUID、GID 和 EGID">关于 Linux 进程的 UID、EUID、GID 和 EGID</span>
+            <span class="post-date" title="2017-05-14 17:13:00">2017/05/14</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2018-10-03-zookeeper-kazoo-usage.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper python 客户端 kazoo 使用指南(译自官网)">zookeeper python 客户端 kazoo 使用指南(译自官网)</span>
+            <span class="post-date" title="2018-10-03 09:23:42">2018/10/03</span>
+        </a>
+        
+        <a id="top" class="算法与数据结构 基础 "
+           href="/2017-05-21-algorithm-efficiency-analysis.html"
+           data-tag="时间复杂度,大O算法"
+           data-author="" >
+            <span class="post-title" title="算法效率分析">算法效率分析</span>
+            <span class="post-date" title="2017-05-21 09:24:06">2017/05/21</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-mysql-index-optimization" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySql 索引优化</h1>
+    
+    <div class="article-meta">
+        
+        <span class="top"><a>置顶</a></span>
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="后端开发">后端开发</a>/
+            
+                <a  data-rel="MySQL">MySQL</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color5">后端开发</a>
+            
+            <a class="color1">MySQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-12-28 14:03:59'>2017-08-07 09:24</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.8k</span>
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#索引的数据结构-B-Tree（mysql主要使用-B-tree-平衡树）"><span class="toc-text">索引的数据结构 B-Tree（mysql主要使用 B-tree 平衡树）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#聚簇索引与非聚簇索引"><span class="toc-text">聚簇索引与非聚簇索引</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#索引类型"><span class="toc-text">索引类型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#主键索引"><span class="toc-text">主键索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#唯一索引"><span class="toc-text">唯一索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#普通索引"><span class="toc-text">普通索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#全文索引"><span class="toc-text">全文索引</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#索引使用原则"><span class="toc-text">索引使用原则</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#列独立"><span class="toc-text">列独立</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#左前缀"><span class="toc-text">左前缀</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#复合索引由左到右生效"><span class="toc-text">复合索引由左到右生效</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#不要滥用索引，多余的索引会降低读写性能"><span class="toc-text">不要滥用索引，多余的索引会降低读写性能</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MySql-中能够使用索引的典型应用"><span class="toc-text">MySql 中能够使用索引的典型应用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#匹配全值（match-the-full-value）"><span class="toc-text">匹配全值（match the full value）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#匹配值的范围查询（match-a-range-of-values）"><span class="toc-text">匹配值的范围查询（match a range of values）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#匹配最左前缀（match-a-leftmost-prefix）"><span class="toc-text">匹配最左前缀（match a leftmost prefix）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#仅仅对索引进行查询（index-only-query）"><span class="toc-text">仅仅对索引进行查询（index only query）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#匹配列前缀（match-a-column-prefix）"><span class="toc-text">匹配列前缀（match a column prefix）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#能够实现索引匹配部分精确而其他部分进行范围匹配（match-one-part-exactly-and-match-a-range-on-another-part）"><span class="toc-text">能够实现索引匹配部分精确而其他部分进行范围匹配（match one part exactly and match a range on another part）</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#如果列名是索引，那么使用-column-name-is-null-就会使用索引。"><span class="toc-text">如果列名是索引，那么使用 column_name is null 就会使用索引。</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#存在索引但不能使用索引的典型场景"><span class="toc-text">存在索引但不能使用索引的典型场景</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#以-开头的-like-查询不能利用-B-Tree-索引，执行计划中-key-的值为-null-表示没有使用索引"><span class="toc-text">以%开头的 like 查询不能利用 B-Tree 索引，执行计划中 key 的值为 null 表示没有使用索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据类型出现隐式转换的时候也不会使用索引"><span class="toc-text">数据类型出现隐式转换的时候也不会使用索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则-leftmost，是不会使用复合索引的。"><span class="toc-text">复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则 leftmost，是不会使用复合索引的。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#如果-MySQL-估计使用索引比全表扫描更慢，则不使用索引。"><span class="toc-text">如果 MySQL 估计使用索引比全表扫描更慢，则不使用索引。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#用-or-分割开的条件，如果-or-前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。"><span class="toc-text">用 or 分割开的条件，如果 or 前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#索引的维护和优化"><span class="toc-text">索引的维护和优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看索引使用情况"><span class="toc-text">查看索引使用情况</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#删除冗余的索引"><span class="toc-text">删除冗余的索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查找未被使用的索引"><span class="toc-text">查找未被使用的索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#更新索引统计信息及减少索引碎片"><span class="toc-text">更新索引统计信息及减少索引碎片</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用索引的小技巧"><span class="toc-text">使用索引的小技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#字符串字段权衡区分度与长度的技巧"><span class="toc-text">字符串字段权衡区分度与长度的技巧</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#左前缀不易区分的字段索引建立方法"><span class="toc-text">左前缀不易区分的字段索引建立方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#索引覆盖"><span class="toc-text">索引覆盖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#延迟关联"><span class="toc-text">延迟关联</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#索引排序"><span class="toc-text">索引排序　</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#重复索引和冗余索引"><span class="toc-text">重复索引和冗余索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#索引碎片与维护"><span class="toc-text">索引碎片与维护</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#innodb引擎的索引注意事项"><span class="toc-text">innodb引擎的索引注意事项</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#使用索引扫描优化排序"><span class="toc-text">使用索引扫描优化排序</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="索引的数据结构-B-Tree（mysql主要使用-B-tree-平衡树）"><a href="#索引的数据结构-B-Tree（mysql主要使用-B-tree-平衡树）" class="headerlink" title="索引的数据结构 B-Tree（mysql主要使用 B-tree 平衡树）"></a>索引的数据结构 B-Tree（mysql主要使用 B-tree 平衡树）</h4><h5 id="聚簇索引与非聚簇索引"><a href="#聚簇索引与非聚簇索引" class="headerlink" title="聚簇索引与非聚簇索引"></a>聚簇索引与非聚簇索引</h5><blockquote>
+<p>聚簇索引：索引的叶节点指向数据<br>非聚簇索引：索引的叶节点指向数据的引用  </p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>索引类型</th>
+<th>优</th>
+<th>劣</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚簇索引</td>
+<td>查询数据少时，无须回行</td>
+<td>不规则插入数据，频繁的页分裂</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>myisam使用非聚簇索引，innodb使用聚簇索引  </p>
+</blockquote>
+<p>对于innodb引擎：  </p>
+<ol>
+<li>主键索引既存储索引值，又在叶中存储行数据</li>
+<li>如果没有主键，则会使用 unique key 做主键  </li>
+<li>如果没有unique，则mysql会生成一个rowid做主键　　</li>
+</ol>
+<h4 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h4><h5 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h5><p>primary key() 要求关键字不能重复，也不能为null,同时增加主键约束<br>主键索引定义时，不能命名</p>
+<h5 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h5><p>unique index() 要求关键字不能重复，同时增加唯一约束</p>
+<h5 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h5><p>index() 对关键字没有要求</p>
+<h5 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h5><p>fulltext key() 关键字的来源不是所有字段的数据，而是字段中提取的特别关键字</p>
+<p><strong>关键字：可以是某个字段或多个字段，多个字段称为复合索引</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">建表：</span><br><span class="line">creat table student(</span><br><span class="line">    stu_id int unsigned not null auto_increment,</span><br><span class="line">    name varchar(32) not null default &#39;&#39;,</span><br><span class="line">    phone char(11) not null default &#39;&#39;,</span><br><span class="line">    stu_code varchar(32) not null default &#39;&#39;,</span><br><span class="line">    stu_desc text,</span><br><span class="line">    primary key (&#39;stu_id&#39;),     &#x2F;&#x2F;主键索引</span><br><span class="line">    unique index &#39;stu_code&#39; (&#39;stu_code&#39;), &#x2F;&#x2F;唯一索引</span><br><span class="line">    index &#39;name_phone&#39; (&#39;name&#39;,&#39;phone&#39;),  &#x2F;&#x2F;普通索引，复合索引</span><br><span class="line">    fulltext index &#39;stu_desc&#39; (&#39;stu_desc&#39;), &#x2F;&#x2F;全文索引</span><br><span class="line">) engine&#x3D;myisam charset&#x3D;utf8;</span><br><span class="line"></span><br><span class="line">更新：</span><br><span class="line">alert table student</span><br><span class="line">    add primary key (&#39;stu_id&#39;),     &#x2F;&#x2F;主键索引</span><br><span class="line">    add unique index &#39;stu_code&#39; (&#39;stu_code&#39;), &#x2F;&#x2F;唯一索引</span><br><span class="line">    add index &#39;name_phone&#39; (&#39;name&#39;,&#39;phone&#39;),  &#x2F;&#x2F;普通索引，复合索引</span><br><span class="line">    add fulltext index &#39;stu_desc&#39; (&#39;stu_desc&#39;); &#x2F;&#x2F;全文索引</span><br><span class="line"></span><br><span class="line">删除：</span><br><span class="line">alert table sutdent</span><br><span class="line">    drop primary key,</span><br><span class="line">    drop index &#39;stu_code&#39;,</span><br><span class="line">    drop index &#39;name_phone&#39;,</span><br><span class="line">    drop index &#39;stu_desc&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="索引使用原则"><a href="#索引使用原则" class="headerlink" title="索引使用原则"></a>索引使用原则</h4><h5 id="列独立"><a href="#列独立" class="headerlink" title="列独立"></a>列独立</h5><p>保证索引包含的字段独立在查询语句中，不能是在表达式中</p>
+<h5 id="左前缀"><a href="#左前缀" class="headerlink" title="左前缀"></a>左前缀</h5><p>like:匹配模式左边不能以通配符开始，才能使用索引<br>注意：前缀索引在排序 order by 和分组 group by 操作的时候无法使用。</p>
+<h5 id="复合索引由左到右生效"><a href="#复合索引由左到右生效" class="headerlink" title="复合索引由左到右生效"></a>复合索引由左到右生效</h5><p>建立联合索引，要同时考虑列查询的频率和列的区分度。  </p>
+<p>eg. index(a,b,c)  </p>
+<table>
+<thead>
+<tr>
+<th>语句</th>
+<th>索引是否发挥作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>where a=3</td>
+<td>是，只使用了a</td>
+</tr>
+<tr>
+<td>where a=3 and b=5</td>
+<td>是，使用了a,b</td>
+</tr>
+<tr>
+<td>where a=3 and b=5 and c=4</td>
+<td>是，使用了a,b,c</td>
+</tr>
+<tr>
+<td>where b=3 or where c=4</td>
+<td>否</td>
+</tr>
+<tr>
+<td>where a=3 and c=4</td>
+<td>是，仅使用了a</td>
+</tr>
+<tr>
+<td>where a=3 and b&gt;10 and c=7</td>
+<td>是，使用了a,b</td>
+</tr>
+<tr>
+<td>where a=3 and b like ‘%xx%’ and c=7</td>
+<td>使用了a,b</td>
+</tr>
+<tr>
+<td>or的两边都有存在可用的索引，该语句才能用索引。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="不要滥用索引，多余的索引会降低读写性能"><a href="#不要滥用索引，多余的索引会降低读写性能" class="headerlink" title="不要滥用索引，多余的索引会降低读写性能"></a>不要滥用索引，多余的索引会降低读写性能</h5><p><strong>即使满足了上述原则，mysql还是可能会弃用索引，因为有些查询即使使用索引，也会出现大量的随机io，相对于从数据记录中的顺序io开销更大。</strong></p>
+<h4 id="MySql-中能够使用索引的典型应用"><a href="#MySql-中能够使用索引的典型应用" class="headerlink" title="MySql 中能够使用索引的典型应用"></a>MySql 中能够使用索引的典型应用</h4><blockquote>
+<p>测试库下载地址：<a href="https://downloads.mysql.com/docs/sakila-db.zip" target="_blank" rel="noopener">https://downloads.mysql.com/docs/sakila-db.zip</a>  </p>
+</blockquote>
+<h5 id="匹配全值（match-the-full-value）"><a href="#匹配全值（match-the-full-value）" class="headerlink" title="匹配全值（match the full value）"></a>匹配全值（match the full value）</h5><p>对索引中所有列都指定具体值，即是对索引中的所有列都有等值匹配的条件。<br>例如，租赁表 rental 中通过指定出租日期 rental_date + 库存编号 inventory_id + 客户编号 customer_id 的组合条件进行查询，熊执行计划的 key he extra 两字段的值看到优化器选择了复合索引 idx_rental_date:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; explain select * from rental where rental_date&#x3D;&#39;2005-05-25 17:22:10&#39; and inventory_id&#x3D;373 and customer_id&#x3D;343 \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: const</span><br><span class="line">possible_keys: rental_date,idx_fk_inventory_id,idx_fk_customer_id</span><br><span class="line">          key: rental_date</span><br><span class="line">      key_len: 10</span><br><span class="line">          ref: const,const,const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>explain 输出结果中字段 type 的值为 const，表示是常量；字段 key 的值为 rental_date, 表示优化器选择索引 rental_date 进行扫描。  </p>
+<h5 id="匹配值的范围查询（match-a-range-of-values）"><a href="#匹配值的范围查询（match-a-range-of-values）" class="headerlink" title="匹配值的范围查询（match a range of values）"></a>匹配值的范围查询（match a range of values）</h5><p>对索引的值能够进行范围查找。<br>例如，检索租赁表 rental 中客户编号 customer_id 在指定范围内的记录：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; explain select * from rental where customer_id &gt;&#x3D; 373 and customer_id &lt; 400 \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: range</span><br><span class="line">possible_keys: idx_fk_customer_id</span><br><span class="line">          key: idx_fk_customer_id</span><br><span class="line">      key_len: 2</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 718</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index condition</span><br><span class="line"> 1 row in set, 1 warning (0.05 sec)</span><br></pre></td></tr></table></figure>
+<p>类型 type 为  range 说明优化器选择范围查询，索引 key 为 idx_fk_customer_id 说明优化器选择索引 idx_fk_customer_id 来加速访问，注意到这个列子中 extra 列为 using index codition ,表示 mysql 使用了 ICP（using index condition） 来进一步优化查询。  </p>
+<h5 id="匹配最左前缀（match-a-leftmost-prefix）"><a href="#匹配最左前缀（match-a-leftmost-prefix）" class="headerlink" title="匹配最左前缀（match a leftmost prefix）"></a>匹配最左前缀（match a leftmost prefix）</h5><p>仅仅使用索引中的最左边列进行查询，比如在 col1 + col2 + col3 字段上的联合索引能够被包含 col1、(col1 + col2)、（col1 + col2 + col3）的等值查询利用到，可是不能够被 col2、（col2、col3）的等值查询利用到。<br>最左匹配原则可以算是 MySQL 中 B-Tree 索引使用的首要原则。</p>
+<h5 id="仅仅对索引进行查询（index-only-query）"><a href="#仅仅对索引进行查询（index-only-query）" class="headerlink" title="仅仅对索引进行查询（index only query）"></a>仅仅对索引进行查询（index only query）</h5><p>当查询的列都在索引的字段中时，查询的效率更高，所以应该尽量避免使用 select *，需要哪些字段，就只查哪些字段。  </p>
+<h5 id="匹配列前缀（match-a-column-prefix）"><a href="#匹配列前缀（match-a-column-prefix）" class="headerlink" title="匹配列前缀（match a column prefix）"></a>匹配列前缀（match a column prefix）</h5><p>仅仅使用索引中的第一列，并且只包含索引第一列的开头一部分进行查找。<br>例如，现在需要查询出标题 title 是以 AFRICAN 开头的电影信息，从执行计划能够清楚看到，idx_title_desc_part 索引被利用上了：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create index idx_title_desc_part on film_text(title (10), description(20));</span><br><span class="line">Query OK, 0 rows affected (0.07 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; explain select title from film_text where title like &#39;AFRICAN%&#39;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: film_text</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: range</span><br><span class="line">possible_keys: idx_title_desc_part,idx_title_description</span><br><span class="line">          key: idx_title_desc_part</span><br><span class="line">      key_len: 32</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using where</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>extra 值为 using where 表示优化器需要通过索引回表查询数据。  </p>
+<h6 id="能够实现索引匹配部分精确而其他部分进行范围匹配（match-one-part-exactly-and-match-a-range-on-another-part）"><a href="#能够实现索引匹配部分精确而其他部分进行范围匹配（match-one-part-exactly-and-match-a-range-on-another-part）" class="headerlink" title="能够实现索引匹配部分精确而其他部分进行范围匹配（match one part exactly and match a range on another part）"></a>能够实现索引匹配部分精确而其他部分进行范围匹配（match one part exactly and match a range on another part）</h6><p>例如，需要查询出租日期 rental_date 为指定日期且客户编号 customer_id 为指定范围的库存：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; MySQL [sakila]&gt; explain select inventory_id from rental where rental_date&#x3D;&#39;2006-02-14 15:16:03&#39; and customer_id &gt;&#x3D; 300 and customer_id &lt;&#x3D;400\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: rental</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: rental_date,idx_fk_customer_id</span><br><span class="line">          key: rental_date</span><br><span class="line">      key_len: 5</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 182</span><br><span class="line">     filtered: 16.85</span><br><span class="line">        Extra: Using where; Using index</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h5 id="如果列名是索引，那么使用-column-name-is-null-就会使用索引。"><a href="#如果列名是索引，那么使用-column-name-is-null-就会使用索引。" class="headerlink" title="如果列名是索引，那么使用 column_name is null 就会使用索引。"></a>如果列名是索引，那么使用 column_name is null 就会使用索引。</h5><p>例如，查询支付表 payment 的租赁编号 rental_id 字段为空的记录就用到了索引：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; explain select * from payment where rental_id is null \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: payment</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: fk_payment_rental</span><br><span class="line">          key: fk_payment_rental</span><br><span class="line">      key_len: 5</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 5</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: Using index condition</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="存在索引但不能使用索引的典型场景"><a href="#存在索引但不能使用索引的典型场景" class="headerlink" title="存在索引但不能使用索引的典型场景"></a>存在索引但不能使用索引的典型场景</h4><p>有些时候虽然有索引，但是并不被优化器选择使用，下面举例几个不能使用索引的场景。</p>
+<h5 id="以-开头的-like-查询不能利用-B-Tree-索引，执行计划中-key-的值为-null-表示没有使用索引"><a href="#以-开头的-like-查询不能利用-B-Tree-索引，执行计划中-key-的值为-null-表示没有使用索引" class="headerlink" title="以%开头的 like 查询不能利用 B-Tree 索引，执行计划中 key 的值为 null 表示没有使用索引"></a>以%开头的 like 查询不能利用 B-Tree 索引，执行计划中 key 的值为 null 表示没有使用索引</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; explain select * from actor where last_name like &quot;%NI%&quot;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: NULL</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 200</span><br><span class="line">     filtered: 11.11</span><br><span class="line">        Extra: Using where</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>因为 B-Tree 索引的结构，所以以%开头的插叙很自然就没法利用索引了。一般推荐使用全文索引（Fulltext）来解决类似的全文检索的问题。或者考虑利用 innodb 的表都是聚簇表的特点，采取一种轻量级别的解决方式：一般情况下，索引都会比表小，扫描索引要比扫描表更快，而Innodb 表上二级索引 idx_last_name 实际上存储字段 last_name 还有主键 actot_id,那么理想的访问应该是<code>首先扫描二级索引 idx_last_name 获得满足条件的last_name like &#39;%NI%&#39; 的主键 actor_id 列表，之后根据主键回表去检索记录，这样访问避开了全表扫描演员表 actor 产生的大量 IO 请求。</code>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">ySQL [sakila]&gt; explain select * from (select actor_id from actor where last_name like &#39;%NI%&#39;) a , actor b where a.actor_id &#x3D; b.actor_id \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: index</span><br><span class="line">possible_keys: PRIMARY</span><br><span class="line">          key: idx_actor_last_name</span><br><span class="line">      key_len: 137</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 200</span><br><span class="line">     filtered: 11.11</span><br><span class="line">        Extra: Using where; Using index</span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: b</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: eq_ref</span><br><span class="line">possible_keys: PRIMARY</span><br><span class="line">          key: PRIMARY</span><br><span class="line">      key_len: 2</span><br><span class="line">          ref: sakila.actor.actor_id</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br></pre></td></tr></table></figure>
+<p>从执行计划中能够看出，extra 字段 using wehre；using index。理论上比全表扫描更快一下。  </p>
+<h5 id="数据类型出现隐式转换的时候也不会使用索引"><a href="#数据类型出现隐式转换的时候也不会使用索引" class="headerlink" title="数据类型出现隐式转换的时候也不会使用索引"></a>数据类型出现隐式转换的时候也不会使用索引</h5><p>当列的类型是字符串，那么一定记得在 where 条件中<code>把字符常量值用引号引起来</code>，否则即便这个列上有索引，mysql 也不会用到，因为 MySQL 默认把输入的常量值进行转换以后才进行检索。  </p>
+<p>例如，演员表 actor 中的姓氏字段 last_name 是字符型的，但是 sql 语句中的条件值 1 是一个数值型值，因此即便存在索引 idx_last_name, mysql 也不能正确的用上索引，而是继续进行全表扫描：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; explain select * from actor where last_name &#x3D; 1 \G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: idx_actor_last_name</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 200</span><br><span class="line">     filtered: 10.00</span><br><span class="line">        Extra: Using where</span><br><span class="line"> 1 row in set, 3 warnings (0.00 sec)</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; explain select * from actor where last_name &#x3D; &#39;1&#39;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: actor</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: idx_actor_last_name</span><br><span class="line">          key: idx_actor_last_name</span><br><span class="line">      key_len: 137</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line"> 1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h5 id="复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则-leftmost，是不会使用复合索引的。"><a href="#复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则-leftmost，是不会使用复合索引的。" class="headerlink" title="复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则 leftmost，是不会使用复合索引的。"></a>复合索引的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则 leftmost，是不会使用复合索引的。</h5><h5 id="如果-MySQL-估计使用索引比全表扫描更慢，则不使用索引。"><a href="#如果-MySQL-估计使用索引比全表扫描更慢，则不使用索引。" class="headerlink" title="如果 MySQL 估计使用索引比全表扫描更慢，则不使用索引。"></a>如果 MySQL 估计使用索引比全表扫描更慢，则不使用索引。</h5><h5 id="用-or-分割开的条件，如果-or-前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。"><a href="#用-or-分割开的条件，如果-or-前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。" class="headerlink" title="用 or 分割开的条件，如果 or 前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。"></a>用 or 分割开的条件，如果 or 前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。</h5><h4 id="索引的维护和优化"><a href="#索引的维护和优化" class="headerlink" title="索引的维护和优化"></a>索引的维护和优化</h4><h5 id="查看索引使用情况"><a href="#查看索引使用情况" class="headerlink" title="查看索引使用情况"></a>查看索引使用情况</h5><p>如果索引正在工作， Handler_read_key 的值将很高，这个值代表了一个行被索引值读的次数，很低的值表名增加索引得到的性能改善不高，因为索引并不经常使用。<br>Handler_read_rnd_next 的值高则意味着查询运行低效，并且应该建立索引补救。这个值的含义是在数据文件中读下一行的请求数。如果正在进行大量的表扫描，Handler_read_rnd_next 的值较高，则通常说明表索引不正确或写入的查询没有利用索引，具体如下。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; show status like &#39;Handler_read%&#39;;</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Variable_name         | Value |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Handler_read_first    | 1     |</span><br><span class="line">| Handler_read_key      | 5     |</span><br><span class="line">| Handler_read_last     | 0     |</span><br><span class="line">| Handler_read_next     | 200   |</span><br><span class="line">| Handler_read_prev     | 0     |</span><br><span class="line">| Handler_read_rnd      | 0     |</span><br><span class="line">| Handler_read_rnd_next | 0     |</span><br><span class="line">+-----------------------+-------+</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="删除冗余的索引"><a href="#删除冗余的索引" class="headerlink" title="删除冗余的索引"></a>删除冗余的索引</h5><p>使用percona-toolkit工具包中的 <code>pt-duplicate-key-checker</code> 可以删除重复和冗余的索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;pt-duplicate-key-checker --host&#x3D;172.16.16.35 --port&#x3D;3306 --user&#x3D;root --password&#x3D;123456 --database&#x3D;test --tables&#x3D;new_orders;</span><br></pre></td></tr></table></figure>
+
+<h5 id="查找未被使用的索引"><a href="#查找未被使用的索引" class="headerlink" title="查找未被使用的索引"></a>查找未被使用的索引</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT object_schema, object_name, index_name, b.&#96;TABLE_ROWS&#96; </span><br><span class="line">FROM performance_schema.table_io_waits_summary_by_index_usage a </span><br><span class="line">JOIN information_schema.tables b </span><br><span class="line">ON a.&#96;OBJECT_SCHEMA&#96;&#x3D;b.&#96;TABLE_SCHEMA&#96; AND a.&#96;OBJECT_NAME&#96;&#x3D;b.&#96;TABLE_NAME&#96; </span><br><span class="line">WHERE index_name IS NOT NULL </span><br><span class="line">AND count_star&#x3D;0 </span><br><span class="line">ORDER BY object_schema, object_name;</span><br></pre></td></tr></table></figure>
+<h5 id="更新索引统计信息及减少索引碎片"><a href="#更新索引统计信息及减少索引碎片" class="headerlink" title="更新索引统计信息及减少索引碎片"></a>更新索引统计信息及减少索引碎片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze table table_name</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用索引的小技巧"><a href="#使用索引的小技巧" class="headerlink" title="使用索引的小技巧"></a>使用索引的小技巧</h4><h5 id="字符串字段权衡区分度与长度的技巧"><a href="#字符串字段权衡区分度与长度的技巧" class="headerlink" title="字符串字段权衡区分度与长度的技巧"></a>字符串字段权衡区分度与长度的技巧</h5><p>截取不同长度，测试区分度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 这里假设截取6个字符长度计算区别度，直到区别度达到0.1，就可以把这个字段的这个长度作为索引了</span><br><span class="line">mysql&gt; select count(distinct left([varchar]],6))&#x2F;count(*) from table;</span><br><span class="line"></span><br><span class="line">#注意：设置前缀索引时指定的长度表示字节数，而对于非二进制类型(CHAR, VARCHAR, TEXT)字段而言的字段长度表示字符数，所</span><br><span class="line">#      以，在设置前缀索引前需要把计算好的字符数转化为字节数，常用字符集与字节的关系如下：</span><br><span class="line"># latin      单字节：1B</span><br><span class="line"># GBK	    双字节：2B</span><br><span class="line"># UTF8       三字节：3B</span><br><span class="line"># UTF8mb4	四字节：4B     </span><br><span class="line"># myisam 表的索引大小默认为 1000字节，innodb 表的索引大小默认为 767 字节，可以在配置文件中修改 innodb_large_prefix </span><br><span class="line"># 项的值增大 innodb 索引的大小，最大 3072 字节。</span><br></pre></td></tr></table></figure>
+<p>区别度能达到0.1，就可以。  </p>
+<h5 id="左前缀不易区分的字段索引建立方法"><a href="#左前缀不易区分的字段索引建立方法" class="headerlink" title="左前缀不易区分的字段索引建立方法"></a>左前缀不易区分的字段索引建立方法</h5><p>这样的字段，左边有大量重复字符，比如url字段汇总的http://</p>
+<ol>
+<li>倒过来存储并建立索引</li>
+<li>新增伪hash字段 把字符串转化为整型</li>
+</ol>
+<h5 id="索引覆盖"><a href="#索引覆盖" class="headerlink" title="索引覆盖"></a>索引覆盖</h5><p>概念：如果查询的列恰好是索引的一部分，那么查询只需要在索引文件上进行，不需要回行到磁盘，这种查询，速度极快，江湖人称——索引覆盖  </p>
+<h5 id="延迟关联"><a href="#延迟关联" class="headerlink" title="延迟关联"></a>延迟关联</h5><p>在根据条件查询数据时，如果查询条件不能用的索引，可以先查出数据行的id，再根据id去取数据行。<br>eg.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;普通查询 没有用到索引</span><br><span class="line">select * from post where content like &quot;%新闻%&quot;;</span><br><span class="line">&#x2F;&#x2F;延迟关联优化后 内层查询走content索引，取出id,在用join查所有行</span><br><span class="line">select a.* from post as a inner join (select id from post where content like &quot;%新闻%&quot;) as b on a.id&#x3D;b.id;</span><br></pre></td></tr></table></figure>
+<h5 id="索引排序"><a href="#索引排序" class="headerlink" title="索引排序　"></a>索引排序　</h5><p>排序的字段上加入索引，可以提高速度。</p>
+<h5 id="重复索引和冗余索引"><a href="#重复索引和冗余索引" class="headerlink" title="重复索引和冗余索引"></a>重复索引和冗余索引</h5><p>重复索引：在同一列或者相同顺序的几个列建立了多个索引，成为重复索引，没有任何意义，删掉<br>冗余索引：两个或多个索引所覆盖的列有重叠，比如对于列m,n ，加索引index m(m),indexmn(m,n),称为冗余索引。  </p>
+<h5 id="索引碎片与维护"><a href="#索引碎片与维护" class="headerlink" title="索引碎片与维护"></a>索引碎片与维护</h5><p>在数据表长期的更改过程中，索引文件和数据文件都会产生空洞，形成碎片。修复表的过程十分耗费资源，可以用比较长的周期修复表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;清理方法</span><br><span class="line">alert table xxx engine innodb; </span><br><span class="line">&#x2F;&#x2F;或</span><br><span class="line">optimize table xxx;</span><br></pre></td></tr></table></figure>
+
+<h5 id="innodb引擎的索引注意事项"><a href="#innodb引擎的索引注意事项" class="headerlink" title="innodb引擎的索引注意事项"></a>innodb引擎的索引注意事项</h5><p>Innodb 表要尽量自己指定主键，如果有几个列都是唯一的，要选择最常作为访问条件的列作为主键，另外，Innodb 表的普通索引都会保存主键的键值，所以主键要尽可能选择较短的数据类型，可以有效的减少索引的磁盘占用，提高索引的缓存效果。  </p>
+<h5 id="使用索引扫描优化排序"><a href="#使用索引扫描优化排序" class="headerlink" title="使用索引扫描优化排序"></a>使用索引扫描优化排序</h5><ul>
+<li>索引的列顺序和 Order By 子句的顺序完全一致</li>
+<li>索引中所有列的方向(升序, 降序) 和 order by 子句完全一致</li>
+<li>order by 中的字段全部在关联表中的第一张表表中</li>
+</ul>
+
+      
+       
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>MySql 索引优化</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">3.8k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="Waterandair">Waterandair</a></p>
+    <p><span class="copy-title">发布时间:</span>2017-08-07, 09:24:06</p>
+    <p><span class="copy-title">最后更新:</span>2019-12-28, 14:03:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2017-08-07-mysql-index-optimization.html" title="MySql 索引优化">https://waterandair.github.io/2017-08-07-mysql-index-optimization.html</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2017 Waterandair</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#时间复杂度','#大O算法','#Ansible','#大数据','#Redis','#Nosql','#Docker','#Go','#后端开发','#Linux','#Hadoop','#Hive','#环境搭建','#Java','#Kafka','#消息队列','#Zookeeper','#机器学习','#回归','#MySQL','#音乐','#Numpy','#Pandas','#Python','#Spark','#开发','#RPC','#性能调优','#原理','#Spark 原理','#工具','#分布式协作框架','#Linux 权限问题',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: ;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+</div>
+
+
+</html>

@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySQL 锁机制 | Waterandair&#39;s Blog</title>
+  <meta name="keywords" content=" 后端开发 , MySQL ">
+  <meta name="description" content="MySQL 锁机制 | Waterandair&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="https://waterandair.github.io/tags/index.html">
+<meta property="og:site_name" content="Waterandair&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-17T18:58:18.000Z">
+<meta property="article:modified_time" content="2019-12-28T06:03:51.541Z">
+<meta property="article:author" content="Waterandair">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Waterandair</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/waterandair" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="email" href="mailto:156577812@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+<a class="more-menus">更多菜单</a>
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(74)</small></div></li>
+    
+        
+            
+            <li><div data-rel="算法与数据结构"><i class="fold iconfont icon-right"></i>算法与数据结构<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端开发"><i class="fold iconfont icon-right"></i>后端开发<small>(33)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Redis">Redis<small>(6)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Ansible">Ansible<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Docker">Docker<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Linux">Linux<small>(4)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="MySQL">MySQL<small>(16)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="RPC">RPC<small>(4)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="大数据"><i class="fold iconfont icon-right"></i>大数据<small>(29)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Hadoop">Hadoop<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="CDH">CDH<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Hive">Hive<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="基础">基础<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Kafka">Kafka<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="数据分析">数据分析<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Spark">Spark<small>(19)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Zookeeper">Zookeeper<small>(2)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Go"><i class="fold iconfont icon-right"></i>Go<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Go 语言注意点">Go 语言注意点<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="环境搭建">环境搭建<small>(5)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="机器学习"><i class="fold iconfont icon-right"></i>机器学习<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="算法">算法<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="案例">案例<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Interesting"><i class="fold iconfont icon-right"></i>Interesting<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Music">Music<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="Python">Python<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="74">
+<input type="hidden" id="yelog_site_word_count" value="137.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">时间复杂度</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">大O算法</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Ansible</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">大数据</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Redis</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Nosql</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Docker</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">Go</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">后端开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Hadoop</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Hive</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">环境搭建</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Java</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Kafka</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">消息队列</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">Zookeeper</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">机器学习</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">回归</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySQL</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">音乐</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Numpy</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Pandas</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">Python</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Spark</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">开发</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">RPC</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">性能调优</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Spark 原理</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">工具</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">分布式协作框架</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">Linux 权限问题</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use%20copy.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 基础 "
+           href="/2017-10-06-big-data-collect.html"
+           data-tag="大数据"
+           data-author="" >
+            <span class="post-title" title="大数据的数据采集流程">大数据的数据采集流程</span>
+            <span class="post-date" title="2017-10-06 21:49:02">2017/10/06</span>
+        </a>
+        
+        <a id="top" class="后端开发 Ansible "
+           href="/2017-09-30-ansible-base-use.html"
+           data-tag="Ansible"
+           data-author="" >
+            <span class="post-title" title="ansible 一些基本使用方法的记录">ansible 一些基本使用方法的记录</span>
+            <span class="post-date" title="2017-09-30 11:20:47">2017/09/30</span>
+        </a>
+        
+        <a id="top" class="大数据 CDH "
+           href="/2017-12-15-big-data-cdh-5-14-2-install.html"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="centos7 本地源方式部署 CDH 大数据服务管理平台">centos7 本地源方式部署 CDH 大数据服务管理平台</span>
+            <span class="post-date" title="2017-12-15 11:20:47">2017/12/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Docker "
+           href="/2017-10-03-docker-base-use.html"
+           data-tag="Docker"
+           data-author="" >
+            <span class="post-title" title="Docker 基本操作">Docker 基本操作</span>
+            <span class="post-date" title="2017-10-03 23:38:00">2017/10/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-09-10-distributed-lock.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="分布式锁(redis &amp; zookeeper)">分布式锁(redis &amp; zookeeper)</span>
+            <span class="post-date" title="2018-09-10 23:38:23">2018/09/10</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-21-file-descriptor.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="文件描述符（File Descriptor）简介">文件描述符（File Descriptor）简介</span>
+            <span class="post-date" title="2017-09-21 09:24:06">2017/09/21</span>
+        </a>
+        
+        <a id="top" class="大数据 Hadoop "
+           href="/2018-02-16-hadoop-hdfs-base.html"
+           data-tag="大数据,Hadoop"
+           data-author="" >
+            <span class="post-title" title="HDFS 系统基础介绍及使用(python)">HDFS 系统基础介绍及使用(python)</span>
+            <span class="post-date" title="2018-02-16 18:19:32">2018/02/16</span>
+        </a>
+        
+        <a id="top" class="Go Go 语言注意点 "
+           href="/2018-11-05-go-the-zero-value-of-struct-is-not-nil.html"
+           data-tag="Go"
+           data-author="" >
+            <span class="post-title" title="Go语言-结构体的零值问题">Go语言-结构体的零值问题</span>
+            <span class="post-date" title="2018-11-05 12:58:50">2018/11/05</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-04-23-hive-base.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 基础及实践">Hive 基础及实践</span>
+            <span class="post-date" title="2018-04-23 18:19:32">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Hive "
+           href="/2018-06-30-hive-optimization.html"
+           data-tag="大数据,Hive"
+           data-author="" >
+            <span class="post-title" title="Hive 优化总结">Hive 优化总结</span>
+            <span class="post-date" title="2018-06-30 18:19:32">2018/06/30</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-16-install-hadoop.html"
+           data-tag="Hadoop,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hadoop 集群">使用 ansible 部署 hadoop 集群</span>
+            <span class="post-date" title="2017-10-16 18:19:32">2017/10/16</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-23-install-hive.html"
+           data-tag="Hive,环境搭建"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 hive （远程 mysql 存储 metadata）">使用 ansible 部署 hive （远程 mysql 存储 metadata）</span>
+            <span class="post-date" title="2017-10-23 18:19:32">2017/10/23</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-11-28-install-zookeeper.html"
+           data-tag="环境搭建,Zookeeper"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 zookeeper 环境">使用 ansible 部署 zookeeper 环境</span>
+            <span class="post-date" title="2017-11-28 12:42:24">2017/11/28</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-10-13-install-jdk.html"
+           data-tag="环境搭建,Java"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 java(jdk) 环境">使用 ansible 部署 java(jdk) 环境</span>
+            <span class="post-date" title="2017-10-13 18:19:32">2017/10/13</span>
+        </a>
+        
+        <a id="top" class="环境搭建 "
+           href="/2017-12-03-install-kafka.html"
+           data-tag="环境搭建,Kafka"
+           data-author="" >
+            <span class="post-title" title="使用 ansible 部署 kafka 集群">使用 ansible 部署 kafka 集群</span>
+            <span class="post-date" title="2017-12-03 07:01:41">2017/12/03</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-28-linux-top.html"
+           data-tag="后端开发,Linux"
+           data-author="" >
+            <span class="post-title" title="Linux 命令 top 拆解">Linux 命令 top 拆解</span>
+            <span class="post-date" title="2017-05-28 09:24:06">2017/05/28</span>
+        </a>
+        
+        <a id="top" class="大数据 Kafka "
+           href="/2017-12-19-kafka-intro.html"
+           data-tag="Kafka,消息队列"
+           data-author="" >
+            <span class="post-title" title="kafka python 客户端使用">kafka python 客户端使用</span>
+            <span class="post-date" title="2017-12-19 12:58:50">2017/12/19</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-03-03-ml-gradient-descent.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="梯度下降求解逻辑回归">梯度下降求解逻辑回归</span>
+            <span class="post-date" title="2018-03-03 09:24:06">2018/03/03</span>
+        </a>
+        
+        <a id="top" class="机器学习 案例 "
+           href="/2018-03-10-ml-linearregression-advertising.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="LinearRegression建立广告投放与销售量的模型(sklearn)">LinearRegression建立广告投放与销售量的模型(sklearn)</span>
+            <span class="post-date" title="2018-03-10 09:24:06">2018/03/10</span>
+        </a>
+        
+        <a id="top" class="Interesting Music "
+           href="/2018-05-17-music-eason-unconditional.html"
+           data-tag="音乐"
+           data-author="" >
+            <span class="post-title" title="温情脉脉 —《无条件》">温情脉脉 —《无条件》</span>
+            <span class="post-date" title="2018-05-17 12:58:50">2018/05/17</span>
+        </a>
+        
+        <a id="top" class="机器学习 算法 "
+           href="/2018-02-26-ml-regression-pic.html"
+           data-tag="机器学习,回归"
+           data-author="" >
+            <span class="post-title" title="线性回归算法推导">线性回归算法推导</span>
+            <span class="post-date" title="2018-02-26 09:24:06">2018/02/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-30-mysql-authority-management.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 权限管理">MySQL 权限管理</span>
+            <span class="post-date" title="2017-07-30 09:24:06">2017/07/30</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-20-mysql-binlog.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL二进制日志 binlog 详细介绍">MySQL二进制日志 binlog 详细介绍</span>
+            <span class="post-date" title="2017-06-20 09:24:06">2017/06/20</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-29-mysql-backup-restore.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 备份和恢复机制">MySQL 备份和恢复机制</span>
+            <span class="post-date" title="2017-08-29 09:24:06">2017/08/29</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-07-08-mysql-commonly-used-tools.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 中的常用工具">MySQL 中的常用工具</span>
+            <span class="post-date" title="2018-07-08 09:24:06">2018/07/08</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-09-mysql-common-skill.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 常见问题和应用技巧">MySQL 常见问题和应用技巧</span>
+            <span class="post-date" title="2017-07-09 09:24:06">2017/07/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-23-mysql-concurrent-params.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="调整 MySQL 并发相关的参数">调整 MySQL 并发相关的参数</span>
+            <span class="post-date" title="2017-07-23 09:24:06">2017/07/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-07-mysql-index-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 索引优化">MySql 索引优化</span>
+            <span class="post-date" title="2017-08-07 09:24:06">2017/08/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-16-mysql-innodb-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL Innodb 日志机制及优化">MySQL Innodb 日志机制及优化</span>
+            <span class="post-date" title="2017-06-16 09:24:06">2017/06/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-07-02-mysql-lock-intro.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 锁机制">MySQL 锁机制</span>
+            <span class="post-date" title="2017-07-02 09:24:06">2017/07/02</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-24-mysql-log.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 日志介绍">MySQL 日志介绍</span>
+            <span class="post-date" title="2017-06-24 09:24:06">2017/06/24</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-16-mysql-memory-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 内存优化">MySQL 内存优化</span>
+            <span class="post-date" title="2017-08-16 09:24:06">2017/08/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2018-08-26-mysql-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 性能优化(全面)">MySQL 性能优化(全面)</span>
+            <span class="post-date" title="2018-08-26 09:24:06">2018/08/26</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-05-mysql-partition.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySql 表分区">MySql 表分区</span>
+            <span class="post-date" title="2017-09-05 09:24:06">2017/09/05</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-09-13-mysql-replication.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 主从复制">MySQL 主从复制</span>
+            <span class="post-date" title="2017-09-13 09:24:06">2017/09/13</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-06-10-mysql-sql-optimization-steps.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="优化 sql 语句的一般步骤">优化 sql 语句的一般步骤</span>
+            <span class="post-date" title="2017-06-10 09:24:06">2017/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-18-pandas-intro.html"
+           data-tag="Pandas"
+           data-author="" >
+            <span class="post-title" title="pandas 入门练习">pandas 入门练习</span>
+            <span class="post-date" title="2018-02-18 11:20:47">2018/02/18</span>
+        </a>
+        
+        <a id="top" class="后端开发 MySQL "
+           href="/2017-08-22-mysql-select-optimization.html"
+           data-tag="后端开发,MySQL"
+           data-author="" >
+            <span class="post-title" title="MySQL 查询优化">MySQL 查询优化</span>
+            <span class="post-date" title="2017-08-22 09:24:06">2017/08/22</span>
+        </a>
+        
+        <a id="top" class="大数据 数据分析 "
+           href="/2018-02-10-numpy-intro.html"
+           data-tag="Numpy"
+           data-author="" >
+            <span class="post-title" title="numpy 入门练习">numpy 入门练习</span>
+            <span class="post-date" title="2018-02-10 11:20:47">2018/02/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-03-pyspark-custom-accumulator.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="pyspark 自定义累加器(python)">pyspark 自定义累加器(python)</span>
+            <span class="post-date" title="2018-04-03 11:20:47">2018/04/03</span>
+        </a>
+        
+        <a id="top" class="Python "
+           href="/2018-05-22-python-singleton.html"
+           data-tag="Python"
+           data-author="" >
+            <span class="post-title" title="四种 python 实现的单例模式的方式">四种 python 实现的单例模式的方式</span>
+            <span class="post-date" title="2018-05-22 09:24:06">2018/05/22</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-08-11-redis-basic.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 数据类型及应用场景">Redis 数据类型及应用场景</span>
+            <span class="post-date" title="2018-08-11 23:38:23">2018/08/11</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-pyspark-read-write.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark 读取和转存数据(python)">Spark 读取和转存数据(python)</span>
+            <span class="post-date" title="2018-01-01 07:34:19">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-21-redis-cluster.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Cluster 介绍">Redis Cluster 介绍</span>
+            <span class="post-date" title="2018-03-21 23:38:23">2018/03/21</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-07-redis-persistence.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 持久化介绍(RDB 和 AOF)">Redis 持久化介绍(RDB 和 AOF)</span>
+            <span class="post-date" title="2017-11-07 23:38:23">2017/11/07</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2017-11-15-redis-replication.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis Replication 原理是实践">Redis Replication 原理是实践</span>
+            <span class="post-date" title="2017-11-15 23:38:23">2017/11/15</span>
+        </a>
+        
+        <a id="top" class="后端开发 Redis "
+           href="/2018-03-16-redis-sentinel.html"
+           data-tag="Redis,Nosql"
+           data-author="" >
+            <span class="post-title" title="Redis 哨兵(sentinal)">Redis 哨兵(sentinal)</span>
+            <span class="post-date" title="2018-03-16 23:38:23">2018/03/16</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-27-rpc-distribute-zookeeper-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="基于zookeeper的分布式RPC(python)">基于zookeeper的分布式RPC(python)</span>
+            <span class="post-date" title="2018-05-27 09:24:06">2018/05/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-23-rpc-basic-python.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 模型基础知识(python)">RPC 模型基础知识(python)</span>
+            <span class="post-date" title="2018-05-23 09:24:06">2018/05/23</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-06-01-rpc-grpc-python-ping.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="grpc开发入门(python)">grpc开发入门(python)</span>
+            <span class="post-date" title="2018-06-01 09:24:06">2018/06/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-09-spark-and-sql-join-pattern.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="快速区分 spark 四种关联方式(结论适用于 sql)">快速区分 spark 四种关联方式(结论适用于 sql)</span>
+            <span class="post-date" title="2018-01-09 11:20:47">2018/01/09</span>
+        </a>
+        
+        <a id="top" class="后端开发 RPC "
+           href="/2018-05-16-rpc-protocol-basic.html"
+           data-tag="后端开发,RPC"
+           data-author="" >
+            <span class="post-title" title="RPC 消息协议设计注意点">RPC 消息协议设计注意点</span>
+            <span class="post-date" title="2018-05-16 09:24:06">2018/05/16</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-22-spark-app-area-top3-product.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="各区域热门商品统计(pyspark)">各区域热门商品统计(pyspark)</span>
+            <span class="post-date" title="2018-04-22 09:24:06">2018/04/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-20-spark-app-page-convert-rate.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="计算页面单跳转化率(pyspark)">计算页面单跳转化率(pyspark)</span>
+            <span class="post-date" title="2018-04-20 09:24:06">2018/04/20</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-19-spark-app-session-analysis.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="用户行为分析(pyspark)">用户行为分析(pyspark)</span>
+            <span class="post-date" title="2018-04-19 09:24:06">2018/04/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-02-02-spark-base-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="spark 性能优化方法">spark 性能优化方法</span>
+            <span class="post-date" title="2018-02-02 09:24:06">2018/02/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-22-spark-functions-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark 算子调优方法">Spark 算子调优方法</span>
+            <span class="post-date" title="2018-01-22 09:24:06">2018/01/22</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2017-12-25-spark-operating-mechanism.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 运行机制">Spark 运行机制</span>
+            <span class="post-date" title="2017-12-25 11:20:47">2017/12/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-01-spark-rdd-dependence.html"
+           data-tag="Spark,Spark 原理"
+           data-author="" >
+            <span class="post-title" title="Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)">Spark RDD 的 窄依赖和宽依赖(以 wordcount 程序为例)</span>
+            <span class="post-date" title="2018-01-01 09:24:06">2018/01/01</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-07-19-spark-shuffle-optimization.html"
+           data-tag="Spark,性能调优"
+           data-author="" >
+            <span class="post-title" title="Spark Shuffle 性能调优">Spark Shuffle 性能调优</span>
+            <span class="post-date" title="2018-07-19 11:20:47">2018/07/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-19-spark-sql-rdd.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Sql 两种将 RDD 转为 DataFrame 的方式">Spark Sql 两种将 RDD 转为 DataFrame 的方式</span>
+            <span class="post-date" title="2018-06-19 11:20:47">2018/06/19</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-17-spark-standalone.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark Standalone 运行模式">Spark Standalone 运行模式</span>
+            <span class="post-date" title="2018-01-17 11:20:47">2018/01/17</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-06-10-spark-streaming-checkpoint.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 使用 checkpoint 做恢复">Spark Streaming 使用 checkpoint 做恢复</span>
+            <span class="post-date" title="2018-06-10 11:20:47">2018/06/10</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-24-spark-streaming-transform.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="sparkStreaming 实时黑名单过滤(pyspark)">sparkStreaming 实时黑名单过滤(pyspark)</span>
+            <span class="post-date" title="2018-04-24 11:20:47">2018/04/24</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-05-02-spark-streaming-sql-top3.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 与 spark sql 结合实时统计点击量top3商品">Spark Streaming 与 spark sql 结合实时统计点击量top3商品</span>
+            <span class="post-date" title="2018-05-02 11:20:47">2018/05/02</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-25-spark-streaming-window.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="Spark Streaming 热点搜索词滑动统计(pyspark)">Spark Streaming 热点搜索词滑动统计(pyspark)</span>
+            <span class="post-date" title="2018-04-25 11:20:47">2018/04/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-04-23-spark-updatestatebykey.html"
+           data-tag="Spark,开发"
+           data-author="" >
+            <span class="post-title" title="UpdateStateByKey 实时统计全局wordcount(pyspark)">UpdateStateByKey 实时统计全局wordcount(pyspark)</span>
+            <span class="post-date" title="2018-04-23 11:20:47">2018/04/23</span>
+        </a>
+        
+        <a id="top" class="大数据 Spark "
+           href="/2018-01-27-spark-yarn-client-cluster.html"
+           data-tag="Spark,原理"
+           data-author="" >
+            <span class="post-title" title="Spark 的 Yarn-cluster 和 Yarn-client 提交模式">Spark 的 Yarn-cluster 和 Yarn-client 提交模式</span>
+            <span class="post-date" title="2018-01-27 09:24:06">2018/01/27</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-09-25-supervisor-intro.html"
+           data-tag="工具"
+           data-author="" >
+            <span class="post-title" title="进程管理工具 supervisor">进程管理工具 supervisor</span>
+            <span class="post-date" title="2017-09-25 11:20:47">2017/09/25</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2017-11-25-zookeeper-intro.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper概述(应用场景及基本概念)">zookeeper概述(应用场景及基本概念)</span>
+            <span class="post-date" title="2017-11-25 09:23:42">2017/11/25</span>
+        </a>
+        
+        <a id="top" class="后端开发 Linux "
+           href="/2017-05-14-uid-euid-gid-egid-introduce.html"
+           data-tag="Linux 权限问题"
+           data-author="" >
+            <span class="post-title" title="关于 Linux 进程的 UID、EUID、GID 和 EGID">关于 Linux 进程的 UID、EUID、GID 和 EGID</span>
+            <span class="post-date" title="2017-05-14 17:13:00">2017/05/14</span>
+        </a>
+        
+        <a id="top" class="大数据 Zookeeper "
+           href="/2018-10-03-zookeeper-kazoo-usage.html"
+           data-tag="大数据,分布式协作框架"
+           data-author="" >
+            <span class="post-title" title="zookeeper python 客户端 kazoo 使用指南(译自官网)">zookeeper python 客户端 kazoo 使用指南(译自官网)</span>
+            <span class="post-date" title="2018-10-03 09:23:42">2018/10/03</span>
+        </a>
+        
+        <a id="top" class="算法与数据结构 基础 "
+           href="/2017-05-21-algorithm-efficiency-analysis.html"
+           data-tag="时间复杂度,大O算法"
+           data-author="" >
+            <span class="post-title" title="算法效率分析">算法效率分析</span>
+            <span class="post-date" title="2017-05-21 09:24:06">2017/05/21</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-mysql-lock-intro" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySQL 锁机制</h1>
+    
+    <div class="article-meta">
+        
+        <span class="top"><a>置顶</a></span>
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="后端开发">后端开发</a>/
+            
+                <a  data-rel="MySQL">MySQL</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color5">后端开发</a>
+            
+            <a class="color1">MySQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2019-12-28 14:03:59'>2017-07-02 09:24</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:5.1k</span>
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#MySQL-锁概述"><span class="toc-text">MySQL 锁概述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#myisam-表锁"><span class="toc-text">myisam 表锁</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MySQL-表级锁的锁模式"><span class="toc-text">MySQL 表级锁的锁模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#加锁"><span class="toc-text">加锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#并发插入（concurrent-inserts）"><span class="toc-text">并发插入（concurrent inserts）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#myisam-的锁调度"><span class="toc-text">myisam 的锁调度</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查询表级锁争用情况"><span class="toc-text">查询表级锁争用情况</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InnoDB-锁"><span class="toc-text">InnoDB 锁</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#并发事务处理存在的问题"><span class="toc-text">并发事务处理存在的问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#事务隔离级别"><span class="toc-text">事务隔离级别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#innodb-的行锁模式及加锁方法"><span class="toc-text">innodb 的行锁模式及加锁方法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#innodb-存储引擎共享锁例子-更新时死锁"><span class="toc-text">innodb 存储引擎共享锁例子(更新时死锁)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#innodb-存储引擎排它锁例子"><span class="toc-text">innodb 存储引擎排它锁例子</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#innodb-行锁实现方式"><span class="toc-text">innodb 行锁实现方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看-Innodb-行锁争用情况"><span class="toc-text">查看 Innodb 行锁争用情况</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#查询-information-schema-数据库中的表了解锁等待"><span class="toc-text">查询 information_schema 数据库中的表了解锁等待</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#通过设置-innodb-monitors-观察锁冲突情况"><span class="toc-text">通过设置 innodb monitors 观察锁冲突情况</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#在不通过索引条件查询时，innodb-会锁定表中的所有记录。"><span class="toc-text">在不通过索引条件查询时，innodb 会锁定表中的所有记录。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#由于-MySQL-的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。"><span class="toc-text">由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb-都会使用行锁对数据加锁。"><span class="toc-text">当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb 都会使用行锁对数据加锁。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#即便在条件中使用了索引字段，但是否使用索引来检索数据是由-MySQL-通过判断不同执行计划的代价来决定的，如果-MySQL-认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下-innodb-也会对所有记录加锁。因此，在分析锁冲突时，别忘了检查-sql-的执行计划，以确认是否真正使用了索引。"><span class="toc-text">即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，如果 MySQL 认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下 innodb 也会对所有记录加锁。因此，在分析锁冲突时，别忘了检查 sql 的执行计划，以确认是否真正使用了索引。</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#next-key-锁"><span class="toc-text">next-key 锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#innodb-使用表锁"><span class="toc-text">innodb 使用表锁</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#死锁"><span class="toc-text">死锁</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#避免死锁的方法"><span class="toc-text">避免死锁的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会"><span class="toc-text">程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。"><span class="toc-text">在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。"><span class="toc-text">在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#在-repeatable-read-隔离级别下，如果两个线程同时对相同条件记录用-select-…-for-update-加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成-read-committed-，就可避免问题。"><span class="toc-text">在 repeatable-read 隔离级别下，如果两个线程同时对相同条件记录用 select … for update 加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成 read committed ，就可避免问题。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#当隔离级别为-read-committed-时，如果两个线程都先执行-select-…-for-update-判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第-1-个线程提交后，第-2-个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第-3-个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行-rollback-释放获得的排他锁"><span class="toc-text">当隔离级别为 read committed 时，如果两个线程都先执行 select … for update, 判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第 1 个线程提交后，第 2 个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第 3 个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行 rollback 释放获得的排他锁</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>锁是计算机协调多个进程或线程并发访问某一资源的机制</p>
+<a id="more"></a>
+
+<h4 id="MySQL-锁概述"><a href="#MySQL-锁概述" class="headerlink" title="MySQL 锁概述"></a>MySQL 锁概述</h4><p>MySQL 两种锁特性归纳 ：  </p>
+<ul>
+<li>表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。  </li>
+<li>行级锁：开销大，加锁慢；会出现死锁；锁定粒度小，发生锁冲突的概率最低，并发度也最高。   </li>
+</ul>
+<p>myisam 和 memory 存储引擎采用的是 表级锁；<br>innodb 存储引擎既支持行级锁，也支持表级锁，但默认情况下采用行级锁。  </p>
+<p>表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如 web 应用；<br>行级锁则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用。 </p>
+<h4 id="myisam-表锁"><a href="#myisam-表锁" class="headerlink" title="myisam 表锁"></a>myisam 表锁</h4><h5 id="MySQL-表级锁的锁模式"><a href="#MySQL-表级锁的锁模式" class="headerlink" title="MySQL 表级锁的锁模式"></a>MySQL 表级锁的锁模式</h5><p>MySQL 的表级锁有两种模式，表共享读锁(table read lock)和表独占写锁（table write lock）。  </p>
+<p><code>对 myisam 表的读操作，不会阻塞其他用户对同一表的读请求，但会阻塞对同一表的写请求；对 myisam 表的写操作，则会阻塞其他用户对同一表的读和写操作</code>  </p>
+<p>当一个线程获得对一个表的写锁时，只有持有锁的线程可以对表进行更新操作，其他线程的读写操作都会等待，直到锁被释放。  </p>
+<h5 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h5><p>myisam 在执行查询语句（select）前，会自动给涉及到的所有表加读锁；在执行更新操作（update、delete、insert等）前，会自动给涉及的表加写锁，这个过程并不需要直接用 <code>lock table</code> 命令给 myisam 表显示加锁。<br>给 myisam 表显式加锁，一般是为了在一定程度模拟事务操作。<br>myisam 总是自动给sql语句涉及到的所有表加锁，所以显示锁表的时候，必须同时取得所有涉及表的锁，这也正是 myisam 表不会出现死锁（deadlock）的原因。  </p>
+<p>注意：在使用 <code>lock tables</code> 时，不仅需要一次锁定用到的所有表，而且同一个表在 sql 语句中出现多少次，就要通过与 sql 语句中相同的别名锁定多少次，否则会报错。</p>
+<h5 id="并发插入（concurrent-inserts）"><a href="#并发插入（concurrent-inserts）" class="headerlink" title="并发插入（concurrent inserts）"></a>并发插入（concurrent inserts）</h5><p>myisam 表的读和写是串行的，但这是就总体而言的。在一定条件下，myisam 表也支持查询和插入操作的并发进行。<br>myisam 存储引擎有一个系统变量 <code>concurrent_insert</code> , 专门用以控制其并发插入的行为，其值分别可以为0,1,2。  </p>
+<ul>
+<li>为 <code>0</code> 时，不允许并发插入。  </li>
+<li>为 <code>1</code> 时，如果 myisam 表中没有空洞（即表的中间没有被删除的行），myisam 允许在一个进程读表的同时，另一个进程从表尾插入记录。这也是 MySQL 的默认设置。  </li>
+<li>为 <code>2</code> 时，无论 myisam 表中有没有空洞，都允许在表尾并发插入记录。  </li>
+</ul>
+<h5 id="myisam-的锁调度"><a href="#myisam-的锁调度" class="headerlink" title="myisam 的锁调度"></a>myisam 的锁调度</h5><p>myisam 存储引擎的读锁和写锁是互斥的，读写操作时串行的。<br>当一个进程请求某个 myisam 表的读锁，同时另一个进程也请求同一表的写锁时，写进程会先获得锁。<br>不仅如此，即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前，这是因为 mysql 认为写请求一般比读请求重要。<br>这也正是<code>myisam 表不太适合有大量更新操作和查询操作应用</code>的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。  </p>
+<p>通过一些参数设置可以调节 MySQL 的默认调度行为：  </p>
+<ul>
+<li>通过指定启动参数 <code>low-priority-updates</code>, 使 myisam 引擎默认给予读请求以优先的权利。  </li>
+<li>通过执行命令 <code>set low_priority_updates = 1</code>, 使该连接发出的更新请求优先级降低。  </li>
+<li>通过指定 insert、update、delete 语句的 low_priority 属性，降低该语句的优先级。  </li>
+</ul>
+<p>上述方式都是要么更新优先，要么查询优先，MySQL 也提供了一种折中的办法调节读写冲突：  </p>
+<p>给系统参数 <code>max_write_lock_count</code> 设置一个合适的值，当一个表的读锁达到这个值后，MySQL 就暂时将写请求的优先级降低，给读进程一定获得锁的机会。  </p>
+<h5 id="查询表级锁争用情况"><a href="#查询表级锁争用情况" class="headerlink" title="查询表级锁争用情况"></a>查询表级锁争用情况</h5><p>可以通过检查 <code>table_locks_waited</code> 和 <code>table_locks_immediate</code> 状态变量来分析系统上的表锁定争夺：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; show status like &#39;table_locks%&#39;;</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Variable_name         | Value |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Table_locks_immediate | 100   |</span><br><span class="line">| Table_locks_waited    | 0     |</span><br><span class="line">+-----------------------+-------+</span><br></pre></td></tr></table></figure>
+<p>如果 <code>table_locks_waited</code> 的值比较高，则说明存在着较严重的表级锁争用情况。  </p>
+<h4 id="InnoDB-锁"><a href="#InnoDB-锁" class="headerlink" title="InnoDB 锁"></a>InnoDB 锁</h4><p>innodb 与 myisam 的最大不同有两点，一是支持事务（transaction），二是采用了行级锁。  </p>
+<h5 id="并发事务处理存在的问题"><a href="#并发事务处理存在的问题" class="headerlink" title="并发事务处理存在的问题"></a>并发事务处理存在的问题</h5><p>相对于串行处理来说，并发事务处理能力大大增加数据库资源的利用率，提高数据库系统事务吞吐量，从而可以支持更多的用户，但并发事务处理也会带来一些问题：</p>
+<table>
+<thead>
+<tr>
+<th>\</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>更新丢失(lost update)</td>
+<td>多个事务更新某行时，每个事务都不知道其他事务的存在，最后的更新覆盖了其他事务所做的更新</td>
+</tr>
+<tr>
+<td>脏读(dirty reads)</td>
+<td>事务A正在修改id为1的记录，在事务A提交前，事务B也来读取同一行，如果事务B读出了事务A做的修改，就叫脏读</td>
+</tr>
+<tr>
+<td>不可重复读(non-repeatable reads)</td>
+<td>事务A做一个查询(M)后未提交，此时事务B修改查询(M)涉及到的记录并提交，事务A做查询(M),发现结果集发生变化，这种情况叫做不可重复读</td>
+</tr>
+<tr>
+<td>幻读(phantom reads)</td>
+<td>事务A查询id为1的记录，发现没有，此时事务B插入id为1的记录，因为事务A并没有找到id为1的记录，所以随后插入id为1的记录，但会提示<code>duplicate key</code>拒绝插入，这种情况叫做幻读</td>
+</tr>
+</tbody></table>
+<h5 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h5><p><code>更新丢失:</code>通常可以加必要的锁来解决。<br><code>脏读/不可重复读/幻读:</code>其实都是数据库读一致性问题，须由数据库提供一定的事务隔离机制。  </p>
+<p>数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上<code>串行化</code>进行，这显然与<code>并发</code>是矛盾的。<br>为了解决<code>隔离</code>与<code>并发</code>的矛盾，<code>ISO/ANSI SQL92</code> 定义了 4 个事务隔离级别，MySQL 实现了这四种级别，应用可以选择适合自己的隔离级别</p>
+<p><img src="/images/mysql-lock/1.png" alt="image"></p>
+<h5 id="innodb-的行锁模式及加锁方法"><a href="#innodb-的行锁模式及加锁方法" class="headerlink" title="innodb 的行锁模式及加锁方法"></a>innodb 的行锁模式及加锁方法</h5><p>Innodb 实现了两种类型的行锁：  </p>
+<ul>
+<li>共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排他锁。</li>
+<li>排他锁（X）：允许获得排他锁的事务更新数据，阻止其他事务获取相同数据集的共享读锁和排他写锁。  </li>
+</ul>
+<p>另外，为了允许行锁和表锁共存，实现多粒度锁机制，innodb 还有两种内部使用的意向锁，这两种意向锁都是表锁：  </p>
+<ul>
+<li>意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的 IS 锁。  </li>
+<li>意向排它锁（IX）: 事务打算给数据行加行排它锁，事务在给一个数据行加排它锁前必须先取得该表的 IX 锁。  </li>
+</ul>
+<p><img src="/images/mysql-lock/2.png" alt="image"><br>如果一个事务请求的锁模式与当前的锁兼容，innodb 就将请求的锁授予该事务；反之，如果两者不兼容，该事务就要等待锁释放。<br>意向锁是 innodb 自动加的，不需要用户干预。对于 update、delete 和 insert 语句，innodb 会自动给涉及数据集加排它锁（X）；对于普通 select 语句，innodb 不会加任何锁。  </p>
+<p>事务可以通过以下语句显式给记录集加共享锁或排它锁。  </p>
+<ul>
+<li>共享锁（S）：select * from table_name where … lock in share mode.</li>
+<li>排它锁（X）: select * from table_name where … for update.    </li>
+</ul>
+<p>用 select… in share mode 获得共享锁，主要用在需要数据依存关系时来确认某行记录是否存在，并确保没有人对这个记录进行 update 或者 delete 操作。但是如果<code>当前事务也需要对该记录进行更新操作</code>,则有可能造成死锁，对于锁定行记录后需要进行更新操作的应用，应该使用 select… for update 方式获得排他锁。</p>
+<h6 id="innodb-存储引擎共享锁例子-更新时死锁"><a href="#innodb-存储引擎共享锁例子-更新时死锁" class="headerlink" title="innodb 存储引擎共享锁例子(更新时死锁)"></a>innodb 存储引擎<code>共享锁</code>例子(更新时死锁)</h6><p><img src="/images/mysql-lock/3.png" alt="image"></p>
+<h6 id="innodb-存储引擎排它锁例子"><a href="#innodb-存储引擎排它锁例子" class="headerlink" title="innodb 存储引擎排它锁例子"></a>innodb 存储引擎<code>排它锁</code>例子</h6><p><img src="/images/mysql-lock/4.png" alt="image"></p>
+<h5 id="innodb-行锁实现方式"><a href="#innodb-行锁实现方式" class="headerlink" title="innodb 行锁实现方式"></a>innodb 行锁实现方式</h5><p>innodb 行锁是通过给索引项加锁来实现的，如果么有索引，innodb 将通过隐藏的聚簇索引来对记录加锁。innodb 行锁分为 3 种情形：  </p>
+<ul>
+<li>record lock： 对索引项加锁</li>
+<li>gap lock： 对索引项之间的“间隙”、第一条记录前的“间隙”或最后一条记录的“间隙”加锁。  </li>
+<li>next-key lock： 前两种的结合，对记录及其前面的间隙加锁。</li>
+</ul>
+<p><code>innodb 这种行锁实现特点意味着：如果不通过索引条件检索数据，那么 innodb 将对表中的所有记录加锁，实际效果和表锁一样！</code>  </p>
+<p>在实际应用中，要特别注意 innodb 行锁的这一特性，否则可能导致大量的锁冲突，从而影响并发性能。  </p>
+<h5 id="查看-Innodb-行锁争用情况"><a href="#查看-Innodb-行锁争用情况" class="headerlink" title="查看 Innodb 行锁争用情况"></a>查看 Innodb 行锁争用情况</h5><p>可以通过检查 <code>innodb_row_lock</code> 状态变量来分析系统上的行锁的争夺情况：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; show status like &#39;innodb_row_lock%&#39;;</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| Variable_name                 | Value |</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| Innodb_row_lock_current_waits | 0     |</span><br><span class="line">| Innodb_row_lock_time          | 0     |</span><br><span class="line">| Innodb_row_lock_time_avg      | 0     |</span><br><span class="line">| Innodb_row_lock_time_max      | 0     |</span><br><span class="line">| Innodb_row_lock_waits         | 0     |</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>如果发现锁争用比较严重，如 <code>Innodb_row_lock_waits</code> 和 <code>Innodb_row_lock_time_avg</code> 的值比较高，可以通过查询 <code>information_schema</code> 数据库中相关的表来查看锁情况，或者通过设置 <code>innodb monitors</code> 来进一步观察。  </p>
+<h6 id="查询-information-schema-数据库中的表了解锁等待"><a href="#查询-information-schema-数据库中的表了解锁等待" class="headerlink" title="查询 information_schema 数据库中的表了解锁等待"></a>查询 information_schema 数据库中的表了解锁等待</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; use information_schema</span><br><span class="line">Database changed</span><br><span class="line">MySQL [information_schema]&gt; select * from innodb_locks \G;</span><br></pre></td></tr></table></figure>
+
+<h6 id="通过设置-innodb-monitors-观察锁冲突情况"><a href="#通过设置-innodb-monitors-观察锁冲突情况" class="headerlink" title="通过设置 innodb monitors 观察锁冲突情况"></a>通过设置 innodb monitors 观察锁冲突情况</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create table innodb_monitor (a int) engine&#x3D;innodb;</span><br><span class="line">Query OK, 0 rows affected (0.05 sec)</span><br><span class="line"></span><br><span class="line">show engine innodb status \G;</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="在不通过索引条件查询时，innodb-会锁定表中的所有记录。"><a href="#在不通过索引条件查询时，innodb-会锁定表中的所有记录。" class="headerlink" title="在不通过索引条件查询时，innodb 会锁定表中的所有记录。"></a>在不通过索引条件查询时，innodb 会锁定表中的所有记录。</h6><p>创建测试表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create table tab_no_index (id int, name varchar(10)) engine&#x3D;innodb;</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line">MySQL [sakila]&gt; insert into tab_no_index values (1,&#39;1&#39;),(2,&#39;2&#39;),(3,&#39;3&#39;),(4,&#39;4&#39;);</span><br><span class="line">Query OK, 4 rows affected (0.01 sec)</span><br><span class="line">Records: 4  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/mysql-lock/5.png" alt="image"></p>
+<p><code>看起来 session_1 只给一行加了排他锁，但 session_2 在请求其他行的排他锁时，却出现了锁等待！原因就是在没有索引的情况下，Innodb 会对所有记录都加锁。当给其增加一个索引后，innodb 就只锁定了符合条件的行</code> </p>
+<p>创建测试表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create table tab_with_index (id int , name varchar(10)) engine &#x3D; innodb;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; alter table tab_with_index add index id(id);</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; insert into tab_with_index values (1,&#39;1&#39;),(2,&#39;2&#39;),(3,&#39;3&#39;),(4,&#39;4&#39;);</span><br><span class="line">Query OK, 4 rows affected (0.00 sec)</span><br><span class="line">Records: 4  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/mysql-lock/6.png" alt="image"></p>
+<h6 id="由于-MySQL-的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。"><a href="#由于-MySQL-的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。" class="headerlink" title="由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。"></a>由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。</h6><p>创建测试表,id字段有索引，name字段没有索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create table tab_with_index (id int , name varchar(10)) engine &#x3D; innodb;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; alter table tab_with_index add index id(id);</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; insert into tab_with_index values (1,&#39;1&#39;),(1,&#39;4&#39;);</span><br><span class="line">Query OK, 4 rows affected (0.00 sec)</span><br><span class="line">Records: 4  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/mysql-lock/7.png" alt="image"></p>
+<h6 id="当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb-都会使用行锁对数据加锁。"><a href="#当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb-都会使用行锁对数据加锁。" class="headerlink" title="当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb 都会使用行锁对数据加锁。"></a>当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，不论是使用主键索引、唯一索引或普通索引，innodb 都会使用行锁对数据加锁。</h6><p>创建测试表，id 字段和 name 字段都有索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MySQL [sakila]&gt; create table tab_with_index (id int , name varchar(10),index id (id),index name (name)) engine &#x3D; innodb;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">MySQL [sakila]&gt; insert into tab_with_index values (1,&#39;1&#39;),(1,&#39;4&#39;),(2,&#39;2&#39;);</span><br><span class="line">Query OK, 3 rows affected (0.00 sec)</span><br><span class="line">Records: 3  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/mysql-lock/8.png" alt="image"></p>
+<h6 id="即便在条件中使用了索引字段，但是否使用索引来检索数据是由-MySQL-通过判断不同执行计划的代价来决定的，如果-MySQL-认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下-innodb-也会对所有记录加锁。因此，在分析锁冲突时，别忘了检查-sql-的执行计划，以确认是否真正使用了索引。"><a href="#即便在条件中使用了索引字段，但是否使用索引来检索数据是由-MySQL-通过判断不同执行计划的代价来决定的，如果-MySQL-认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下-innodb-也会对所有记录加锁。因此，在分析锁冲突时，别忘了检查-sql-的执行计划，以确认是否真正使用了索引。" class="headerlink" title="即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，如果 MySQL 认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下 innodb 也会对所有记录加锁。因此，在分析锁冲突时，别忘了检查 sql 的执行计划，以确认是否真正使用了索引。"></a>即便在条件中使用了索引字段，但是否使用索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，<code>如果 MySQL 认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下 innodb 也会对所有记录加锁。</code>因此，在分析锁冲突时，别忘了检查 sql 的执行计划，以确认是否真正使用了索引。</h6><h5 id="next-key-锁"><a href="#next-key-锁" class="headerlink" title="next-key 锁"></a>next-key 锁</h5><p>当我们用<code>范围条件</code>而不是相等条件检索数据，并请求共享或排他锁时,innodb 会给符合条件的已有数据记录的索引项加锁；对于键值在条件范围内但并不存在的记录，叫做“间隙（gap）”，innodb 也会对这个“间隙”加锁，这种锁机制就是所谓的 next-key 锁。  </p>
+<p>举例来说，假如 emp 表中只有 101 条记录，其 id 的值分别是1、2、…、100、101，下面的 sql:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 这是一个范围条件的检索，innodb 不仅会对符合条件的 id 值为 101 的记录加锁，也会对 id 大于 101（这些记录并不存在）的“间隙”加锁。</span><br><span class="line">select * from emp where id &gt; 100 for update;</span><br></pre></td></tr></table></figure>
+<p>innodb 使用 next-key 锁的目的，一方面是为了防止幻读，以满足相关隔离级别的要求，对于上面的例子，要是不使用间隙锁，如果其他事务插入了 id 大于 100 的任何记录，那么本事务如果再次执行上述语句，就会发生幻读；另一方面，是为了满足其恢复和复制的需要。  </p>
+<p>在使用范围条件检索并锁定记录时，innodb 这种加锁机制会阻塞符合条件范围内键值的并发插入，这往往会造成严重的锁等待。因此，<code>在实际开发中，尤其是并发插入比较多的应用，应该尽量优化业务逻辑，尽量使用相等条件来访问更新数据，避免使用范围条件。</code>  </p>
+<p>innodb 除了通过范围条件加锁时使用 next-key 锁外，如果使用相等条件请求给一个不存在的记录加锁，innodb 也会使用 next-key 锁！  </p>
+<h5 id="innodb-使用表锁"><a href="#innodb-使用表锁" class="headerlink" title="innodb 使用表锁"></a>innodb 使用表锁</h5><p>innodb 表在个别特殊任务中，也考虑使用表级锁：  </p>
+<ol>
+<li>事务需要更新大部分或全部数据，表又比较大</li>
+<li>事务涉及多个表，比较复杂，很可能引起死锁，造成大量事务回滚。这种情况也可以考虑一次性锁定多个表，从而避免死锁，减少数据库因事务回滚带来的开销。<br>当然，应用中这两种事务不能太多，否则，就应该考虑使用 myisam 表了。  </li>
+</ol>
+<p>在 innodb 下，使用表锁要注意以下两点：  </p>
+<ol>
+<li>使用 <code>lock tables</code> 虽然可以给 innodb 加表级锁，但必须说明的是，表锁不是由 innodb 存储引擎管理的，而是由其上一层———— MySQL server 负责的，<code>仅当 autocommit=0、innodb_table_locks=1(默认设置)时，innodb 层才知道 MySQL 加的表锁，MySQL server 也才能够感知 innodb 加的行锁，这种情况下，innodb 才能自动识别涉及到的锁</code>。  </li>
+<li>在用 <code>lock_tables</code> 对 innodb 表加锁时要注意，要将 autocommit 设为 0，否则 MySQL 不会给表加锁；事务结束前，不要用 unlock tables 释放表锁，因为 unlock tables 会隐含的提交事务；commit 或 rollback 并不能释放用 lock tables 加的表锁，必须用 unlock tables 释放表锁  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set autocommit &#x3D; 0;</span><br><span class="line">lock tables ti write, t2 read, ...;</span><br><span class="line">[do something with tables t1 and t2 here];</span><br><span class="line">commit;</span><br><span class="line">unlock tables;</span><br></pre></td></tr></table></figure>
+
+<h4 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h4><p>myisam 表锁是 deadlock free 的，这是因为 myisam 总是一次获取所需的全部锁，要么全部满足，要么等待，因此不会出现死锁。但在 innodb 中，除单个 sql 组成的事务外，锁是逐步获得的，这就决定了在 innodb 中发生死锁是可能的。  </p>
+<p><img src="/images/mysql-lock/9.png" alt="image"></p>
+<p>上面的例子中，<code>两个事务都需要获得对方持有的排他锁才能继续完成事务，这种循环锁等待就是典型的死锁。</code>  </p>
+<p>发生死锁后，innodb 一般都能自动检测到，并使一个事务释放锁回退，另一个事务获得锁，继续完成事务。但在涉及外部锁或表锁的情况下，innodb 并不能完全自动检测到死锁，只需要通过设置锁等待超时参数 innodb_lock_wait_timeout 来解决。需要说明的是，这个参数并不是只用来解决死锁问题，在并发访问比较高的情况下，如果大量事务因无法立即获得所需的锁而挂起，会占用大量计算机资源，造成严重的性能问题，甚至拖垮数据库。  </p>
+<p><code>通常来说，死锁都是应用设计的问题，通过调整业务流程，数据库对象设计、事务大小、以及访问数据库的 sql 语句，绝大部分死锁都可以避免。</code>  </p>
+<h5 id="避免死锁的方法"><a href="#避免死锁的方法" class="headerlink" title="避免死锁的方法"></a>避免死锁的方法</h5><h6 id="程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会"><a href="#程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会" class="headerlink" title="程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会"></a>程序中并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会</h6><p>下面的例子中，由于两个 session 访问两个表的顺序不同，发生死锁的机会就非常高！但如果以相同的顺序来访问，死锁就可以避免。<br><img src="/images/mysql-lock/10.png" alt="image"> </p>
+<p>如果 session_2 以相同的顺序执行 sql 语句，会造成锁等待，但不会死锁。</p>
+<h6 id="在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。"><a href="#在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。" class="headerlink" title="在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。"></a>在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。</h6><p><img src="/images/mysql-lock/11.png" alt="image"> </p>
+<h6 id="在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。"><a href="#在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。" class="headerlink" title="在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。"></a>在事务中，如果要更新记录，应该申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。</h6><h6 id="在-repeatable-read-隔离级别下，如果两个线程同时对相同条件记录用-select-…-for-update-加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成-read-committed-，就可避免问题。"><a href="#在-repeatable-read-隔离级别下，如果两个线程同时对相同条件记录用-select-…-for-update-加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成-read-committed-，就可避免问题。" class="headerlink" title="在 repeatable-read 隔离级别下，如果两个线程同时对相同条件记录用 select … for update 加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成 read committed ，就可避免问题。"></a>在 repeatable-read 隔离级别下，如果两个线程同时对相同条件记录用 select … for update 加排他锁，在没有符合该条件记录情况下，两个线程过会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，将隔离级别改成 read committed ，就可避免问题。</h6><h6 id="当隔离级别为-read-committed-时，如果两个线程都先执行-select-…-for-update-判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第-1-个线程提交后，第-2-个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第-3-个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行-rollback-释放获得的排他锁"><a href="#当隔离级别为-read-committed-时，如果两个线程都先执行-select-…-for-update-判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第-1-个线程提交后，第-2-个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第-3-个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行-rollback-释放获得的排他锁" class="headerlink" title="当隔离级别为 read committed 时，如果两个线程都先执行 select … for update, 判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第 1 个线程提交后，第 2 个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第 3 个线程又来申请排他锁，也会出现死锁。对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行 rollback 释放获得的排他锁"></a>当隔离级别为 read committed 时，如果两个线程都先执行 select … for update, 判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第 1 个线程提交后，第 2 个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁，如果有第 3 个线程又来申请排他锁，也会出现死锁。<code>对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行 rollback 释放获得的排他锁</code></h6><p>** 尽管通过上面介绍的设计和 sql 优化等措施，可以大大减少死锁，但死锁很难完全避免。因此，在程序设计中总是捕获并处理死锁异常是一个很好的编程习惯 **  </p>
+<p>如果出现死锁，可以用 show innodb status 命令来确定最后一个死锁产生的原因。返回结果中包括死锁相关事务的详细信息，如引发死锁的 sql 语句，事务已经获得的锁，正在等待什么锁，以及被回滚的事务等。可以据此分析产生死锁的原因。</p>
+
+      
+       
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>MySQL 锁机制</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">5.1k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="Waterandair">Waterandair</a></p>
+    <p><span class="copy-title">发布时间:</span>2017-07-02, 09:24:06</p>
+    <p><span class="copy-title">最后更新:</span>2019-12-28, 14:03:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2017-07-02-mysql-lock-intro.html" title="MySQL 锁机制">https://waterandair.github.io/2017-07-02-mysql-lock-intro.html</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2017 Waterandair</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#时间复杂度','#大O算法','#Ansible','#大数据','#Redis','#Nosql','#Docker','#Go','#后端开发','#Linux','#Hadoop','#Hive','#环境搭建','#Java','#Kafka','#消息队列','#Zookeeper','#机器学习','#回归','#MySQL','#音乐','#Numpy','#Pandas','#Python','#Spark','#开发','#RPC','#性能调优','#原理','#Spark 原理','#工具','#分布式协作框架','#Linux 权限问题',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: ;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    .post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/waterandair">github</a>
+    
+</div>
+
+
+</html>
